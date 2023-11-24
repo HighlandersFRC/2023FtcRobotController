@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Commands;
 import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
@@ -10,7 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.PID;
 
     public class Turn extends Command{
-    PID PID = new PID(0.06, 0.0, 0.0);
+    PID PID = new PID(0.04, 0.0, 0.0);
     public DcMotor Left_Back;
     public DcMotor Right_Back;
     public DcMotor Left_Front;
@@ -35,6 +36,9 @@ import org.firstinspires.ftc.teamcode.PID;
         imu.initialize(parameters);
     }
     public void start() {
+        Right_Front.setDirection(DcMotorSimple.Direction.REVERSE);
+        Right_Back.setDirection(DcMotorSimple.Direction.REVERSE);
+        Left_Back.setDirection(DcMotorSimple.Direction.REVERSE);
         PID.setMaxInput(180);
         PID.setMinInput(-180);
         PID.setContinuous(true);
@@ -50,7 +54,7 @@ import org.firstinspires.ftc.teamcode.PID;
         this.PIDOutput = power;
         System.out.println(power + "  " + PID.getError());
 
-        Right_Front.setPower(power);
+        Right_Front.setPower(-power);
         Left_Front.setPower(power);
         Left_Back.setPower(power);
         Right_Back.setPower(-power);

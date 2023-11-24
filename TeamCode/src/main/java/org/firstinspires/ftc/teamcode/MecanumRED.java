@@ -49,9 +49,9 @@ public class MecanumRED extends LinearOpMode {
 
 
 
-            double y = -gamepad1.left_stick_y;
-            double x = gamepad1.left_stick_x * 1.1;
-            double rx = gamepad1.right_stick_x;
+            double y = gamepad1.left_stick_y;
+            double x = -gamepad1.left_stick_x * 1.1;
+            double rx = -gamepad1.right_stick_x;
 
             if (Math.abs(gamepad1.left_stick_x) < 0.00001){
                 Left_Front.setPower(0);
