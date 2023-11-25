@@ -69,7 +69,7 @@ import org.firstinspires.ftc.teamcode.PID;
 
     public boolean isFinished() {
         if (!(PID.getError() == 0)) {
-            if ((Math.abs(PID.getError())) < 1) {
+            if ((Math.abs(PID.getError())) < 2) {
                 return true;
             }
         }

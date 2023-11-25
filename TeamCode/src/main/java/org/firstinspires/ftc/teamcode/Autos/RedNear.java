@@ -44,14 +44,10 @@ public class RedNear extends LinearOpMode {
      * The variable to store our instance of the vision portal.
      */
     private VisionPortal visionPortal;
-    private static final String TFOD_MODEL_ASSET = "modeltrial1.tflite";
+    private static final String TFOD_MODEL_ASSET = "finalmodel.tflite";
     private static final String[] LABELS = {
-            "BLUECUBE",
-            "REDCUBE",
-            "PURPLEPIXEL",
-            "YELLOWPIXEL",
-            "GREENPIXEL"
-
+            "RedCube",
+            "BlueCube"
     };
     Scheduler scheduler = new Scheduler();
 

@@ -20,7 +20,6 @@ import org.firstinspires.ftc.teamcode.Commands.Wait;
 import org.firstinspires.ftc.teamcode.Commands.WristUp;
 
 @Autonomous
-@Disabled
 public class RedNearRight extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
@@ -30,17 +29,17 @@ public class RedNearRight extends LinearOpMode {
                 new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.2, 0.75), new CommandGroup(scheduler, new Wait(1000), new DeployIntake(hardwareMap, "Deploy"))),
                 new MoveWrist(hardwareMap, 0.3),
                 new Turn(hardwareMap, -90),
-                new Drive(hardwareMap, 0.1, 0.3),
-                new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.15, -0.1), new PixelTray(hardwareMap, 3000, -1, "L"), new CommandGroup(scheduler, new Wait(1000),  new Intake(hardwareMap, 1000, -0.25))),
+                new Drive(hardwareMap, 0.1, 0.33),
+                new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.15, -0.1), new PixelTray(hardwareMap, 3000, -1, "R"), new CommandGroup(scheduler, new Wait(1000),  new Intake(hardwareMap, 1000, -0.25))),
                 new MoveWrist(hardwareMap, 0.7),
                 new Wait(1000),
                 new RetractIntake(hardwareMap),
-                new Drive(hardwareMap, 0.15, 0.4),
+                new Drive(hardwareMap, 0.25, 0.37),
                 new DeployIntake(hardwareMap, "Deploy"),
                 new Wait(1000),
                 new RotateArm(hardwareMap, ArmConstants.armPlace),
-                new ParallelCommandGroup(scheduler, new PixelTray(hardwareMap, 3000, -1, "R"), new RotateArm(hardwareMap, ArmConstants.armPlace))
-                ));
+                new ParallelCommandGroup(scheduler, new PixelTray(hardwareMap, 3000, -1, "L"), new RotateArm(hardwareMap, ArmConstants.armPlace))
+        ));
         while (opModeIsActive()){
             scheduler.update();
         }

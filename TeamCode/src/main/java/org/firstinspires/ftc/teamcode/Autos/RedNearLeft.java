@@ -30,17 +30,17 @@ public class RedNearLeft extends LinearOpMode {
                 new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.2, 0.65), new CommandGroup(scheduler, new Wait(1000), new DeployIntake(hardwareMap, "Deploy"))),
                 new MoveWrist(hardwareMap, 0.3),
                 new Turn(hardwareMap, -90),
-                new Drive(hardwareMap, -0.13, 0.28),
-                new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.15, -0.1), new PixelTray(hardwareMap, 3000, -1, "L"), new CommandGroup(scheduler, new Wait(1000), new Intake(hardwareMap, 1000, -0.25))),
+                new Drive(hardwareMap, -0.1, 0.2),
+                new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.15, -0.1), new PixelTray(hardwareMap, 3000, -1, "R"), new CommandGroup(scheduler, new Wait(1000), new Intake(hardwareMap, 1000, -0.25))),
                 new MoveWrist(hardwareMap, 0.7),
                 new Wait(1000),
                 new RetractIntake(hardwareMap),
                 new Drive(hardwareMap, 0.2, 0.4),
                 new DeployIntake(hardwareMap, "Deploy"),
-                new Drive(hardwareMap, 0.2, 0.11),
-                new Drive(hardwareMap, 0.1, 0.436),
-                new RotateArm(hardwareMap, ArmConstants.armPlace),
-                new ParallelCommandGroup(scheduler, new PixelTray(hardwareMap, 3000, -1, "R"), new RotateArm(hardwareMap, ArmConstants.armPlace))
+                new Turn(hardwareMap, 15),
+                new Drive(hardwareMap, 0.2, 0.31),
+                new ParallelCommandGroup(scheduler, new RotateArm(hardwareMap, ArmConstants.armPlace), new Drive(hardwareMap, 0.1, 0.13)),
+                new ParallelCommandGroup(scheduler, new PixelTray(hardwareMap, 3000, -1, "L"), new RotateArm(hardwareMap, ArmConstants.armPlace))
         ));
         while (opModeIsActive())
         {

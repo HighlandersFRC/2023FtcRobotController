@@ -24,7 +24,6 @@ import org.firstinspires.ftc.teamcode.Commands.Wait;
 import org.firstinspires.ftc.teamcode.Commands.WristUp;
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous
-@Disabled
 
 public class BlueNearMiddle extends LinearOpMode {
 
