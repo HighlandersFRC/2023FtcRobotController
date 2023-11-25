@@ -76,11 +76,11 @@ public class MecanumRED extends LinearOpMode {
             double rx = -gamepad1.right_stick_x;
 
             if (gamepad2.x){
-                ArmPID.setSetPoint(ArmConstants.armIntake);
+                ArmPID.setSetPoint(Constants.armIntake);
             }
             else
             if (gamepad2.y){
-                ArmPID.setSetPoint(ArmConstants.armPlace);
+                ArmPID.setSetPoint(Constants.armPlace);
             }
 
             if (Math.abs(gamepad1.left_stick_x) < 0.00001){

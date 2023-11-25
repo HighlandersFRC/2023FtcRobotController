@@ -8,11 +8,12 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.Commands.Command;
 import org.firstinspires.ftc.teamcode.Commands.CommandGroup;
 import org.firstinspires.ftc.teamcode.Commands.MoveWrist;
+import org.firstinspires.ftc.teamcode.Commands.ParallelCommandGroup;
 import org.firstinspires.ftc.teamcode.Commands.RotateArm;
 import org.firstinspires.ftc.teamcode.Commands.Scheduler;
+import org.firstinspires.ftc.teamcode.Commands.Wait;
 
 @TeleOp
 //23477
@@ -70,12 +71,12 @@ public class Mecanum extends LinearOpMode {
             Scheduler scheduler = new Scheduler();
 
             if (System.currentTimeMillis() <= endTime + 5 && !gamepad1.x && !gamepad1.y){
-                ArmPID.setSetPoint(ArmConstants.armIntake);
+                ArmPID.setSetPoint(Constants.armIntake);
             }
 
             Right_Front.setDirection(DcMotorSimple.Direction.REVERSE);
             Right_Back.setDirection(DcMotorSimple.Direction.REVERSE);
-            Left_Back.setDirection(DcMotorSimple.Direction.REVERSE);//comment for comp bot
+            //Left_Back.setDirection(DcMotorSimple.Direction.REVERSE);//comment for comp bot
 
             double leftTrigger = gamepad1.left_trigger;
             double rightTrigger = gamepad1.right_trigger;
@@ -117,22 +118,27 @@ public class Mecanum extends LinearOpMode {
                 PID2.setSetPoint(1750);
             }
 
-            if (gamepad2.x){
-                ArmPID.setSetPoint(ArmConstants.armIntake);
+/*            if (gamepad2.x){
+                ArmPID.setSetPoint(Constants.armIntake);
             }
 
             else
 
             if (gamepad2.y){
-                ArmPID.setSetPoint(ArmConstants.armPlace);
-            }
+                ArmPID.setSetPoint(Constants.armPlace);
+            }*/
 
             if(gamepad2.a){
-                scheduler.add(new CommandGroup(scheduler, new MoveWrist(hardwareMap, 0.3)));
+                /*scheduler.add(new ParallelCommandGroup(scheduler, new MoveWrist(hardwareMap, Constants.wristDown), new Wait(500), new RotateArm(hardwareMap, Constants.armIntake)));
+*/
+                ArmPID.setSetPoint(Constants.armIntake);
+                WristServo.setPosition(Constants.wristDown);
             }
             else
                 if(gamepad2.b){
-                    scheduler.add(new CommandGroup(scheduler,new MoveWrist(hardwareMap, 0.7)));
+                    ArmPID.setSetPoint(Constants.armPlace);
+                    WristServo.setPosition(Constants.wristUp);
+                   /* scheduler.add(new CommandGroup(scheduler,new MoveWrist(hardwareMap, Constants.wristUp), new Wait(500), new RotateArm(hardwareMap, Constants.armPlace)));*/
                 }
 //For Competion Bot Use these values
             if (gamepad2.dpad_up) {

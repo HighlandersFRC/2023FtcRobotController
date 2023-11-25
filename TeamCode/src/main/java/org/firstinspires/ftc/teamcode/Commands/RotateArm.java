@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.Commands;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.ArmConstants;
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.PID;
 public class RotateArm extends Command {
     public double targetPosition;
@@ -14,7 +14,6 @@ public class RotateArm extends Command {
         Arm_Motor = hardwareMap.dcMotor.get("Arm_Motor");
         ArmPID.setSetPoint(targetPosition);
         targetPosition = this.targetPosition;
-        ArmConstants.prevSetPoint = targetPosition;
     }
 
     public void start() {

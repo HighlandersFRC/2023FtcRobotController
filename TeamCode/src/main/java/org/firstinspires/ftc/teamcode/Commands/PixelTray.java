@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.ArmConstants;
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.PID;
 
 public class PixelTray extends Command {
@@ -25,8 +25,6 @@ public class PixelTray extends Command {
         this.speed = Speed;
         this.time = Time;
         this.LR = LR;
-        Arm_Motor = hardwareMap.dcMotor.get("Arm_Motor");
-        ArmPID.setSetPoint(ArmConstants.prevSetPoint);
     }
 
     public void start() {

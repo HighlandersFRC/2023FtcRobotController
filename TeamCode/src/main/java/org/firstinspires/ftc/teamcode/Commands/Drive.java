@@ -5,12 +5,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
-import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.ArmConstants;
 import org.firstinspires.ftc.teamcode.PID;
-import org.opencv.core.Mat;
 
 public class Drive extends Command {
     org.firstinspires.ftc.teamcode.PID PID = new PID(0.015, 0.0, 0.0);

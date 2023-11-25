@@ -5,14 +5,13 @@ package org.firstinspires.ftc.teamcode.Autos;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.teamcode.ArmConstants;
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.CameraConstants;
 import org.firstinspires.ftc.teamcode.Commands.CommandGroup;
 import org.firstinspires.ftc.teamcode.Commands.DeployIntake;
@@ -26,7 +25,6 @@ import org.firstinspires.ftc.teamcode.Commands.RotateArm;
 import org.firstinspires.ftc.teamcode.Commands.Scheduler;
 import org.firstinspires.ftc.teamcode.Commands.Turn;
 import org.firstinspires.ftc.teamcode.Commands.Wait;
-import org.firstinspires.ftc.teamcode.Commands.WristUp;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 import java.util.List;
@@ -86,9 +84,9 @@ public class BlueNear extends LinearOpMode {
                     new Drive(hardwareMap, 0.2, 0.4),
                     new DeployIntake(hardwareMap, "Deploy"),
                     new Drive(hardwareMap, 0.2, 0.11),
-                    new RotateArm(hardwareMap, ArmConstants.armPlace),
+                    new RotateArm(hardwareMap, Constants.armPlace),
                     new Drive(hardwareMap, 0.1, 0.436),
-                    new ParallelCommandGroup(scheduler, new PixelTray(hardwareMap, 3000, -1, "R"), new RotateArm(hardwareMap, ArmConstants.armPlace))));
+                    new ParallelCommandGroup(scheduler, new PixelTray(hardwareMap, 3000, -1, "R"), new RotateArm(hardwareMap, Constants.armPlace))));
         } else if (autoside.equals("Left")){
             scheduler.add(new CommandGroup(scheduler,
                     new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.2, 0.75), new CommandGroup(scheduler, new Wait(1000), new DeployIntake(hardwareMap, "Deploy"))),
@@ -102,8 +100,8 @@ public class BlueNear extends LinearOpMode {
                     new Drive(hardwareMap, 0.15, 0.4),
                     new DeployIntake(hardwareMap, "Deploy"),
                     new Wait(1000),
-                    new RotateArm(hardwareMap, ArmConstants.armPlace),
-                    new ParallelCommandGroup(scheduler, new PixelTray(hardwareMap, 3000, -1, "R"), new RotateArm(hardwareMap, ArmConstants.armPlace))
+                    new RotateArm(hardwareMap, Constants.armPlace),
+                    new ParallelCommandGroup(scheduler, new PixelTray(hardwareMap, 3000, -1, "R"), new RotateArm(hardwareMap, Constants.armPlace))
             ));
         } else if (autoside.equals("Middle")){
             scheduler.add(new CommandGroup(scheduler,
@@ -118,8 +116,8 @@ public class BlueNear extends LinearOpMode {
                     new Drive(hardwareMap, 0.1, 0.32),
                     new Turn(hardwareMap, -90),
                     new Drive(hardwareMap,0.2, 0.83),
-                    new RotateArm(hardwareMap, ArmConstants.armPlace),
-                    new ParallelCommandGroup(scheduler, new PixelTray(hardwareMap, 3000, -1, "R"), new RotateArm(hardwareMap, ArmConstants.armPlace))
+                    new RotateArm(hardwareMap, Constants.armPlace),
+                    new ParallelCommandGroup(scheduler, new PixelTray(hardwareMap, 3000, -1, "R"), new RotateArm(hardwareMap, Constants.armPlace))
             ));
         }
             while (opModeIsActive()) {

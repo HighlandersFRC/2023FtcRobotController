@@ -1,9 +1,8 @@
 package org.firstinspires.ftc.teamcode.Autos;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.ArmConstants;
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.Commands.CommandGroup;
 import org.firstinspires.ftc.teamcode.Commands.Drive;
 import org.firstinspires.ftc.teamcode.Commands.Intake;
@@ -16,7 +15,6 @@ import org.firstinspires.ftc.teamcode.Commands.Turn;
 import org.firstinspires.ftc.teamcode.Commands.Wait;
 import org.firstinspires.ftc.teamcode.Commands.MoveWrist;
 import org.firstinspires.ftc.teamcode.Commands.PixelTray;
-import org.firstinspires.ftc.teamcode.Commands.WristUp;
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous
 
@@ -39,8 +37,8 @@ public class RedNearLeft extends LinearOpMode {
                 new DeployIntake(hardwareMap, "Deploy"),
                 new Turn(hardwareMap, 15),
                 new Drive(hardwareMap, 0.2, 0.31),
-                new ParallelCommandGroup(scheduler, new RotateArm(hardwareMap, ArmConstants.armPlace), new Drive(hardwareMap, 0.1, 0.13)),
-                new ParallelCommandGroup(scheduler, new PixelTray(hardwareMap, 3000, -1, "L"), new RotateArm(hardwareMap, ArmConstants.armPlace))
+                new ParallelCommandGroup(scheduler, new RotateArm(hardwareMap, Constants.armPlace), new Drive(hardwareMap, 0.1, 0.13)),
+                new ParallelCommandGroup(scheduler, new PixelTray(hardwareMap, 3000, -1, "L"), new RotateArm(hardwareMap, Constants.armPlace))
         ));
         while (opModeIsActive())
         {
