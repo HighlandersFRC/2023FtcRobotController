@@ -16,8 +16,7 @@ public class navX2 {
     private AHRS hardwareMap(String deviceName) {
         return null;
     }
-
-    public AHRS getAhrs() {
+ AHRS getAhrs() {
         return ahrs;
     }
 

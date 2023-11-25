@@ -27,11 +27,27 @@ public class BlueFarLeft extends LinearOpMode {
     public void runOpMode() {
         waitForStart();
         scheduler.add(new CommandGroup(scheduler,
-                new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.2, 0.75), new CommandGroup(scheduler, new Wait(1000), new DeployIntake(hardwareMap, "Deploy"))),
+
+                new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.2, 0.75) {
+                    @Override
+                    public void execute() {
+
+                    }
+                }, new CommandGroup(scheduler, new Wait(1000), new DeployIntake(hardwareMap, "Deploy"))),
                 new MoveWrist(hardwareMap, 0.3),
                 new Turn(hardwareMap, 90),
-                new Drive(hardwareMap, 0.1, 0.3),
-                new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.15, -0.1), new PixelTray(hardwareMap, 3000, -1, "L"), new CommandGroup(scheduler, new Wait(1000),  new Intake(hardwareMap, 1000, -0.25)))
+                new Drive(hardwareMap, 0.1, 0.3) {
+                    @Override
+                    public void execute() {
+
+                    }
+                },
+                new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.15, -0.1) {
+                    @Override
+                    public void execute() {
+
+                    }
+                }, new PixelTray(hardwareMap, 3000, -1, "L"), new CommandGroup(scheduler, new Wait(1000),  new Intake(hardwareMap, 1000, -0.25)))
         ));
         while (opModeIsActive()){
             scheduler.update();
