@@ -5,6 +5,9 @@ import java.util.List;
 
 public class Scheduler {
     List<Command> commandList = new ArrayList<>();
+    public String getActive(){
+        return commandList.get(0).toString();
+    }
     public void add(Command command){
         commandList.add(command);
         command.start();
