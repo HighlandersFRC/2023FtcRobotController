@@ -12,6 +12,7 @@ buildscript {
     dependencies {
         // Note for FTC Teams: Do not modify this yourself.
         classpath 'com.android.tools.build:gradle:7.4.2'
+        compile (name:'navx_ftc-release', ext:'aar')
     }
 }
 
@@ -21,9 +22,18 @@ allprojects {
     repositories {
         mavenCentral()
         google()
+        flatDir {
+            dirs 'libs','/Users/doadj/navx-mxp/android/libs'
+        }
+
     }
 }
 
 repositories {
     mavenCentral()
+    flatDir {
+        dirs 'libs', 'C:\\Users\\doadj\\navx-micro\\android\\libs'
+    }
+
+
 }

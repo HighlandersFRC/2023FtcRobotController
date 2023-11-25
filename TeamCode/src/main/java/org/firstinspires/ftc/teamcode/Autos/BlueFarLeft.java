@@ -44,7 +44,7 @@ public class BlueFarLeft extends LinearOpMode {
                 },
                 new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.15, -0.1) {
                     @Override
-                    public void execute() {
+                    public void execute( ) {
 
                     }
                 }, new PixelTray(hardwareMap, 3000, -1, "L"), new CommandGroup(scheduler, new Wait(1000),  new Intake(hardwareMap, 1000, -0.25)))
