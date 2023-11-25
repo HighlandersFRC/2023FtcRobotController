@@ -8,6 +8,12 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.Commands.Command;
+import org.firstinspires.ftc.teamcode.Commands.CommandGroup;
+import org.firstinspires.ftc.teamcode.Commands.MoveWrist;
+import org.firstinspires.ftc.teamcode.Commands.RotateArm;
+import org.firstinspires.ftc.teamcode.Commands.Scheduler;
+
 @TeleOp
 //23477
 public class Mecanum extends LinearOpMode {
@@ -53,14 +59,15 @@ public class Mecanum extends LinearOpMode {
 
 
         waitForStart();
-/*        Arm_Motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Arm_Motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);*/
+        Arm_Motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Arm_Motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 //arm 1 is positive 600 max extension
         //arm 2 is -510 max extension
         if (isStopRequested()) return;
 
         while (opModeIsActive()) {
             //arm2 is reversed
+            Scheduler scheduler = new Scheduler();
 
             if (System.currentTimeMillis() <= endTime + 5 && !gamepad1.x && !gamepad1.y){
                 ArmPID.setSetPoint(ArmConstants.armIntake);
@@ -68,24 +75,23 @@ public class Mecanum extends LinearOpMode {
 
             Right_Front.setDirection(DcMotorSimple.Direction.REVERSE);
             Right_Back.setDirection(DcMotorSimple.Direction.REVERSE);
-            Left_Back.setDirection(DcMotorSimple.Direction.REVERSE);
+            Left_Back.setDirection(DcMotorSimple.Direction.REVERSE);//comment for comp bot
 
             double leftTrigger = gamepad1.left_trigger;
             double rightTrigger = gamepad1.right_trigger;
             double lstick2 = gamepad2.left_stick_y;
             LServo.scaleRange(-180, 180);
             RServo.scaleRange(-180, 180);
-            WristServo.scaleRange(-150, 150);
 
             double r2Trigger =  gamepad2.right_trigger;
             double l2Trigger =  gamepad2.left_trigger;
             double intakePower = (rightTrigger - leftTrigger);
 
-            PID.setMaxOutput(1);
-            PID.setMinOutput(-1);
+            PID.setMaxOutput(0.75);
+            PID.setMinOutput(-0.75);
             PID.setPID(0.003, 0, 0.001);
-            PID2.setMaxOutput(1);
-            PID2.setMinOutput(-1);
+            PID2.setMaxOutput(0.75);
+            PID2.setMinOutput(-0.75);
             PID2.setPID(0.003, 0, 0.001);
             PID.updatePID(Arm1.getCurrentPosition());
             PID2.updatePID(Arm2.getCurrentPosition());
@@ -98,17 +104,17 @@ public class Mecanum extends LinearOpMode {
             Arm_Motor.setPower(-ArmPID.getResult());
             Arm2.setDirection(DcMotorSimple.Direction.REVERSE);
 
-            holderservo_left.setPower(intakePower);
-            holderservo_right.setPower(-intakePower);
+            holderservo_left.setPower(-intakePower);
+            holderservo_right.setPower(intakePower);
 
             if (gamepad1.a){
-                PID.setSetPoint(-230);
-                PID2.setSetPoint(38);
+                PID.setSetPoint(0);
+                PID2.setSetPoint(0);
             }
 
             if (gamepad1.b){
-                PID.setSetPoint(-1931);
-                PID2.setSetPoint(-1644);
+                PID.setSetPoint(1750);
+                PID2.setSetPoint(1750);
             }
 
             if (gamepad2.x){
@@ -120,38 +126,28 @@ public class Mecanum extends LinearOpMode {
             if (gamepad2.y){
                 ArmPID.setSetPoint(ArmConstants.armPlace);
             }
-            /*if (gamepad2.a){
-                PID.setSetPoint(0);
-                PID2.setSetPoint(0);
-            }
-            if (gamepad2.b){
-                PID.setSetPoint(-1622);
-                PID2.setSetPoint(-1637);
-            }
-*/
+
             if(gamepad2.a){
-                WristServo.setPosition(0.3);
-                WristServo.setDirection(Servo.Direction.REVERSE);
+                scheduler.add(new CommandGroup(scheduler, new MoveWrist(hardwareMap, 0.41)));
             }
             else
                 if(gamepad2.b){
-                    WristServo.setPosition(0.7);
-                    WristServo.setDirection(Servo.Direction.REVERSE);
+                    scheduler.add(new CommandGroup(scheduler,new MoveWrist(hardwareMap, 0.9)));
                 }
-
+//For Competion Bot Use these values
             if (gamepad2.dpad_up) {
-                LServo.setPosition(-80);
-                RServo.setPosition(80);
+                LServo.setPosition(0.75);
+                RServo.setPosition(0.25);
             }
             if (gamepad2.dpad_down) {
-                LServo.setPosition(-1);
-                RServo.setPosition(1);
+                LServo.setPosition(0.07);
+                RServo.setPosition(0.94);
             }
-
+//end
             Right_Intake.setPower(intakePower);
 
             double y = gamepad1.left_stick_y;
-            double x = gamepad1.left_stick_x * 1.1;
+            double x = -gamepad1.left_stick_x * 1.1;
             double rx = -gamepad1.right_stick_x;
 
             if (Math.abs(gamepad1.left_stick_x) < 0.00001){

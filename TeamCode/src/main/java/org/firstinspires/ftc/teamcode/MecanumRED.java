@@ -2,7 +2,10 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.AnalogInput;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp
 //23477
@@ -11,10 +14,12 @@ public class MecanumRED extends LinearOpMode {
     private DcMotor Right_Front;
     private DcMotor Left_Back;
     private DcMotor Right_Back;
-
+    private DcMotor Right_Intake;
+    private AnalogInput armEncoder;
 
     // private OpticalDistanceSensor distance_Sensor;
     org.firstinspires.ftc.teamcode.PID PID = new PID(0.1, 0, 0);
+    PID ArmPID = new PID(0.001, 0.0, 0.0);
 
     @Override
     public void runOpMode() {
@@ -24,8 +29,19 @@ public class MecanumRED extends LinearOpMode {
         Right_Front = hardwareMap.dcMotor.get("Right_Front");
         Left_Back = hardwareMap.dcMotor.get("Left_Back");
         Right_Back = hardwareMap.dcMotor.get("Right_Back");
+        Right_Intake = hardwareMap.dcMotor.get("Right_Intake");
+        DcMotor Arm_Motor = hardwareMap.dcMotor.get("Arm_Motor");
+        Servo LServo = hardwareMap.servo.get("LServo");
+        Servo RServo = hardwareMap.servo.get("RServo");
+        DcMotor Arm1 = hardwareMap.dcMotor.get("Arm_Left");
+        DcMotor Arm2 = hardwareMap.dcMotor.get("Arm_Right");
+        CRServo holderservo_left = hardwareMap.crservo.get("HolderServo_Left");
+        CRServo holderservo_right = hardwareMap.crservo.get("HolderServo_Right");
+        Servo WristServo = hardwareMap.servo.get("WristServo");
+        armEncoder = hardwareMap.analogInput.get("absEncoder");
 
-
+        Arm_Motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        Arm_Motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         waitForStart();
         long timeElapsed = 0;
@@ -41,17 +57,31 @@ public class MecanumRED extends LinearOpMode {
             double leftTrigger = gamepad1.left_trigger;
             double rightTrigger = gamepad1.right_trigger;
 
-            double intakePower = (rightTrigger - leftTrigger) * 0.75;
-
+            double intakePower = (rightTrigger - leftTrigger);
             PID.setMaxOutput(1);
             PID.setMinOutput(-1);
             PID.setPID(0.003,0 ,0.001);
 
+            ArmPID.setMaxOutput(0.75);
+            ArmPID.setMinOutput(-0.75);
+            ArmPID.updatePID(Arm_Motor.getCurrentPosition());
+            Arm_Motor.setPower(-ArmPID.getResult());
 
+            Right_Intake.setPower(intakePower);
+            holderservo_left.setPower(intakePower);
+            holderservo_right.setPower(-intakePower);
 
             double y = gamepad1.left_stick_y;
             double x = -gamepad1.left_stick_x * 1.1;
             double rx = -gamepad1.right_stick_x;
+
+            if (gamepad2.x){
+                ArmPID.setSetPoint(ArmConstants.armIntake);
+            }
+            else
+            if (gamepad2.y){
+                ArmPID.setSetPoint(ArmConstants.armPlace);
+            }
 
             if (Math.abs(gamepad1.left_stick_x) < 0.00001){
                 Left_Front.setPower(0);
