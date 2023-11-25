@@ -104,8 +104,8 @@ public class Mecanum extends LinearOpMode {
             Arm_Motor.setPower(-ArmPID.getResult());
             Arm2.setDirection(DcMotorSimple.Direction.REVERSE);
 
-            holderservo_left.setPower(-intakePower);
-            holderservo_right.setPower(intakePower);
+            holderservo_left.setPower(intakePower);
+            holderservo_right.setPower(-intakePower);
 
             if (gamepad1.a){
                 PID.setSetPoint(0);
@@ -128,11 +128,11 @@ public class Mecanum extends LinearOpMode {
             }
 
             if(gamepad2.a){
-                scheduler.add(new CommandGroup(scheduler, new MoveWrist(hardwareMap, 0.41)));
+                scheduler.add(new CommandGroup(scheduler, new MoveWrist(hardwareMap, 0.3)));
             }
             else
                 if(gamepad2.b){
-                    scheduler.add(new CommandGroup(scheduler,new MoveWrist(hardwareMap, 0.9)));
+                    scheduler.add(new CommandGroup(scheduler,new MoveWrist(hardwareMap, 0.7)));
                 }
 //For Competion Bot Use these values
             if (gamepad2.dpad_up) {
@@ -147,7 +147,7 @@ public class Mecanum extends LinearOpMode {
             Right_Intake.setPower(intakePower);
 
             double y = gamepad1.left_stick_y;
-            double x = -gamepad1.left_stick_x * 1.1;
+            double x = gamepad1.left_stick_x * 1.1;
             double rx = -gamepad1.right_stick_x;
 
             if (Math.abs(gamepad1.left_stick_x) < 0.00001){
