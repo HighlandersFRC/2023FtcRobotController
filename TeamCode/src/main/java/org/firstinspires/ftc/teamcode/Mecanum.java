@@ -62,6 +62,10 @@ public class Mecanum extends LinearOpMode {
         waitForStart();
         Arm_Motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Arm_Motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        /*double voltageDelta = Constants.absoluteArmZero - armEncoder.getVoltage();
+        double ticksOffset = voltageDelta / Constants.voltsPer1000Ticks * 1000;*/
+        Constants.armOffset = -Constants.getOffsetFromVoltage(Constants.absoluteArmZero - armEncoder.getVoltage());
 //arm 1 is positive 600 max extension
         //arm 2 is -510 max extension
         if (isStopRequested()) return;
@@ -70,9 +74,6 @@ public class Mecanum extends LinearOpMode {
             //arm2 is reversed
             Scheduler scheduler = new Scheduler();
 
-            if (System.currentTimeMillis() <= endTime + 5 && !gamepad1.x && !gamepad1.y){
-                ArmPID.setSetPoint(Constants.armIntake);
-            }
 
             Right_Front.setDirection(DcMotorSimple.Direction.REVERSE);
             Right_Back.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -98,7 +99,7 @@ public class Mecanum extends LinearOpMode {
             PID2.updatePID(Arm2.getCurrentPosition());
             ArmPID.setMaxOutput(0.75);
             ArmPID.setMinOutput(-0.75);
-            ArmPID.updatePID(Arm_Motor.getCurrentPosition());
+            ArmPID.updatePID(Arm_Motor.getCurrentPosition() - Constants.armOffset);
             Arm1.setPower(PID.getResult());
             Arm2.setPower(PID2.getResult());
 
@@ -183,15 +184,16 @@ public class Mecanum extends LinearOpMode {
             Right_Back.setPower(backRightPower);
 
             telemetry.addLine("Motor Positions");
+            telemetry.addData("TicksOffset", Constants.armOffset);
             telemetry.addData("Front-Left Position", Left_Front.getCurrentPosition());
             telemetry.addData("Front-Right Position", Right_Front.getCurrentPosition());
             telemetry.addData("Back-Left Position", Left_Back.getCurrentPosition());
             telemetry.addData("Back-Right Position", Right_Back.getCurrentPosition());
             telemetry.addData("Arm One Encoder", Arm1.getCurrentPosition());
             telemetry.addData("Arm Two Encoder", Arm2.getCurrentPosition());
-            telemetry.addData("ArmRotateAbsEncoder", Arm_Motor.getCurrentPosition());
+            telemetry.addData("Arm Encoder", Arm_Motor.getCurrentPosition() - Constants.armOffset);
             telemetry.addData("Wrist Servo Position", WristServo.getPosition());
-            telemetry.addData("Arm Encoder", armEncoder.getVoltage());
+            telemetry.addData("Arm Voltage", armEncoder.getVoltage());
 
             telemetry.addLine("");
             telemetry.addLine("Controller Inputs");
