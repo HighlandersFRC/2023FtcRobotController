@@ -26,11 +26,11 @@ public class BlueNearRight extends LinearOpMode {
 
         scheduler.add(new CommandGroup(scheduler,
                 new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.2, 0.65), new CommandGroup(scheduler, new Wait(1000), new DeployIntake(hardwareMap, "Deploy"))),
-                new MoveWrist(hardwareMap, 0.3),
+                new MoveWrist(hardwareMap, Constants.wristDown),
                 new Turn(hardwareMap, 90),
                 new Drive(hardwareMap, -0.1, 0.28),
                 new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.15, -0.1), new PixelTray(hardwareMap, 3000, -1, "L"), new CommandGroup(scheduler, new Wait(1000), new Intake(hardwareMap, 1000, -0.25))),
-                new MoveWrist(hardwareMap, 0.7),
+                new MoveWrist(hardwareMap, Constants.wristUp),
                 new Wait(1000),
                 new RetractIntake(hardwareMap),
                 new Drive(hardwareMap, 0.2, 0.4),

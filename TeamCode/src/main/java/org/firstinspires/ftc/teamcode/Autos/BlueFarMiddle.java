@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.Commands.PixelTray;
 import org.firstinspires.ftc.teamcode.Commands.Scheduler;
 import org.firstinspires.ftc.teamcode.Commands.Turn;
 import org.firstinspires.ftc.teamcode.Commands.Wait;
+import org.firstinspires.ftc.teamcode.Constants;
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous
 public class BlueFarMiddle extends LinearOpMode {
@@ -25,7 +26,7 @@ public class BlueFarMiddle extends LinearOpMode {
 
         scheduler.add(new CommandGroup(scheduler,
                 new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.2, 0.42), new CommandGroup(scheduler, new Wait(1000), new DeployIntake(hardwareMap, "Deploy"))),
-                new MoveWrist(hardwareMap, 0.3),
+                new MoveWrist(hardwareMap, Constants.wristDown),
                 new Turn(hardwareMap, 180),
                 new Drive(hardwareMap, -0.2, 0.539),
                 new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.15, -0.1), new PixelTray(hardwareMap, 3000, -1, "L"), new CommandGroup(scheduler, new Wait(1000), new Intake(hardwareMap, 1000, -0.25)))

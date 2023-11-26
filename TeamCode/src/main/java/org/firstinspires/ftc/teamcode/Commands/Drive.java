@@ -47,7 +47,7 @@ public class Drive extends Command {
         imu.initialize(parameters);
         Right_Front.setDirection(DcMotorSimple.Direction.REVERSE);
         Right_Back.setDirection(DcMotorSimple.Direction.REVERSE);
-        Left_Back.setDirection(DcMotorSimple.Direction.REVERSE);
+/*        Left_Back.setDirection(DcMotorSimple.Direction.REVERSE);*/
         Arm_Motor = hardwareMap.dcMotor.get("Arm_Motor");
     }
     public void start() {

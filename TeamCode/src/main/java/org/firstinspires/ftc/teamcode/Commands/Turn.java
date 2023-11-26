@@ -38,7 +38,7 @@ import org.firstinspires.ftc.teamcode.PID;
     public void start() {
         Right_Front.setDirection(DcMotorSimple.Direction.REVERSE);
         Right_Back.setDirection(DcMotorSimple.Direction.REVERSE);
-        Left_Back.setDirection(DcMotorSimple.Direction.REVERSE);
+/*        Left_Back.setDirection(DcMotorSimple.Direction.REVERSE);*/
         PID.setMaxInput(180);
         PID.setMinInput(-180);
         PID.setContinuous(true);
