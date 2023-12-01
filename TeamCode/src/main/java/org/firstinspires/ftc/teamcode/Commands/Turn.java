@@ -11,7 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.PID;
 
     public class Turn extends Command{
-    PID PID = new PID(0.04, 0.0, 0.0);
+    PID PID = new PID(0.06, 0.0001, 0.0);
     public DcMotor Left_Back;
     public DcMotor Right_Back;
     public DcMotor Left_Front;

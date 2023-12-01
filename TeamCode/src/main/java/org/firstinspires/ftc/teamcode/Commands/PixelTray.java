@@ -28,13 +28,13 @@ public class PixelTray extends Command {
     }
 
     public void start() {
-        if (LR == "L") {
+        if (LR.equals("L")) {
             holderservo_left.setPower(-speed);
         }else
-            if(LR == "R"){
+            if(LR.equals("R")){
                 holderservo_right.setPower(speed);
         }else
-            if (LR == "LR"){
+            if (LR.equals("LR")){
                 holderservo_left.setPower(-speed);
                 holderservo_right.setPower(speed);
             }

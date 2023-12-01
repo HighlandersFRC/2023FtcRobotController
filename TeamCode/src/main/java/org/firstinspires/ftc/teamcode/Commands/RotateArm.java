@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.ArmEncoder;
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.PID;
 public class RotateArm extends Command {
@@ -17,19 +18,20 @@ public class RotateArm extends Command {
         Arm_Motor = hardwareMap.dcMotor.get("Arm_Motor");
         ArmPID.setSetPoint(targetPosition);
         targetPosition = this.targetPosition;
-        Constants.armOffset = -Constants.getOffsetFromVoltage(Constants.absoluteArmZero - armEncoder.getVoltage());
     }
 
     public void start() {
-    }
+            }
 
     public void execute() {
+        System.out.println(Arm_Motor.getCurrentPosition() +" "+ Constants.armOffset);
         ArmPID.updatePID(Arm_Motor.getCurrentPosition() - Constants.armOffset);
         Arm_Motor.setPower(-ArmPID.getResult());
     }
 
     public void end() {
         Arm_Motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        Arm_Motor.setPower(0);
     }
 
     public boolean isFinished() {
