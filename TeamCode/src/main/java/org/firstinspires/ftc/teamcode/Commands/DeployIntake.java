@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.Commands;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import java.util.Objects;
+
 public class DeployIntake extends Command{
     public Servo LServo;
     public Servo RServo;
@@ -15,11 +17,11 @@ public class DeployIntake extends Command{
     }
 
     public void start(){
-        if(Deploy == "Deploy"){
+        if(Objects.equals(Deploy, "Deploy")){
             LServo.setPosition(0.3);
             RServo.setPosition(0.8);
         }else
-        if (Deploy == "Retract"){
+        if (Objects.equals(Deploy, "Retract")){
             LServo.setPosition(0.8);
             RServo.setPosition(0.2);
         }
