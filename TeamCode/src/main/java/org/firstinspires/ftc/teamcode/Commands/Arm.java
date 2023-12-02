@@ -20,10 +20,18 @@ public class Arm extends Command {
         Arm1.setTargetPosition(PID.getSetPoint());
         Arm1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
+<<<<<<< Updated upstream
     public void execute(){
         PID.updatePID(Arm1.getCurrentPosition());
         Arm1.setTargetPosition(PID.getSetPoint());
         Arm1.setPower(1);
+=======
+    public boolean execute(){
+        PID.updatePID(Arm1.getCurrentPosition());
+        Arm1.setTargetPosition(PID.getSetPoint());
+        Arm1.setPower(1);
+        return false;
+>>>>>>> Stashed changes
     }
     public void end(){
         Arm1.setPower(0);

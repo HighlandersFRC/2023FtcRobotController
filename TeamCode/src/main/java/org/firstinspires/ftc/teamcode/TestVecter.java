@@ -1,3 +1,7 @@
+<<<<<<< Updated upstream
+=======
+/*
+>>>>>>> Stashed changes
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -13,7 +17,11 @@ import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.internal.ftdi.eeprom.FT_EEPROM_232H;
+<<<<<<< Updated upstream
 import org.firstinspires.ftc.teamcode.Commands.Drive;
+=======
+
+>>>>>>> Stashed changes
 import org.firstinspires.ftc.teamcode.Tools.Vector;
 
 @TeleOp
@@ -54,14 +62,22 @@ public class TestVecter extends LinearOpMode {
             Vector l = new Vector(lx, ly);
             double botHeading = -imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
             double botHeadingRadian = -imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+<<<<<<< Updated upstream
             Drive drive = new Drive(l, rx) {
                 @Override
                 public void execute() {
 
                 }
             };
+=======
+            Drive drive = new Drive(l, rx);
+>>>>>>> Stashed changes
             drive.execute();
 
         }
     }
+<<<<<<< Updated upstream
 }
+=======
+}*/
+>>>>>>> Stashed changes

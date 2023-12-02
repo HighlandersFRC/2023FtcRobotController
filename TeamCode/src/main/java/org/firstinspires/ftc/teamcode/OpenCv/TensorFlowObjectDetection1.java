@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 /* Copyright (c) 2019 FIRST. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -26,6 +27,9 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+=======
+
+>>>>>>> Stashed changes
 
 package org.firstinspires.ftc.teamcode.OpenCv;
 
@@ -37,6 +41,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
+<<<<<<< Updated upstream
 
 import java.util.List;
 
@@ -51,6 +56,14 @@ import java.util.List;
 //@Disabled
 public class TensorFlowObjectDetection1 extends LinearOpMode {
 
+=======
+import java.util.List;
+
+
+@TeleOp(name = "TensorFlow Object Detection", group = "Concept")
+//@Disabled
+public class TensorFlowObjectDetection1 extends LinearOpMode {
+>>>>>>> Stashed changes
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
     /**
@@ -58,13 +71,25 @@ public class TensorFlowObjectDetection1 extends LinearOpMode {
      */
     private TfodProcessor tfod;
 
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
     /**
      * The variable to store our instance of the vision portal.
      */
     private VisionPortal visionPortal;
+<<<<<<< Updated upstream
     private static final String TFOD_MODEL_ASSET = "Centerstage.tflite";
     private static final String[] LABELS = {
             "Pixel"
+=======
+    private static final String TFOD_MODEL_ASSET = "model_20231124_191315.tflite";
+    private static final String[] LABELS = {
+            "RedCube",
+            "BlueCube"
+
+>>>>>>> Stashed changes
     };
 
 
@@ -89,6 +114,7 @@ public class TensorFlowObjectDetection1 extends LinearOpMode {
                 telemetry.update();
 
                 // Save CPU resources; can resume streaming when needed.
+<<<<<<< Updated upstream
               //  if (gamepad1.dpad_down) {
                //     visionPortal.stopStreaming();
                // } else if (gamepad1.dpad_up) {
@@ -101,6 +127,20 @@ public class TensorFlowObjectDetection1 extends LinearOpMode {
         }
 
         // Save more CPU resources when camera is no longer needed.
+=======
+            //    if (gamepad1.dpad_down) {
+              //      visionPortal.stopStreaming();
+                //} else if (gamepad1.dpad_up) {
+                  //  visionPortal.resumeStreaming();
+               //}
+
+                // Share the CPU.
+                sleep(10);
+            }
+        }
+
+
+>>>>>>> Stashed changes
         visionPortal.close();
 
     }   // end runOpMode()
@@ -118,12 +158,20 @@ public class TensorFlowObjectDetection1 extends LinearOpMode {
             //.setModelAssetName(TFOD_MODEL_ASSET)
             //.setModelFileName(TFOD_MODEL_FILE)
                 .setModelLabels(LABELS)
+<<<<<<< Updated upstream
             //.setModelLabels(LABELS)
             //.setIsModelTensorFlow2(true)
             //.setIsModelQuantized(true)
             //.setModelInputSize(300)
             //.setModelAspectRatio(16.0 / 9.0)
 
+=======
+            .setModelLabels(LABELS)
+            //.setIsModelTensorFlow2(true)
+            .setIsModelQuantized(true)
+            .setModelInputSize(360)
+           // .setModelAspectRatio(16.0 / 9.0)
+>>>>>>> Stashed changes
             .build();
 
         // Create the vision portal by using a builder.
@@ -136,6 +184,7 @@ public class TensorFlowObjectDetection1 extends LinearOpMode {
             builder.setCamera(BuiltinCameraDirection.BACK);
         }
 
+<<<<<<< Updated upstream
         // Choose a camera resolution. Not all cameras support all resolutions.
         //builder.setCameraResolution(new Size(640, 480));
 
@@ -161,10 +210,30 @@ public class TensorFlowObjectDetection1 extends LinearOpMode {
 
         // Disable or re-enable the TFOD processor at any time.
         //visionPortal.setProcessorEnabled(tfod, true);
+=======
+
+
+
+        // Enable the RC preview (LiveView).  Set "false" to omit camera monitoring.
+      //
+        builder.setStreamFormat(VisionPortal.StreamFormat.YUY2);
+        builder.setAutoStopLiveView(false);
+        builder.addProcessor(tfod);
+
+
+        visionPortal = builder.build();
+
+        // Set confidence threshold for TFOD recognitions, at any time.
+        tfod.setMinResultConfidence(0.75f);
+
+
+        visionPortal.setProcessorEnabled(tfod, true);
+>>>>>>> Stashed changes
 
     }   // end method initTfod()
 
     /**
+<<<<<<< Updated upstream
      * Add telemetry about TensorFlow Object Detection (TFOD) recognitions.
      */
     private void telemetryTfod() {
@@ -176,6 +245,51 @@ public class TensorFlowObjectDetection1 extends LinearOpMode {
         for (Recognition recognition : currentRecognitions) {
             double x = (recognition.getLeft() + recognition.getRight()) / 2 ;
             double y = (recognition.getTop()  + recognition.getBottom()) / 2 ;
+=======
+     * Add telemetry about TensorFlow Object Detection recognitions.
+
+     * @return
+     */
+
+    private String telemetryTfod() {
+
+        List<Recognition> currentRecognitions = tfod.getRecognitions();
+        telemetry.addData("# Objects Detected", currentRecognitions.size());
+  /* Boolean go = true;*/
+        // Step through the list of recognitions and display info for each one.
+        for (Recognition recognition : currentRecognitions) {
+            float x = (recognition.getLeft() + recognition.getRight()) / 2 ;
+            float y = (recognition.getTop()  + recognition.getBottom()) / 2 ;
+
+         /*   if("BLUECUBE".equals(LABELS)) {
+                return String.valueOf(go);
+            }
+if(go) {*/
+    if (x < 280) {
+        telemetry.addData("Location", "Left");
+        return "Left";
+    }
+    if (x > 390) {
+        telemetry.addData("Location", "Right");
+        return "Right";
+    }
+    if (x > 280 && x < 390) {
+        telemetry.addData("Location", "Center");
+        return "Center";
+    }
+    if (Float.isNaN(x)) {
+        telemetry.addData("Location", "Center");
+        return "Center";
+    }
+/*};*/
+
+//NOTE, for the better Left, Right, Center without the telemetry copy the one from my command named MODULETEAMPROP.java in the commands folder.
+// It may also be renamed as TEAMPROPOBJECTDETECTION.java TENSORFLOWOBJECTDETECTIONCOMMAND.java and cmd.java are NOT correct -------|^
+
+            currentRecognitions = tfod.getFreshRecognitions();
+
+
+>>>>>>> Stashed changes
 
 
             telemetry.addData(""," ");
@@ -184,6 +298,19 @@ public class TensorFlowObjectDetection1 extends LinearOpMode {
             telemetry.addData("- Size", "%.0f x %.0f", recognition.getWidth(), recognition.getHeight());
         }   // end for() loop
 
+<<<<<<< Updated upstream
     }   // end method telemetryTfod()
 
 }   // end class
+=======
+        return null;
+
+    }   //end method telemetryTfod()
+
+}   // end class
+/*
+*
+
+*/
+//135
+>>>>>>> Stashed changes

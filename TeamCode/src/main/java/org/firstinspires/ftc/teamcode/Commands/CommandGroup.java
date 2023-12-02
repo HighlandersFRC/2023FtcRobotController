@@ -19,7 +19,11 @@ public class CommandGroup extends Command {
         scheduler.add(commands.get(0));
     }
 
+<<<<<<< Updated upstream
     public void execute() {
+=======
+    public boolean execute() {
+>>>>>>> Stashed changes
         if (commands.get(0).commandCompleted) {
             commands.remove(0);
             if (commands.size() > 0) {
@@ -29,6 +33,10 @@ public class CommandGroup extends Command {
 
         }
         System.out.println(commands.size());
+<<<<<<< Updated upstream
+=======
+        return false;
+>>>>>>> Stashed changes
     }
 
     public void end() {

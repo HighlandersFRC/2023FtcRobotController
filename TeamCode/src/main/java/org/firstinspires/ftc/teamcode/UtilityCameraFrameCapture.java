@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 /*
  * Copyright (c) 2023 FIRST
  *
@@ -30,6 +31,9 @@
  * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+=======
+
+>>>>>>> Stashed changes
 
 package org.firstinspires.ftc.teamcode;
 
@@ -44,6 +48,7 @@ import org.firstinspires.ftc.vision.VisionPortal;
 
 import java.util.Locale;
 
+<<<<<<< Updated upstream
 /*
  * This OpMode helps calibrate a webcam or RC phone camera, useful for AprilTag pose estimation
  * with the FTC VisionPortal.   It captures a camera frame (image) and stores it on the Robot Controller
@@ -57,19 +62,29 @@ import java.util.Locale;
  *
  * In OnBot Java, use "Add File" to add this OpMode from the list of Samples.
  */
+=======
+>>>>>>> Stashed changes
 
 @Autonomous(name = "Utility: Camera Frame Capture", group = "Utility")
 public class UtilityCameraFrameCapture extends LinearOpMode
 {
+<<<<<<< Updated upstream
     /*
      * EDIT THESE PARAMETERS AS NEEDED
      */
+=======
+
+>>>>>>> Stashed changes
     final boolean USING_WEBCAM = true;
     final BuiltinCameraDirection INTERNAL_CAM_DIR = BuiltinCameraDirection.BACK;
     final int RESOLUTION_WIDTH = 640;
     final int RESOLUTION_HEIGHT = 480;
 
+<<<<<<< Updated upstream
     // Internal state
+=======
+
+>>>>>>> Stashed changes
     boolean lastX;
     int frameCount;
     long capReqTime;
@@ -82,7 +97,11 @@ public class UtilityCameraFrameCapture extends LinearOpMode
         if (USING_WEBCAM)
         {
             portal = new VisionPortal.Builder()
+<<<<<<< Updated upstream
                     .setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"))
+=======
+                    .setCamera(hardwareMap.get(WebcamName.class, "webcam1"))
+>>>>>>> Stashed changes
                     .setCameraResolution(new Size(RESOLUTION_WIDTH, RESOLUTION_HEIGHT))
                     .build();
         }
