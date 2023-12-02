@@ -134,8 +134,8 @@ public class Mecanum extends LinearOpMode {
                 PID.setSetPoint(0);
                 PID2.setSetPoint(0);
                 WristServo.setPosition(Constants.wristUp);
-                LServo.setPosition(0.75);
-                RServo.setPosition(0.25);
+                LServo.setPosition(0.2);
+                RServo.setPosition(0.8);
             }else {
                 Arm1.setPower(PID.getResult());
                 Arm2.setPower(PID2.getResult());
@@ -178,17 +178,17 @@ public class Mecanum extends LinearOpMode {
                             ArmPID.setSetPoint(Constants.armPlace);
                             wristCurrentlyGoingDown = false;
                         }
-                    }, 500);
+                    }, 750);
                    /* scheduler.add(new CommandGroup(scheduler,new MoveWrist(hardwareMap, Constants.wristUp), new Wait(500), new RotateArm(hardwareMap, Constants.armPlace)));*/
                 }
 //For Competion Bot Use these values
             if (gamepad2.dpad_up) {
-                LServo.setPosition(0.75);
-                RServo.setPosition(0.25);
+                LServo.setPosition(0.8);
+                RServo.setPosition(0.2);
             }
             if (gamepad2.dpad_down) {
-                LServo.setPosition(0.07);
-                RServo.setPosition(0.94);
+                LServo.setPosition(0.3);
+                RServo.setPosition(0.8);
             }
 //end
             Right_Intake.setPower(intakePower);

@@ -16,10 +16,12 @@ public class DeployIntake extends Command{
 
     public void start(){
         if(Deploy == "Deploy"){
-            LServo.setPosition(0);
+            LServo.setPosition(0.3);
+            RServo.setPosition(0.8);
         }else
         if (Deploy == "Retract"){
-            LServo.setPosition(0.7);
+            LServo.setPosition(0.8);
+            RServo.setPosition(0.2);
         }
     }
 
