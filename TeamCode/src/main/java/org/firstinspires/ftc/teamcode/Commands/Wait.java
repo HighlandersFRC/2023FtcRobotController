@@ -1,11 +1,8 @@
 package org.firstinspires.ftc.teamcode.Commands;
 
 
-<<<<<<< Updated upstream
 import org.firstinspires.ftc.teamcode.Commands.Command;
 
-=======
->>>>>>> Stashed changes
 public class Wait extends Command {
         long time;
     long endTime;
@@ -15,14 +12,8 @@ public class Wait extends Command {
     public void start(){
         endTime = System.currentTimeMillis() + time;
     }
-<<<<<<< Updated upstream
     public void execute(){
 
-=======
-    public boolean execute(){
-
-        return false;
->>>>>>> Stashed changes
     }
     public void end(){
     }

@@ -19,12 +19,7 @@ public class ParallelCommandGroup extends Command {
         }
     }
 
-<<<<<<< Updated upstream
     public void execute() {
-=======
-    public boolean execute() {
-        return false;
->>>>>>> Stashed changes
     }
 
 

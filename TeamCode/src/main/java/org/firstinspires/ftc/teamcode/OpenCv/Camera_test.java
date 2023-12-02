@@ -33,10 +33,7 @@ import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
-<<<<<<< Updated upstream
 import org.openftc.easyopencv.OpenCvInternalCamera;
-=======
->>>>>>> Stashed changes
 
 import java.util.ArrayList;
 

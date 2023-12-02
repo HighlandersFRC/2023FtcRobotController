@@ -1,8 +1,4 @@
-<<<<<<< Updated upstream
 package org.firstinspires.ftc.teamcode.Commands;
-=======
-/*package org.firstinspires.ftc.teamcode.Commands;
->>>>>>> Stashed changes
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -16,18 +12,11 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.PID1;
 import org.firstinspires.ftc.teamcode.Tools.Vector;
 
-<<<<<<< Updated upstream
 public abstract class Drive extends Command {
     PID1 PID = new PID1(0.07, 0.0, 0.2);
     PID1 DrivePID = new PID1(0.03, 0.0, 0.0);
 
 
-=======
-public class Drive extends Command {
-    PID1 PID = new PID1(0.07, 0.0, 0.2);
-    PID1 DrivePID = new PID1(0.03, 0.0, 0.0);
-
->>>>>>> Stashed changes
     public DcMotor Left_Back;
     public DcMotor Right_Back;
     public DcMotor Left_Front;
@@ -97,13 +86,8 @@ public class Drive extends Command {
             Left_Back.setPower(speed);
             Right_Back.setPower(-speed);
         }*/
-<<<<<<< Updated upstream
 
 
-=======
-/*
-    }
->>>>>>> Stashed changes
 
     public void end() {
         Left_Front.setPower(0);
@@ -133,8 +117,4 @@ public class Drive extends Command {
 
 
     }
-<<<<<<< Updated upstream
 }
-=======
-}*/
->>>>>>> Stashed changes
