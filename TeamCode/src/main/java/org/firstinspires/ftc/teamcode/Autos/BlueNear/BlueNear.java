@@ -92,12 +92,12 @@ public class BlueNear extends LinearOpMode {
                     new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.2, 0.75), new CommandGroup(scheduler, new Wait(1000), new DeployIntake(hardwareMap, "Deploy"))),
                     new MoveWrist(hardwareMap, Constants.wristDown),
                     new Turn(hardwareMap, 90),
-                    new Drive(hardwareMap, 0.3, 0.4),
+                    new Drive(hardwareMap, 0.3, 0.35),
                     new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.15, -0.1), new PixelTray(hardwareMap, 3000, -1, "R"), new CommandGroup(scheduler, new Wait(1000),  new Intake(hardwareMap, 1000, -0.25))),
                     new MoveWrist(hardwareMap, Constants.wristUp),
                     new Wait(1000),
                     new DeployIntake(hardwareMap, "Retract"),
-                    new Drive(hardwareMap, 0.25, 0.34),
+                    new Drive(hardwareMap, 0.25, 0.51),
                     new DeployIntake(hardwareMap, "Deploy"),
                     new Wait(1000),
                     new RotateArm(hardwareMap, Constants.armPlace),
@@ -114,8 +114,8 @@ public class BlueNear extends LinearOpMode {
                     new Wait(1000),
                     new DeployIntake(hardwareMap, "Retract"),
                     new Drive(hardwareMap, 0.3, 0.05),
-                    new Turn(hardwareMap, 90),
-                    new Drive(hardwareMap,0.3, 0.81),
+                    new Turn(hardwareMap, -90),
+                    new Drive(hardwareMap,0.3, 0.95),
                     new RotateArm(hardwareMap, Constants.armPlace),
                     new ParallelCommandGroup(scheduler, new PixelTray(hardwareMap, 3000, -1, "L"), new RotateArm(hardwareMap, Constants.armPlace))
             ));
@@ -174,17 +174,17 @@ builder.setCameraResolution(new Size(320, 240));
             float x = (recognition.getLeft() + recognition.getRight()) / 2;
             float y = (recognition.getTop() + recognition.getBottom()) / 2;
 
-            if (x < 280) {
+            if (x < 130) {
                 CameraConstants.autoSide = "Left";
                 visionPortal.stopStreaming();
                 return "Left";
             }
-            if (x > 390) {
+            if (x > 410) {
                 CameraConstants.autoSide = "Right";
                 visionPortal.stopStreaming();
                 return "Right";
             }
-            if (x > 280 && x < 390) {
+            if (x > 150 && x < 410) {
                 CameraConstants.autoSide = "Middle";
                 visionPortal.stopStreaming();
                 return  "Middle";
