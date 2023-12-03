@@ -145,8 +145,8 @@ public class Mecanum extends LinearOpMode {
                 PID.setSetPoint(0);
                 PID2.setSetPoint(0);
                 WristServo.setPosition(Constants.wristUp);
-                LServo.setPosition(0.2);
-                RServo.setPosition(0.8);
+                LServo.setPosition(0.8);
+                RServo.setPosition(0.2);
             }else {
                 Arm1.setPower(PID.getResult());
                 Arm2.setPower(PID2.getResult());
