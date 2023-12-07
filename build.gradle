@@ -21,9 +21,18 @@ allprojects {
     repositories {
         mavenCentral()
         google()
+        flatDir {
+            dirs 'libs','/Users/doadj/navx-mxp/android/libs'
+        }
+
     }
 }
 
 repositories {
     mavenCentral()
+    flatDir {
+        dirs 'libs', 'C:\\Users\\doadj\\navx-micro\\android\\libs'
+    }
+
+
 }
