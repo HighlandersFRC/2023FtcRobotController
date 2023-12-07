@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.ArmConstants;
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.PID;
 
 public class PixelTray extends Command {
@@ -25,20 +25,18 @@ public class PixelTray extends Command {
         this.speed = Speed;
         this.time = Time;
         this.LR = LR;
-        Arm_Motor = hardwareMap.dcMotor.get("Arm_Motor");
-        ArmPID.setSetPoint(ArmConstants.prevSetPoint);
     }
 
     public void start() {
-        if (LR == "L") {
-            holderservo_left.setPower(speed);
+        if (LR.equals("L")) {
+            holderservo_left.setPower(-speed);
         }else
-            if(LR == "R"){
-                holderservo_right.setPower(-speed);
+            if(LR.equals("R")){
+                holderservo_right.setPower(speed);
         }else
-            if (LR == "LR"){
-                holderservo_left.setPower(speed);
-                holderservo_right.setPower(-speed);
+            if (LR.equals("LR")){
+                holderservo_left.setPower(-speed);
+                holderservo_right.setPower(speed);
             }
 
 

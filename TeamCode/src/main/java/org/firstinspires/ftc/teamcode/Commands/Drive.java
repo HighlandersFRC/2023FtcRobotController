@@ -2,20 +2,16 @@ package org.firstinspires.ftc.teamcode.Commands;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.teamcode.PID1;
-import org.firstinspires.ftc.teamcode.Tools.Vector;
+import org.firstinspires.ftc.teamcode.PID;
 
-public abstract class Drive extends Command {
-    PID1 PID = new PID1(0.07, 0.0, 0.2);
-    PID1 DrivePID = new PID1(0.03, 0.0, 0.0);
-
+public class Drive extends Command {
+    org.firstinspires.ftc.teamcode.PID PID = new PID(0.015, 0.0, 0.0);
+    org.firstinspires.ftc.teamcode.PID DrivePID = new PID(0.03, 0.0, 0.0);
 
     public DcMotor Left_Back;
     public DcMotor Right_Back;
@@ -33,6 +29,8 @@ public abstract class Drive extends Command {
     public double backRight;
     public double frontLeft;
     public double frontRight;
+    public DcMotor Arm_Motor;
+    PID ArmPID = new PID(0.001, 0, 0);
 
     public Drive(HardwareMap hardwareMap, double Speed, double Distance){
         this.speed = Speed;
@@ -44,77 +42,71 @@ public abstract class Drive extends Command {
         Right_Back = hardwareMap.dcMotor.get("Right_Back");
         imu = hardwareMap.get(IMU.class, "imu");
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.UP,
-                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
+                RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
+                RevHubOrientationOnRobot.UsbFacingDirection.UP));
         imu.initialize(parameters);
+        Right_Front.setDirection(DcMotorSimple.Direction.REVERSE);
+        Right_Back.setDirection(DcMotorSimple.Direction.REVERSE);
+/*        Left_Back.setDirection(DcMotorSimple.Direction.REVERSE);*/
+        Arm_Motor = hardwareMap.dcMotor.get("Arm_Motor");
     }
-    Vector lvector;
-    double turn;
-    public Drive(Vector vector, double turn) {
-        super();
-        lvector = vector;
-        this.turn = turn;
-    }
-
     public void start() {
         Right_Front.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Left_Front.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Right_Back.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Left_Back.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        targetPos = distance * 300;
+
+        Right_Front.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Left_Front.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Right_Back.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        Left_Back.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+
+        targetPos = distance * 1685;
         DrivePID.setSetPoint(targetPos);
         PID.setMaxInput(180);
         PID.setMinInput(-180);
         PID.setContinuous(true);
-        PID.setMinOutput(-1);
-        PID.setMaxOutput(1);
+        PID.setMinOutput(-0.25);
+        PID.setMaxOutput(0.25);
         imu.resetYaw();
-        Right_Front.setTargetPosition((int) targetPos);
-        //Right_Front.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        Left_Front.setTargetPosition((int) targetPos);
-        //Left_Front.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        Right_Back.setTargetPosition((int) targetPos);
-        //Right_Back.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        Left_Back.setTargetPosition((int) targetPos);
-        //Left_Back.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
     }
 
-        /*
-        if (currentPos >= -5 && currentPos <= 5){
-            Right_Front.setPower(-speed);
-            Left_Front.setPower(speed);
-            Left_Back.setPower(speed);
-            Right_Back.setPower(-speed);
-        }*/
+    public void execute() {
+        ArmPID.updatePID(Arm_Motor.getCurrentPosition());
+        backRight = Right_Back.getCurrentPosition();
+        backLeft = Left_Back.getCurrentPosition();
+        frontLeft = Left_Front.getCurrentPosition();
+        frontRight  = Right_Front.getCurrentPosition();
+        avgEncoder = (backRight + frontLeft + frontRight) / 3;
+        DrivePID.updatePID(avgEncoder);
+        currentPos = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
+        PID.updatePID(currentPos);
 
+        double deviation = PID.getResult();
 
-
+        Right_Front.setPower(-speed - deviation);
+        Left_Front.setPower(-speed + deviation);
+        Right_Back.setPower(-speed - deviation);
+        Left_Back.setPower(-speed + deviation);
+    }
     public void end() {
         Left_Front.setPower(0);
         Left_Back.setPower(0);
-        Right_Front.setPower(0);
         Right_Back.setPower(0);
+        Right_Front.setPower(0);
+        Left_Front.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        Left_Back.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        Right_Front.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        Right_Back.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     public boolean isFinished() {
-        if (avgEncoder >= targetPos) {
+        if (Math.abs(avgEncoder) - 10 >= Math.abs(targetPos)) {
           return true;
         }
         return false;
-    }
-
-    public double[] drive(Vector drivevector, double turn){
-        double drive = drivevector.magnitude();
-        double strafe = drivevector.getTheta();
-        double twist = turn;
-        double[] speeds = {
-                (drive + strafe + twist),
-                (drive - strafe - twist),
-                (drive - strafe + twist),
-                (drive + strafe - twist)
-        };
-        return speeds;
-
-
     }
 }
