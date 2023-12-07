@@ -1,5 +1,3 @@
-
-
 package org.firstinspires.ftc.teamcode.Autos;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
@@ -122,11 +120,11 @@ public class BlueNear extends LinearOpMode {
                     new ParallelCommandGroup(scheduler, new PixelTray(hardwareMap, 3000, -1, "R"), new RotateArm(hardwareMap, ArmConstants.armPlace))
             ));
         }
-            while (opModeIsActive()) {
-                telemetry.addData("IMU yaw", imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
-                telemetry.update();
-                scheduler.update();
-            }
+        while (opModeIsActive()) {
+            telemetry.addData("IMU yaw", imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
+            telemetry.update();
+            scheduler.update();
+        }
         visionPortal.close();
     }
     private void initTfod() {
