@@ -31,7 +31,7 @@ android {
 
 dependencies {
     implementation project(':FtcRobotController')
-    implementation project(path: ':navX')
+   // implementation project(path: ':navX')
     implementation files("C:\\Drive\\FTC Robotics\\NAVX-MXP\\navxmxp-master.zip")
     annotationProcessor files('lib/OpModeAnnotationProcessor.jar')
 }
