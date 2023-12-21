@@ -98,8 +98,8 @@ public class ElvatorsPid extends LinearOpMode {
         telemetry.addData("intake out true or false",gamepad1.right_bumper);
         telemetry.update();
         Right_Intake.setPower(intakePower);
-        HolderServo_Right.setPower(-intakePower);
-        HolderServo_Left.setPower(intakePower);
+        HolderServo_Right.setPower(intakePower);
+        HolderServo_Left.setPower(-intakePower);
         //strafe = strafe * Math.cos(gyro_radians) - drive * Math.sin(gyro_radians);
         //drive = strafe * Math.sin(gyro_radians) + drive * Math.cos(gyro_radians);
         Right_Front.setDirection(DcMotorSimple.Direction.REVERSE);
