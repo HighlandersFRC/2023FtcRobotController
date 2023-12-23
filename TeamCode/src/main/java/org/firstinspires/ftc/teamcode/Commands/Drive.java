@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.PID;
 
 public class Drive extends Command {
@@ -61,8 +62,7 @@ public class Drive extends Command {
         Right_Back.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         Left_Back.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-
-        targetPos = distance * 1685;
+        targetPos = distance * Constants.motorTicksPerRotation;
         DrivePID.setSetPoint(targetPos);
         PID.setMaxInput(180);
         PID.setMinInput(-180);
@@ -70,8 +70,6 @@ public class Drive extends Command {
         PID.setMinOutput(-0.25);
         PID.setMaxOutput(0.25);
         imu.resetYaw();
-
-
     }
 
     public void execute() {
