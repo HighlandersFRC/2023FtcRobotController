@@ -8,9 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
-
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-
 @TeleOp
 public class ElvatorsPid extends LinearOpMode {
     private DcMotor Left_Front;
@@ -32,8 +30,8 @@ public class ElvatorsPid extends LinearOpMode {
         HolderServo_Right= hardwareMap.crservo.get("HolderServo_Right");
         //IMU imu = hardwareMap.get(IMU.class, "imu");
         //IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                //RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
-                //RevHubOrientationOnRobot.UsbFacingDirection.UP));
+        //RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
+        //RevHubOrientationOnRobot.UsbFacingDirection.UP));
         //imu.initialize(parameters);
         org.firstinspires.ftc.teamcode.PID PID = new PID(0.003, 0.000005, 0.00);
         org.firstinspires.ftc.teamcode.PID PID2 = new PID(0.003, 0.000005, 0.00);
@@ -78,7 +76,6 @@ public class ElvatorsPid extends LinearOpMode {
             if(gamepad1.x){
             WristServo.setPosition(.9);
             }
-
         telemetry.addData("right arm encoder position",Arm_Right.getCurrentPosition());
         telemetry.addData("left arm encoder position",Arm_left.getCurrentPosition());
         telemetry.addData("gamepad1.left_stick_y",gamepad1.left_stick_y);
