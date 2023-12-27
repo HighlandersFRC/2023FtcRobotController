@@ -1,5 +1,4 @@
 package org.firstinspires.ftc.teamcode;
-
 import com.kauailabs.navx.ftc.AHRS;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
