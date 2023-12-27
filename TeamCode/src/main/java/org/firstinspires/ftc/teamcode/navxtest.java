@@ -22,6 +22,7 @@ public class navxtest extends LinearOpMode {
         navX = AHRS.getInstance(hardwareMap.get(NavxMicroNavigationSensor.class, "navx"), AHRS.DeviceDataType.kProcessedData);
         double pi = 3.1415926;
         double gyro_degrees = navX.getYaw();
+        
         double gyro_radians = gyro_degrees * pi/180;
         double rcw = gamepad1.right_stick_x;
         double forwrd = gamepad1.left_stick_y;
@@ -35,10 +36,10 @@ public class navxtest extends LinearOpMode {
             double backLeftPower = (strafe - temp + rcw) / denominator;
             double frontRightPower = (strafe - temp - rcw) / denominator;
             double backRightPower = (strafe + temp - rcw) / denominator;
-            Left_Front.setPower(-frontLeftPower);
-            Left_Back.setPower(-backLeftPower);
+            Left_Front.setPower(frontLeftPower);
+            Left_Back.setPower(backLeftPower);
             Right_Front.setPower(frontRightPower);
-            Right_Back.setPower(-backRightPower);
+            Right_Back.setPower(backRightPower);
         telemetry.addData("YAW", navX.getYaw());
         telemetry.addData("radians",gyro_radians);
         telemetry.addData("pitch",navX.getPitch());
