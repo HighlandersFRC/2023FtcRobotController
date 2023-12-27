@@ -118,15 +118,27 @@ public class Mecanum extends LinearOpMode {
 
             holderservo_left.setPower(-intakePower);
             holderservo_right.setPower(intakePower);
-
+            if (gamepad2.x){
+                WristServo.setPosition(0);
+            }else if (gamepad2.y){
+                WristServo.setPosition(1);
+            }
             if (gamepad1.a){
                 PID.setSetPoint(0);
                 PID2.setSetPoint(0);
-            }
+            }else
             if (gamepad1.b){
+                WristServo.setPosition(Constants.wristUp);
                 PID.setSetPoint(1650);
                 PID2.setSetPoint(1650);
-
+            }else if (gamepad2.right_bumper){
+                /*PID.setSetPoint(900);
+                PID2.setSetPoint(900);*/
+                holderservo_left.setPower(1);
+            }else if (gamepad2.left_bumper){
+                PID.setSetPoint(0);
+                PID2.setSetPoint(0);
+                holderservo_right.setPower(-1);
             }
             if (gamepad1.y){
                 Arm1.setPower(-0.75);
@@ -134,22 +146,12 @@ public class Mecanum extends LinearOpMode {
                 PID.setSetPoint(0);
                 PID2.setSetPoint(0);
                 WristServo.setPosition(Constants.wristUp);
-                LServo.setPosition(0.75);
-                RServo.setPosition(0.25);
+                LServo.setPosition(0.8);
+                RServo.setPosition(0.2);
             }else {
                 Arm1.setPower(PID.getResult());
                 Arm2.setPower(PID2.getResult());
             }
-
-/*            if (gamepad2.x){
-                ArmPID.setSetPoint(Constants.armIntake);
-            }
-
-            else
-
-            if (gamepad2.y){
-                ArmPID.setSetPoint(Constants.armPlace);
-            }*/
 
             if(gamepad2.a && !armCurrentlyRetracting) {
                 armCurrentlyRetracting = true;
@@ -170,25 +172,25 @@ public class Mecanum extends LinearOpMode {
             else
                 if(gamepad2.b && !wristCurrentlyGoingDown){
                     wristCurrentlyGoingDown = true;
-                    WristServo.setPosition(Constants.wristUp);
+                    WristServo.setPosition(Constants.lowWrist);
                     Timer timer = new Timer();
                     timer.schedule(new TimerTask() {
                         @Override
                         public void run() {
-                            ArmPID.setSetPoint(Constants.armPlace);
+                            ArmPID.setSetPoint(Constants.lowArm);
                             wristCurrentlyGoingDown = false;
                         }
-                    }, 500);
+                    }, 750);
                    /* scheduler.add(new CommandGroup(scheduler,new MoveWrist(hardwareMap, Constants.wristUp), new Wait(500), new RotateArm(hardwareMap, Constants.armPlace)));*/
                 }
 //For Competion Bot Use these values
             if (gamepad2.dpad_up) {
-                LServo.setPosition(0.75);
-                RServo.setPosition(0.25);
-            }
+                LServo.setPosition(Constants.leftServoUp);
+                RServo.setPosition(Constants.rightServoUp);
+            }else
             if (gamepad2.dpad_down) {
-                LServo.setPosition(0.07);
-                RServo.setPosition(0.94);
+                LServo.setPosition(Constants.leftServoDown);
+                RServo.setPosition(Constants.rightServoDown);
             }
 //end
             Right_Intake.setPower(intakePower);
@@ -197,7 +199,8 @@ public class Mecanum extends LinearOpMode {
             double x = -gamepad1.left_stick_x * 1.1;
             double rx = -gamepad1.right_stick_x;
 
-            if (Math.abs(gamepad1.left_stick_x) < 0.2){
+
+            if (Math.abs(gamepad1.left_stick_x) < 0.1){
                 Left_Front.setPower(0);
                 Left_Back.setPower(0);
                 Right_Front.setPower(0);
@@ -206,7 +209,7 @@ public class Mecanum extends LinearOpMode {
             //3304, 2.91
             //0 is 2.91V and 3304 as
             //0.5V as back
-            if (Math.abs(gamepad1.left_stick_y) < 0.2){
+            if (Math.abs(gamepad1.left_stick_y) < 0.1){
                 Left_Front.setPower(0);
                 Left_Back.setPower(0);
                 Right_Front.setPower(0);
@@ -222,6 +225,13 @@ public class Mecanum extends LinearOpMode {
             double backLeftPower = (y - x + rx) / denominator;
             double frontRightPower = (y - x - rx) / denominator;
             double backRightPower = (y + x - rx) / denominator;
+
+            if (!(gamepad2.right_trigger == 0)){
+            frontRightPower = frontRightPower / 4;
+            backLeftPower = backLeftPower / 4;
+            frontLeftPower = frontLeftPower / 4;
+            backRightPower = backRightPower / 4;
+            }
 
             Left_Front.setPower(frontLeftPower);
             Left_Back.setPower(backLeftPower);

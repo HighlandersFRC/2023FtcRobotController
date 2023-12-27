@@ -70,21 +70,21 @@ private AHRS navX;
             double Right_Back_position = Right_Back.getCurrentPosition();
             double botHeading = -navX.getYaw();
             double pi = 3.1415926;
-            double botHeadingRadian = botHeading * pi/180;
+            double botHeadingRadian = -botHeading * pi/180;
             if (botHeadingRadian != 0) {
                 // Rotate the movement direction counter to the bot's rotation
-                //double rotX = x * Math.cos(botHeadingRadian) - y * Math.sin(botHeadingRadian);// Changed to positive due to things(change back when need)
-                //double rotY = x * Math.sin(botHeadingRadian) + y * Math.cos(botHeadingRadian);//Changed to positive due to things(change back when need)
+                double rotX = (x * Math.cos(botHeadingRadian) - y * Math.sin(botHeadingRadian));// Changed to positive due to things(change back when need)
+                double rotY = (x * Math.sin(botHeadingRadian) + y * Math.cos(botHeadingRadian));//Changed to positive due to things(change back when need)
 
                 x = x *1.1;  // Counteract imperfect strafing
                 // Denominator is the largest motor power (absolute value) or 1rmn
                 // This ensures all the powers maintain the same ratio,
                 // but only if at least one is out of the range [-1, 1]
-                double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1.0);
-                double frontLeftPower = (y + x + rx) / denominator;
-                double backLeftPower = (y - x + rx) / denominator;
-                double frontRightPower = (y - x - rx) / denominator;
-                double backRightPower = (y + x - rx) / denominator;
+                double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1.0);
+                double frontLeftPower = (rotY + rotX + rx) / denominator;
+                double backLeftPower = (rotY - rotX + rx) / denominator;
+                double frontRightPower = (rotY - rotX - rx) / denominator;
+                double backRightPower = (rotY + rotX - rx) / denominator;
                 final double[] result = new double[1];
                 class VelocityPID {
                     double leftBackResult(double encoderPos, double oldPos) {
@@ -97,14 +97,14 @@ private AHRS navX;
                     navX.zeroYaw();
                 }
                 Left_Front.setPower(-frontLeftPower);
-                Left_Back.setPower(backLeftPower);
+                Left_Back.setPower(-backLeftPower);
                 Right_Front.setPower(-frontRightPower);
                 Right_Back.setPower(-backRightPower);
                 telemetry.addData("y", y);
                 telemetry.addData("x", x);
                 telemetry.addData("rx", rx);
-                //telemetry.addData("rotY", rotY);
-                //telemetry.addData("rotX", rotX);
+                telemetry.addData("rotY", rotY);
+                telemetry.addData("rotX", rotX);
           /*      telemetry.addData("parameters", parameters);*/
                 telemetry.addData("navX", navX);
 
@@ -127,3 +127,5 @@ private AHRS navX;
         }
     }
 }
+                  //W BOSS LEVEL ===============
+///IT WORKS -Written by Advik Sanghi and Ethan LULULULULULU
