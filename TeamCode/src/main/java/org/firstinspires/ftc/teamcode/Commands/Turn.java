@@ -8,6 +8,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.teamcode.PID;
 
     public class Turn extends Command{
@@ -29,7 +31,7 @@ import org.firstinspires.ftc.teamcode.PID;
         Left_Back = hardwareMap.dcMotor.get("Left_Back");
         Right_Back = hardwareMap.dcMotor.get("Right_Back");
         imu = hardwareMap.get(IMU.class, "imu");
-        navX = hardwareMap.get(NavxMicroNavigationSensor.class, "NavX");
+        navX = hardwareMap.get(NavxMicroNavigationSensor.class, "navX");
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
                 RevHubOrientationOnRobot.UsbFacingDirection.UP));
@@ -47,7 +49,7 @@ import org.firstinspires.ftc.teamcode.PID;
         imu.resetYaw();
  }
     public void execute() {
-        /*currentPos = navX.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);*/
+     /*   currentPos = navX.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);*/
         currentPos = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
 
         double power = PID.updatePID(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));

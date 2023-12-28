@@ -48,7 +48,7 @@ public class drive2 extends Command {
 
         Right_Front.setDirection(DcMotorSimple.Direction.REVERSE);
         Right_Back.setDirection(DcMotorSimple.Direction.REVERSE);
-        /*        Left_Back.setDirection(DcMotorSimple.Direction.REVERSE);*/
+
         Arm_Motor = hardwareMap.dcMotor.get("Arm_Motor");
     }
     public void start() {
@@ -85,10 +85,10 @@ public class drive2 extends Command {
 
         double deviation = PID.getResult();
 
-        Right_Front.setPower(-speed - deviation);
-        Left_Front.setPower(-speed + deviation);
+        Right_Front.setPower(-speed + deviation);
+        Left_Front.setPower(-speed - deviation);
         Right_Back.setPower(-speed - deviation);
-        Left_Back.setPower(-speed + deviation);
+        Left_Back.setPower(speed - deviation);
     }
     public void end() {
         Left_Front.setPower(0);
