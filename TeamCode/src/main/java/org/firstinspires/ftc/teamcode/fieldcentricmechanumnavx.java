@@ -50,7 +50,7 @@ private AHRS navX;
         Right_Front.setDirection(DcMotorSimple.Direction.REVERSE);
         Right_Back.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        navX = com.kauailabs.navx.ftc.AHRS.getInstance(hardwareMap.get(NavxMicroNavigationSensor.class, "navX"), AHRS.DeviceDataType.kProcessedData);
+
         // Adjust the orientation parameters to match your robot
        /* navX.Orientation parameters = new navX.Parameters(new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
@@ -71,6 +71,7 @@ private AHRS navX;
             double botHeading = -navX.getYaw();
             double pi = 3.1415926;
             double botHeadingRadian = -botHeading * pi/180;
+            double speed =Left_Front.getCurrentPosition()-Left_Front.getCurrentPosition();
             if (botHeadingRadian != 0) {
                 // Rotate the movement direction counter to the bot's rotation
                 double rotX = (x * Math.cos(botHeadingRadian) - y * Math.sin(botHeadingRadian));// Changed to positive due to things(change back when need)
@@ -107,7 +108,7 @@ private AHRS navX;
                 telemetry.addData("rotX", rotX);
           /*      telemetry.addData("parameters", parameters);*/
                 telemetry.addData("navX", navX);
-
+                telemetry.addData("velocity",speed);
                 telemetry.addData("denominator", denominator);
                 telemetry.addData("botHeading", botHeading);
                 telemetry.addData("botHeadingRadian", botHeadingRadian);
@@ -121,6 +122,7 @@ private AHRS navX;
                 telemetry.addData("Right front position", Right_Front_position);
                 telemetry.addData("Right front position", Right_Back_position);
                 telemetry.addData("result", result[0]);
+
                 telemetry.update();
 
             }
