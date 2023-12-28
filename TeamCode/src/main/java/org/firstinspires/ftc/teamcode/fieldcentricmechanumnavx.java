@@ -91,6 +91,19 @@ private AHRS navX;
                         result[0] = (encoderPos - oldPos);
                         return result[0];
                     }
+                    double rightBackResult(double encoderPos, double oldPos) {
+                        result[0] = (encoderPos - oldPos);
+                        return result[0];
+                    }
+                    double leftFrontResult(double encoderPos, double oldPos) {
+                        result[0] = (encoderPos - oldPos);
+                        return result[0];
+                    }
+                    double rightFrontResult(double encoderPos, double oldPos) {
+                        result[0] = (encoderPos - oldPos);
+                        return result[0];
+                    }
+
                 }
 
                 if (gamepad1.right_bumper) {
@@ -121,6 +134,7 @@ private AHRS navX;
                 telemetry.addData("Right front position", Right_Front_position);
                 telemetry.addData("Right front position", Right_Back_position);
                 telemetry.addData("result", result[0]);
+
                 telemetry.update();
 
             }
@@ -129,3 +143,8 @@ private AHRS navX;
 }
                   //W BOSS LEVEL ===============
 ///IT WORKS -Written by Advik Sanghi and Ethan LULULULULULU
+
+//lf   -48437    -18617             2982   velocity 10 sec
+//LB   33772         53502           1973 |
+//RB   31422             51420      1999.8|
+//RF   -45571        -15240        3033.1|
