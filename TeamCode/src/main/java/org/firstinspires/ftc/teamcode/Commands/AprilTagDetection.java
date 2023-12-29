@@ -51,9 +51,6 @@ public class AprilTagDetection extends Command{
                 RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
                 RevHubOrientationOnRobot.UsbFacingDirection.UP));
         imu.initialize(parameters);
-/*        Right_Front.setDirection(DcMotorSimple.Direction.REVERSE);
-        Right_Back.setDirection(DcMotorSimple.Direction.REVERSE);
-        Left_Back.setDirection(DcMotorSimple.Direction.REVERSE);*/
 
         PID.setMaxInput(180);
         PID.setMinInput(-180);

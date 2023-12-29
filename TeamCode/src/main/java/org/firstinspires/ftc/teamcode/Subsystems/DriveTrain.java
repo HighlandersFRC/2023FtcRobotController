@@ -33,4 +33,16 @@ public class DriveTrain extends Subsystems{
         Right_Back.setDirection(DcMotorSimple.Direction.REVERSE);
 
     }
+    public static double getRightFront(){
+        return Right_Front.getCurrentPosition();
+    }
+    public static double getLeftFront(){
+        return Left_Front.getCurrentPosition();
+    }
+    public static double getRightBack(){
+        return Right_Back.getCurrentPosition();
+    }
+    public static double getLeftBack(){
+        return Left_Back.getCurrentPosition();
+    }
 }
