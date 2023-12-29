@@ -99,7 +99,7 @@ public class Mecanum extends LinearOpMode {
 
             double r2Trigger =  gamepad2.right_trigger;
             double l2Trigger =  gamepad2.left_trigger;
-            double intakePower = (rightTrigger - leftTrigger);
+            double intakePower = -(rightTrigger - leftTrigger) ;
 
             PID.setMaxOutput(1);
             PID.setMinOutput(-1);
