@@ -6,6 +6,14 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import com.qualcomm.robotcore.hardware.DigitalChannel;
+
+import com.qualcomm.robotcore.hardware.DistanceSensor;
+
+import com.qualcomm.robotcore.hardware.Gyroscope;
+
+import com.qualcomm.robotcore.hardware.Servo;
+
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
 @TeleOp
@@ -14,7 +22,7 @@ public class MyFIRSTJavaOpMode extends LinearOpMode {
     private DcMotor motorTest;
     private TouchSensor touchSensor;
 
-    PID PIDTest = new PID(0.1, 0, 0);
+    PID1 PIDTest = new PID1();
 
 
     @Override

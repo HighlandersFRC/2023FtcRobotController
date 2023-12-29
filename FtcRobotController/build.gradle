@@ -23,4 +23,8 @@ android {
     namespace = 'com.qualcomm.ftcrobotcontroller'
 }
 
+dependencies {
+    implementation files("C:\\Drive\\FTC Robotics\\NAVX-MXP\\navxmxp-master.zip")
+}
+
 apply from: '../build.dependencies.gradle'
