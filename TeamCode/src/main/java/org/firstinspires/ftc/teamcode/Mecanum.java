@@ -89,7 +89,6 @@ public class Mecanum extends LinearOpMode {
 
             Right_Front.setDirection(DcMotorSimple.Direction.REVERSE);
             Right_Back.setDirection(DcMotorSimple.Direction.REVERSE);
-/*            Left_Back.setDirection(DcMotorSimple.Direction.REVERSE);*///comment for comp bot
 
             double leftTrigger = gamepad1.left_trigger;
             double rightTrigger = gamepad1.right_trigger;
@@ -234,7 +233,7 @@ public class Mecanum extends LinearOpMode {
             }
 
             Left_Front.setPower(frontLeftPower);
-            Left_Back.setPower(backLeftPower);
+            Left_Back.setPower(-backLeftPower);
             Right_Front.setPower(frontRightPower);
             Right_Back.setPower(backRightPower);
 
