@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.Commands.PixelTray;
 import org.firstinspires.ftc.teamcode.Commands.Scheduler;
 import org.firstinspires.ftc.teamcode.Commands.Turn;
 import org.firstinspires.ftc.teamcode.Commands.Wait;
-import org.firstinspires.ftc.teamcode.Constants;
+import org.firstinspires.ftc.teamcode.Tools.Constants;
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous
 @Disabled

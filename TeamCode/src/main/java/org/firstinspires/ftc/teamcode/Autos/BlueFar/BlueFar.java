@@ -13,8 +13,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDir
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.teamcode.Constants;
-import org.firstinspires.ftc.teamcode.CameraConstants;
+import org.firstinspires.ftc.teamcode.Tools.Constants;
 import org.firstinspires.ftc.teamcode.Commands.CommandGroup;
 import org.firstinspires.ftc.teamcode.Commands.DeployIntake;
 import org.firstinspires.ftc.teamcode.Commands.Drive;
@@ -148,17 +147,14 @@ public class BlueFar extends LinearOpMode {
             float y = (recognition.getTop() + recognition.getBottom()) / 2;
 
             if (x < 280) {
-                CameraConstants.autoSide = "Left";
                 visionPortal.stopStreaming();
                 return "Left";
             }
             if (x > 390) {
-                CameraConstants.autoSide = "Right";
                 visionPortal.stopStreaming();
                 return "Right";
             }
             if (x > 280 && x < 390) {
-                CameraConstants.autoSide = "Middle";
                 visionPortal.stopStreaming();
                 return  "Middle";
             }

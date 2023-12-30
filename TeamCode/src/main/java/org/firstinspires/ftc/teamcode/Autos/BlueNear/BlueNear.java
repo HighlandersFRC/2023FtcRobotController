@@ -13,8 +13,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDir
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.teamcode.Constants;
-import org.firstinspires.ftc.teamcode.CameraConstants;
+import org.firstinspires.ftc.teamcode.Tools.Constants;
 import org.firstinspires.ftc.teamcode.Commands.CommandGroup;
 import org.firstinspires.ftc.teamcode.Commands.DeployIntake;
 import org.firstinspires.ftc.teamcode.Commands.Drive;
@@ -175,17 +174,14 @@ builder.setCameraResolution(new Size(320, 240));
             System.out.println("X Value" + "" + x);
 
             if (x < 130) {
-                CameraConstants.autoSide = "Left";
                 visionPortal.stopStreaming();
                 return "Left";
             }
             else if (x > 250) {
-                CameraConstants.autoSide = "Right";
                 visionPortal.stopStreaming();
                 return "Right";
             }
             else if (x > 130 && x < 320) {
-                CameraConstants.autoSide = "Middle";
                 visionPortal.stopStreaming();
                 return  "Middle";
             }

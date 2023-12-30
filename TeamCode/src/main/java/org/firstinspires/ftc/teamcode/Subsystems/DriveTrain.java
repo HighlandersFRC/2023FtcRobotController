@@ -12,10 +12,10 @@ public class DriveTrain extends Subsystems{
     String name = "DriveTrain";
     Command DefaultCommand = new Drive(hardwareMap, 0, 0);
 
-    public static DcMotor Left_Front = hardwareMap.dcMotor.get("Left_Front");
-    public static DcMotor Right_Front = hardwareMap.dcMotor.get("Right_Front");
-    public static DcMotor Left_Back = hardwareMap.dcMotor.get("Left_Back");
-    public static DcMotor Right_Back = hardwareMap.dcMotor.get("Right_Back");
+    public static DcMotor Left_Front;
+    public static DcMotor Right_Front;
+    public static DcMotor Left_Back;
+    public static DcMotor Right_Back;
     public static void Drive(double RightFrontPower, double LeftFrontPower, double RightBackPower, double LeftBackPower){
         Right_Front.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Left_Front.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -43,15 +43,19 @@ public class DriveTrain extends Subsystems{
         }
     }
     public static DcMotor getRightFront(){
+        Right_Front = hardwareMap.dcMotor.get("Right_Front");
         return Right_Front;
     }
     public static DcMotor getLeftFront(){
+        Left_Front = hardwareMap.dcMotor.get("Left_Front");
         return Left_Front;
     }
     public static DcMotor getRightBack(){
+        Right_Back = hardwareMap.dcMotor.get("Right_Back");
         return Right_Back;
     }
     public static DcMotor getLeftBack(){
+        Left_Back = hardwareMap.dcMotor.get("Left_Back");
         return Left_Back;
     }
     public static double getRightFrontEncoder(){

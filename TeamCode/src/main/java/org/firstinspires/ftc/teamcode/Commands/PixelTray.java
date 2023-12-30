@@ -4,8 +4,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.Constants;
-import org.firstinspires.ftc.teamcode.PID;
+import org.firstinspires.ftc.teamcode.Tools.PID;
 
 public class PixelTray extends Command {
     public CRServo holderservo_left;

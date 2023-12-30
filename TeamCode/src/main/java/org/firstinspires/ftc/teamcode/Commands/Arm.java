@@ -4,12 +4,12 @@ package org.firstinspires.ftc.teamcode.Commands;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.PID1;
+import org.firstinspires.ftc.teamcode.Tools.PID;
 
 public class Arm extends Command {
     private DcMotor Arm1;
     double targetPosition;
-    PID1 PID = new PID1(0.1, 0, 0);
+    PID PID = new PID(0.1, 0, 0);
     public Arm(HardwareMap hardwareMap, double targetPosition){
         Arm1 = hardwareMap.dcMotor.get("Arm1");
         this.targetPosition = targetPosition;
