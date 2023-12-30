@@ -1,6 +1,6 @@
 ![image-removebg-preview](https://github.com/HighlandersFRC/2023FtcRobotController/assets/140292400/827f0461-9e26-4d89-b074-931eb20f2390)
 
-
+**This is the programming repository for the 2023-2024 Centerstage Season for the FTC team 23477 The Highlanders**
 
 The Comp branch is the main branch for competition
 
