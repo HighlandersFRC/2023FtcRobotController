@@ -29,7 +29,7 @@ private AHRS navX;
     @Override
     public void runOpMode() throws InterruptedException {
 
-        final double COUNTS_PER_MOTOR_REV = 1440;    // eg: TETRIX Motor Encoder
+        final double COUNTS_PER_MOTOR_REV = 1685;    // eg: TETRIX Motor Encoder
         final double DRIVE_GEAR_REDUCTION = 2.0;     // This is < 1.0 if geared UP
         final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
         final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
