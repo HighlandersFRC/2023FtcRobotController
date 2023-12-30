@@ -25,5 +25,3 @@ https://github.com/HighlandersFRC/2023FtcRobotController/tree/Subsystems/TeamCod
 * In the libs folder are the libraries.
   
 * The config is in the assests folder it is called config.xml.
-
-  
