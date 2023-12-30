@@ -120,7 +120,9 @@ private AHRS navX;
                 telemetry.addData("rotX", rotX);
           /*      telemetry.addData("parameters", parameters);*/
                 telemetry.addData("navX", navX);
-
+                telemetry.addData("YAW", navX.getYaw());
+                telemetry.addData("pitch",navX.getPitch());
+                telemetry.addData("roll",navX.getRoll());
                 telemetry.addData("denominator", denominator);
                 telemetry.addData("botHeading", botHeading);
                 telemetry.addData("botHeadingRadian", botHeadingRadian);

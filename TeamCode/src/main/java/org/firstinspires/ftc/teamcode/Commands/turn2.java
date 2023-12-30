@@ -10,8 +10,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.PID;
 
 public class turn2 extends Command{
-/*    PID PID = new PID(0.01, 0.0000, 0.2);*/
-    PID PID = new PID(0.1, 0.0001, 0.0);
+    PID PID = new PID(0.003, 0.0000, 0.005);
+  /*  PID PID = new PID(0.1, 0.0001, 0.0);*/
     public DcMotor Left_Back;
     public DcMotor Right_Back;
     public DcMotor Left_Front;
@@ -65,7 +65,7 @@ public class turn2 extends Command{
 
     public boolean isFinished() {
         if (!(PID.getError() == 0)) {
-            if ((Math.abs(PID.getError())) < 2) {
+            if ((Math.abs(PID.getError())) < 10) {
                 return true;
             }
         }
