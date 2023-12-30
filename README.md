@@ -1,6 +1,4 @@
-ReadMeMd
-
-Comp branch is the main branch for competition
+The Comp branch is the main branch for competition
 
 The config is in the assests folder it is called config.xml
 The assets folder also includes all of the latest neural networks for tensorflow
