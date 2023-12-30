@@ -96,5 +96,4 @@ public class PID {
     public double getError(){
         return prevError;
     }
-
 }

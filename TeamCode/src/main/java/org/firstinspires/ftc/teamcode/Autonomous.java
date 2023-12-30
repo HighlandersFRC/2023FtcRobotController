@@ -33,7 +33,7 @@ public class Autonomous extends LinearOpMode {
 
         waitForStart();
         scheduler.add(new CommandGroup(scheduler,
-                new IntakeServo(hardwareMap)
+                new Drive(hardwareMap, 0.2, 1)
                 /*new Drive(hardwareMap,0.75, 0.75),
                 new Turn(hardwareMap, 45),
                 new Wait(1000),

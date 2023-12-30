@@ -6,11 +6,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.Commands.CommandGroup;
 import org.firstinspires.ftc.teamcode.Commands.Drive;
-import org.firstinspires.ftc.teamcode.Commands.Intake;
+import org.firstinspires.ftc.teamcode.Commands.MainIntake;
 import org.firstinspires.ftc.teamcode.Commands.DeployIntake;
-import org.firstinspires.ftc.teamcode.Commands.RetractIntake;
 import org.firstinspires.ftc.teamcode.Commands.ParallelCommandGroup;
-import org.firstinspires.ftc.teamcode.Commands.RotateArm;
 import org.firstinspires.ftc.teamcode.Commands.Scheduler;
 import org.firstinspires.ftc.teamcode.Commands.Turn;
 import org.firstinspires.ftc.teamcode.Commands.Wait;
@@ -31,7 +29,7 @@ public class RedFarMiddle extends LinearOpMode {
                 new Turn(hardwareMap, -179),
                 new Turn(hardwareMap, -20),
                 new Drive(hardwareMap, -0.2, 0.37),
-                new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.15, -0.1), new PixelTray(hardwareMap, 3000, -1, "R"), new CommandGroup(scheduler, new Wait(1000),  new Intake(hardwareMap, 1000, -0.25))),
+                new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.15, -0.1), new PixelTray(hardwareMap, 3000, -1, "R"), new CommandGroup(scheduler, new Wait(1000),  new MainIntake(hardwareMap, 1000, -0.25))),
                 new MoveWrist(hardwareMap, Constants.wristUp),
                 new Wait(1000),
                 new DeployIntake(hardwareMap, "Retract"),

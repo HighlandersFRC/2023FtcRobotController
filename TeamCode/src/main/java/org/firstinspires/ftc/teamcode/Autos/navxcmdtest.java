@@ -1,23 +1,10 @@
 package org.firstinspires.ftc.teamcode.Autos;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.Commands.drive2;
 import org.firstinspires.ftc.teamcode.Commands.turn2;
-import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.Commands.CommandGroup;
-import org.firstinspires.ftc.teamcode.Commands.Drive;
-import org.firstinspires.ftc.teamcode.Commands.Intake;
-import org.firstinspires.ftc.teamcode.Commands.DeployIntake;
-import org.firstinspires.ftc.teamcode.Commands.RetractIntake;
-import org.firstinspires.ftc.teamcode.Commands.ParallelCommandGroup;
-import org.firstinspires.ftc.teamcode.Commands.RotateArm;
 import org.firstinspires.ftc.teamcode.Commands.Scheduler;
-import org.firstinspires.ftc.teamcode.Commands.Turn;
-import org.firstinspires.ftc.teamcode.Commands.Wait;
-import org.firstinspires.ftc.teamcode.Commands.MoveWrist;
-import org.firstinspires.ftc.teamcode.Commands.PixelTray;
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous
 

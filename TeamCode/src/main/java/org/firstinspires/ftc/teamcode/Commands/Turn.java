@@ -11,8 +11,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.teamcode.PID;
+import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 
-    public class Turn extends Command{
+public class Turn extends Command{
     PID PID = new PID(0.06, 0.0001, 0.0);
     public DcMotor Left_Back;
     public DcMotor Right_Back;
@@ -26,10 +27,10 @@ import org.firstinspires.ftc.teamcode.PID;
     public Turn(HardwareMap hardwareMap, double targetAngle){
         this.targetAngle = targetAngle;
         PID.setSetPoint(targetAngle);
-        Left_Front = hardwareMap.dcMotor.get("Left_Front");
-        Right_Front = hardwareMap.dcMotor.get("Right_Front");
-        Left_Back = hardwareMap.dcMotor.get("Left_Back");
-        Right_Back = hardwareMap.dcMotor.get("Right_Back");
+        Left_Front = DriveTrain.Left_Front;
+        Right_Front = DriveTrain.Right_Front;
+        Left_Back = DriveTrain.Left_Back;
+        Right_Back = DriveTrain.Right_Back;
         imu = hardwareMap.get(IMU.class, "imu");
         navX = hardwareMap.get(NavxMicroNavigationSensor.class, "navX");
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
@@ -38,9 +39,6 @@ import org.firstinspires.ftc.teamcode.PID;
         imu.initialize(parameters);
     }
     public void start() {
-        Right_Front.setDirection(DcMotorSimple.Direction.REVERSE);
-        Right_Back.setDirection(DcMotorSimple.Direction.REVERSE);
-/*        Left_Back.setDirection(DcMotorSimple.Direction.REVERSE);*/
         PID.setMaxInput(180);
         PID.setMinInput(-180);
         PID.setContinuous(true);
@@ -51,22 +49,13 @@ import org.firstinspires.ftc.teamcode.PID;
     public void execute() {
      /*   currentPos = navX.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);*/
         currentPos = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
-
         double power = PID.updatePID(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
         this.PIDOutput = power;
-        System.out.println(power + "  " + PID.getError());
-
-        Right_Front.setPower(-power);
-        Left_Front.setPower(power);
-        Left_Back.setPower(power);
-        Right_Back.setPower(-power);
+        DriveTrain.Drive(-power, power, -power, power);
     }
 
         public void end() {
-            Left_Front.setPower(0);
-            Left_Back.setPower(0);
-            Right_Front.setPower(0);
-            Right_Back.setPower(0);
+            DriveTrain.Drive(0, 0, 0, 0);
     }
 
     public boolean isFinished() {
