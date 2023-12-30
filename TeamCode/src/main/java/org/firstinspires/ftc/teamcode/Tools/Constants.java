@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.Tools;
 public class Constants {
     //constants for arm positions
     public static double armPlace = -4000;
-    public static double armIntake = 130;
+    public static double armIntake = 0;
     public static double lowArm = -4500;
     public static double absoluteArmZero = 3.241;
     public static double armOffset = 0;

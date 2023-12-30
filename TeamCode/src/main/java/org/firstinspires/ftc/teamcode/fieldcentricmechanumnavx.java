@@ -37,8 +37,6 @@ private AHRS navX;
         final double DRIVE_SPEED = 0.6;
         final double TURN_SPEED = 0.5;
 
-
-        PID1 PID = new PID1();
         // Declare our motors
         DcMotor Left_Front = hardwareMap.dcMotor.get("Left_Front");
         DcMotor Left_Back = hardwareMap.dcMotor.get("Left_Back");

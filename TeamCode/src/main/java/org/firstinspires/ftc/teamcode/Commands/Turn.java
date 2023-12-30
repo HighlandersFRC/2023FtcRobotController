@@ -17,6 +17,7 @@ public class Turn extends Command{
     public DcMotor Right_Back;
     public DcMotor Left_Front;
     public DcMotor Right_Front;
+    public HardwareMap hardwareMap;
     public AHRS navX;
     public double targetAngle;
     public IMU imu;
@@ -35,6 +36,7 @@ public class Turn extends Command{
                 RevHubOrientationOnRobot.UsbFacingDirection.UP));
         imu.initialize(parameters);
         navX = AHRS.getInstance(hardwareMap.get(NavxMicroNavigationSensor.class, "navX"), AHRS.DeviceDataType.kProcessedData);
+        this.hardwareMap = hardwareMap;
     }
     public void start() {
         PID.setMaxInput(180);
@@ -50,11 +52,11 @@ public class Turn extends Command{
         currentPos = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
         double power = PID.updatePID(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
         this.PIDOutput = power;
-        DriveTrain.Drive(-power, power, -power, power);
+        DriveTrain.Drive(hardwareMap, -power, power, -power, power);
     }
 
         public void end() {
-            DriveTrain.Drive(0, 0, 0, 0);
+            DriveTrain.Drive(hardwareMap, 0, 0, 0, 0);
     }
 
     public boolean isFinished() {

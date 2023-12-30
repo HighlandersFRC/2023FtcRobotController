@@ -19,6 +19,7 @@ public class Drive extends Command {
     public DcMotor Right_Back;
     public DcMotor Left_Front;
     public DcMotor Right_Front;
+    public HardwareMap hardwareMap;
     public double targetAngle;
     public IMU imu;
     public AHRS navX;
@@ -43,11 +44,13 @@ public class Drive extends Command {
         Right_Back = DriveTrain.Right_Back;
         imu = hardwareMap.get(IMU.class, "imu");
         navX = AHRS.getInstance(hardwareMap.get(NavxMicroNavigationSensor.class, "navX"), AHRS.DeviceDataType.kProcessedData);
+        this.hardwareMap = hardwareMap;
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
                 RevHubOrientationOnRobot.UsbFacingDirection.UP));
     }
     public void start() {
+        DriveTrain.initializeMotors(hardwareMap);
         targetPos = distance * Constants.motorTicksPerRotation;
         DrivePID.setSetPoint(targetPos);
         PID.setMaxInput(180);
@@ -77,10 +80,10 @@ public class Drive extends Command {
         double RightBackPower = (-speed - deviation);
         double LeftBackPower = (-speed + deviation);
 
-        DriveTrain.Drive(RightFrontPower, LeftFrontPower, RightBackPower, LeftBackPower);
+        DriveTrain.Drive(hardwareMap, RightFrontPower, LeftFrontPower, RightBackPower, LeftBackPower);
     }
     public void end() {
-        DriveTrain.Drive(0, 0, 0, 0);
+        DriveTrain.Drive(hardwareMap, 0, 0, 0, 0);
     }
 
     public boolean isFinished() {

@@ -4,19 +4,24 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.har
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.Commands.Command;
 import org.firstinspires.ftc.teamcode.Commands.Drive;
 
 public class DriveTrain extends Subsystems{
     String name = "DriveTrain";
-    Command DefaultCommand = new Drive(hardwareMap, 0, 0);
 
     public static DcMotor Left_Front;
     public static DcMotor Right_Front;
     public static DcMotor Left_Back;
     public static DcMotor Right_Back;
-    public static void Drive(double RightFrontPower, double LeftFrontPower, double RightBackPower, double LeftBackPower){
+    public static void Drive(HardwareMap hardwareMap, double RightFrontPower, double LeftFrontPower, double RightBackPower, double LeftBackPower){
+        Right_Front = hardwareMap.dcMotor.get("Right_Front");
+        Left_Front = hardwareMap.dcMotor.get("Left_Front");
+        Right_Back = hardwareMap.dcMotor.get("Right_Back");
+        Left_Back = hardwareMap.dcMotor.get("Left_Back");
+
         Right_Front.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Left_Front.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Right_Back.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -42,20 +47,22 @@ public class DriveTrain extends Subsystems{
             Right_Back.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
     }
-    public static DcMotor getRightFront(){
+    public static void initializeMotors(HardwareMap hardwareMap){
         Right_Front = hardwareMap.dcMotor.get("Right_Front");
+        Left_Front = hardwareMap.dcMotor.get("Left_Front");
+        Right_Back = hardwareMap.dcMotor.get("Right_Back");
+        Left_Back = hardwareMap.dcMotor.get("Left_Back");
+    }
+    public static DcMotor getRightFront(){
         return Right_Front;
     }
     public static DcMotor getLeftFront(){
-        Left_Front = hardwareMap.dcMotor.get("Left_Front");
         return Left_Front;
     }
     public static DcMotor getRightBack(){
-        Right_Back = hardwareMap.dcMotor.get("Right_Back");
         return Right_Back;
     }
     public static DcMotor getLeftBack(){
-        Left_Back = hardwareMap.dcMotor.get("Left_Back");
         return Left_Back;
     }
     public static double getRightFrontEncoder(){

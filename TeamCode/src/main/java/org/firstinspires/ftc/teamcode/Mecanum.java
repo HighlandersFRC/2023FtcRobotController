@@ -65,9 +65,9 @@ public class Mecanum extends LinearOpMode {
         Arm_Motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Arm_Motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-/*        double voltageDelta = Constants.absoluteArmZero - armEncoder.getVoltage();
-        double ticksOffset = voltageDelta / Constants.voltsPer1000Ticks * 1000;*/
-        Constants.armOffset = -Constants.getOffsetFromVoltage(Constants.absoluteArmZero - armEncoder.getVoltage());
+/*        double voltageDelta = Constants.absoluteArmZero - armEncoder.getVoltage();*/
+/*        double ticksOffset = voltageDelta / Constants.voltsPer1000Ticks * 1000;*/
+/*        Constants.armOffset = -Constants.getOffsetFromVoltage(Constants.absoluteArmZero - armEncoder.getVoltage());*/
 //arm 1 is positive 600 max extension
         //arm 2 is -510 max extension
         if (isStopRequested()) return;
