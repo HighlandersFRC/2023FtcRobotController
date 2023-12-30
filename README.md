@@ -11,7 +11,7 @@ In the [Subsystem]([url](https://github.com/HighlandersFRC/2023FtcRobotControlle
 
 In the [Tests]([url](https://github.com/HighlandersFRC/2023FtcRobotController/tree/Subsystems/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Tests)) folder are all of the files that have code that is being tested:
 
-In the [OPENCV folder (only comp)]([url](https://github.com/HighlandersFRC/2023FtcRobotController/tree/comp/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/OPENCV)) is all of the computervision related code.
+In the [OPENCV folder (only comp)](url(https://github.com/HighlandersFRC/2023FtcRobotController/tree/comp/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/OPENCV)) is all of the computervision related code.
 
 In the [tools](
 https://github.com/HighlandersFRC/2023FtcRobotController/tree/Subsystems/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Tools) folder are all of the tools and other pieces of code that are necessary.
