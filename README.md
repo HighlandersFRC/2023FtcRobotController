@@ -9,7 +9,7 @@ The Comp branch is the main branch for competition
 
 * The [assets](https://github.com/HighlandersFRC/2023FtcRobotController/tree/Subsystems/TeamCode/src/main/assets) folder also includes all of the latest neural networks for tensorflow:
 
-*  In the [autos folder](https://github.com/HighlandersFRC/2023FtcRobotController/tree/Subsystems/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Autos) are all of the individual au* tos and the full auto with vision:*
+*  In the [autos folder](https://github.com/HighlandersFRC/2023FtcRobotController/tree/Subsystems/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Autos) are all of the individual autos and the full auto with vision:
 
 * In the [Commands folder](https://github.com/HighlandersFRC/2023FtcRobotController/tree/Subsystems/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/Commands) are all of the autonomous commands:
 
