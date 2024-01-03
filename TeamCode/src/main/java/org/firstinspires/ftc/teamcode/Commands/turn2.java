@@ -5,8 +5,6 @@ import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.PID;
 
 public class turn2 extends Command{
@@ -30,6 +28,8 @@ public class turn2 extends Command{
         Right_Back = hardwareMap.dcMotor.get("Right_Back");
 
         navX = com.kauailabs.navx.ftc.AHRS.getInstance(hardwareMap.get(NavxMicroNavigationSensor.class, "navX"), com.kauailabs.navx.ftc.AHRS.DeviceDataType.kProcessedData);
+        this.navX.getYaw();
+
     }
     public void start() {
         Right_Front.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -41,12 +41,13 @@ public class turn2 extends Command{
         PID.setMinOutput(-0.25);
         PID.setMaxOutput(0.25);
         navX.zeroYaw();
+
     }
     public void execute() {
 
-        currentPos =navX.getYaw();
+        currentPos =-navX.getYaw();
 
-        double power = PID.updatePID(navX.getYaw());
+        double power = PID.updatePID(-navX.getYaw());
         this.PIDOutput = power;
         System.out.println(power + "  " + PID.getError());
 
@@ -61,13 +62,13 @@ public class turn2 extends Command{
         Left_Back.setPower(0);
         Right_Front.setPower(0);
         Right_Back.setPower(0);
+
+
     }
 
     public boolean isFinished() {
         if (!(PID.getError() == 0)) {
-            if ((Math.abs(PID.getError())) < 2) {
-                return true;
-            }
+            return (Math.abs(PID.getError())) < 2;
         }
         return false;
     }
