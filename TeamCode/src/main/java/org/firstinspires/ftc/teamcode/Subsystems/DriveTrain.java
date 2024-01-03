@@ -32,8 +32,9 @@ public class DriveTrain extends Subsystems{
         Right_Back.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         Left_Back.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        Right_Front.setDirection(DcMotorSimple.Direction.REVERSE);
-        Right_Back.setDirection(DcMotorSimple.Direction.REVERSE);
+/*        Right_Front.setDirection(DcMotorSimple.Direction.REVERSE);
+        Right_Back.setDirection(DcMotorSimple.Direction.REVERSE);*/
+        Left_Front.setDirection(DcMotorSimple.Direction.REVERSE);
 
         Right_Front.setPower(RightFrontPower);
         Right_Back.setPower(RightBackPower);

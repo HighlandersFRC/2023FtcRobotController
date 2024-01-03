@@ -49,8 +49,8 @@ public class Turn extends Command{
  }
     public void execute() {
         currentPos = navX.getYaw();
-        currentPos = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
-        double power = PID.updatePID(imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
+/*        currentPos = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);*/
+        double power = PID.updatePID(navX.getYaw());
         this.PIDOutput = power;
         DriveTrain.Drive(hardwareMap, -power, power, -power, power);
     }
