@@ -1,31 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 import com.kauailabs.navx.ftc.AHRS;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.HardwareDevice;
-import com.qualcomm.robotcore.hardware.I2cDevice;
-import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
-
-import com.kauailabs.navx.ftc.AHRS;
-import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 @TeleOp
-
 public class fieldcentricmechanumnavx extends LinearOpMode {
-private AHRS navX;
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -38,7 +19,6 @@ private AHRS navX;
         final double TURN_SPEED = 0.5;
 
 
-        PID1 PID = new PID1();
         // Declare our motors
         DcMotor Left_Front = hardwareMap.dcMotor.get("Left_Front");
         DcMotor Left_Back = hardwareMap.dcMotor.get("Left_Back");
@@ -50,17 +30,9 @@ private AHRS navX;
         Right_Front.setDirection(DcMotorSimple.Direction.REVERSE);
         Right_Back.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        navX = com.kauailabs.navx.ftc.AHRS.getInstance(hardwareMap.get(NavxMicroNavigationSensor.class, "navX"), AHRS.DeviceDataType.kProcessedData);
-        // Adjust the orientation parameters to match your robot
-       /* navX.Orientation parameters = new navX.Parameters(new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
-                RevHubOrientationOnRobot.UsbFacingDirection.UP));
-        // Without this, the REV Hub's orientation is assumed to be logo up / USB forward
-        imu.initialize(parameters);*/
-        // Find a motor in the hardware map named "Arm Motor"
+        AHRS navX = AHRS.getInstance(hardwareMap.get(NavxMicroNavigationSensor.class, "navX"), AHRS.DeviceDataType.kProcessedData);
         while (opModeIsActive()) {
 
-            double CPR = 288;
             double y = -gamepad1.left_stick_y;
             double x = gamepad1.left_stick_x;
             double rx = gamepad1.right_stick_x;
@@ -86,7 +58,7 @@ private AHRS navX;
                 double frontRightPower = (rotY - rotX - rx) / denominator;
                 double backRightPower = (rotY + rotX - rx) / denominator;
                 final double[] result = new double[1];
-                class VelocityPID {
+/*                class VelocityPID {
                     double leftBackResult(double encoderPos, double oldPos) {
                         result[0] = (encoderPos - oldPos);
                         return result[0];
@@ -105,7 +77,7 @@ private AHRS navX;
                     }
 
                 }
-
+*/
                 if (gamepad1.right_bumper) {
                     navX.zeroYaw();
                 }
@@ -121,8 +93,8 @@ private AHRS navX;
           /*      telemetry.addData("parameters", parameters);*/
                 telemetry.addData("navX", navX);
                 telemetry.addData("YAW", navX.getYaw());
-                telemetry.addData("pitch",navX.getPitch());
-                telemetry.addData("roll",navX.getRoll());
+                telemetry.addData("pitch", navX.getPitch());
+                telemetry.addData("roll", navX.getRoll());
                 telemetry.addData("denominator", denominator);
                 telemetry.addData("botHeading", botHeading);
                 telemetry.addData("botHeadingRadian", botHeadingRadian);
@@ -136,7 +108,7 @@ private AHRS navX;
                 telemetry.addData("Right front position", Right_Front_position);
                 telemetry.addData("Right front position", Right_Back_position);
                 telemetry.addData("result", result[0]);
-
+                telemetry.addData("mag", navX.getRawMagZ());
                 telemetry.update();
 
             }
