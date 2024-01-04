@@ -33,8 +33,7 @@ public class turn2 extends Command{
                 RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
                 RevHubOrientationOnRobot.UsbFacingDirection.UP));
         imu.initialize(parameters);
-        navX = com.kauailabs.navx.ftc.AHRS.getInstance(hardwareMap.get(NavxMicroNavigationSensor.class, "navX"), com.kauailabs.navx.ftc.AHRS.DeviceDataType.kProcessedData);
-        navX.zeroYaw();
+        navX = com.kauailabs.navx.ftc.AHRS.getInstance(hardwareMap.get(NavxMicroNavigationSensor.class, "navX"), com.kauailabs.navx.ftc.AHRS.DeviceDataType.kProcessedData);navX.zeroYaw();
     }
     public void start() {
         Right_Front.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -45,10 +44,10 @@ public class turn2 extends Command{
         PID.setContinuous(true);
         PID.setMinOutput(-.15);
         PID.setMaxOutput(.15);
-        navX.zeroYaw();
+
     }
     public void execute() {
-
+        navX.zeroYaw();
         currentPos = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
         double power = PID.updatePID(currentPos);
         this.PIDOutput = power;
@@ -59,15 +58,16 @@ public class turn2 extends Command{
         Left_Front.setPower(power);
         Left_Back.setPower(power);
         Right_Back.setPower(-power);
-        navX.zeroYaw();
+
     }
 
     public void end() {
+        navX.zeroYaw();
         Left_Front.setPower(0);
         Left_Back.setPower(0);
         Right_Front.setPower(0);
         Right_Back.setPower(0);
-        navX.zeroYaw();
+
     }
 
     public boolean isFinished() {
