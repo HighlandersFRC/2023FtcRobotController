@@ -22,6 +22,26 @@ public class DriveTrain extends Subsystems{
         Right_Back = hardwareMap.dcMotor.get("Right_Back");
         Left_Back = hardwareMap.dcMotor.get("Left_Back");
 
+        //new comp bot
+/*
+        Right_Front.setPower(RightFrontPower);
+        Right_Back.setPower(RightBackPower);
+        Left_Front.setPower(-LeftFrontPower);
+        Left_Back.setPower(LeftBackPower);
+*/
+
+        //old comp bot
+        Right_Front.setPower(-RightFrontPower);
+        Right_Back.setPower(-RightBackPower);
+        Left_Front.setPower(LeftFrontPower);
+        Left_Back.setPower(LeftBackPower);
+    }
+    public static void initializeMotors(HardwareMap hardwareMap){
+        Right_Front = hardwareMap.dcMotor.get("Right_Front");
+        Left_Front = hardwareMap.dcMotor.get("Left_Front");
+        Right_Back = hardwareMap.dcMotor.get("Right_Back");
+        Left_Back = hardwareMap.dcMotor.get("Left_Back");
+
         Right_Front.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Left_Front.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Right_Back.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -31,28 +51,6 @@ public class DriveTrain extends Subsystems{
         Left_Front.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         Right_Back.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         Left_Back.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-/*        Right_Front.setDirection(DcMotorSimple.Direction.REVERSE);
-        Right_Back.setDirection(DcMotorSimple.Direction.REVERSE);*/
-        Left_Front.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        Right_Front.setPower(RightFrontPower);
-        Right_Back.setPower(RightBackPower);
-        Left_Front.setPower(LeftFrontPower);
-        Left_Back.setPower(LeftBackPower);
-
-        if (RightBackPower == 0 && RightFrontPower == 0 && LeftFrontPower == 0 && LeftBackPower == 0){
-            Left_Front.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            Left_Back.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            Right_Front.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            Right_Back.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        }
-    }
-    public static void initializeMotors(HardwareMap hardwareMap){
-        Right_Front = hardwareMap.dcMotor.get("Right_Front");
-        Left_Front = hardwareMap.dcMotor.get("Left_Front");
-        Right_Back = hardwareMap.dcMotor.get("Right_Back");
-        Left_Back = hardwareMap.dcMotor.get("Left_Back");
     }
     public static DcMotor getRightFront(){
         return Right_Front;

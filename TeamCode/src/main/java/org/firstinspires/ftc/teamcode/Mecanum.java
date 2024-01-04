@@ -80,7 +80,7 @@ public class Mecanum extends LinearOpMode {
 
 /*            Right_Front.setDirection(DcMotorSimple.Direction.REVERSE);
             Right_Back.setDirection(DcMotorSimple.Direction.REVERSE);*/
-            Left_Back.setDirection(DcMotorSimple.Direction.REVERSE);//comment for comp bot
+/*            Left_Back.setDirection(DcMotorSimple.Direction.REVERSE);*///comment for comp bot
 
             double leftTrigger = gamepad1.left_trigger;
             double rightTrigger = gamepad1.right_trigger;
@@ -90,7 +90,10 @@ public class Mecanum extends LinearOpMode {
 
             double r2Trigger =  gamepad2.right_trigger;
             double l2Trigger =  gamepad2.left_trigger;
-            double intakePower = -(rightTrigger - leftTrigger) ;
+            double intakePower = -(rightTrigger - leftTrigger);
+            if (intakePower > 0){
+                intakePower = intakePower / 2;
+            }
 
             PID.setMaxOutput(1);
             PID.setMinOutput(-1);
@@ -112,7 +115,6 @@ public class Mecanum extends LinearOpMode {
             }else if (gamepad1.x){
                 ArmPID.setSetPoint(Constants.armIntake);
             }
-
             Arm_Motor.setPower(-ArmPID.getResult());
             Arm2.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -199,22 +201,6 @@ public class Mecanum extends LinearOpMode {
             double x = -gamepad1.left_stick_x * 1.1;
             double rx = -gamepad1.right_stick_x;
 
-
-            if (Math.abs(gamepad1.left_stick_x) < 0.1){
-                Left_Front.setPower(0);
-                Left_Back.setPower(0);
-                Right_Front.setPower(0);
-                Right_Back.setPower(0);
-            }
-            //3304, 2.91
-            //0 is 2.91V and 3304 as
-            //0.5V as back
-            if (Math.abs(gamepad1.left_stick_y) < 0.1){
-                Left_Front.setPower(0);
-                Left_Back.setPower(0);
-                Right_Front.setPower(0);
-                Right_Back.setPower(0);
-            }
 /*
             if (Math.abs(Arm_Motor.getCurrentPosition() - Constants.getOffsetFromVoltage(armEncoder.getVoltage())) <= 100) {
                 Constants.armIntake = Arm_Motor.getCurrentPosition() - Constants.getOffsetFromVoltage(armEncoder.getVoltage());
