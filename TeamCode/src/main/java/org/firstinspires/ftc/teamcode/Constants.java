@@ -21,4 +21,6 @@ public class Constants {
     public static double lowWrist = 0.85;
 /*    public static double wristDown = 0.3; //practice bot
     public static double wristUp = 0.7; //practice bot*/
+    public static double startingPosition = 0;
+
 }
