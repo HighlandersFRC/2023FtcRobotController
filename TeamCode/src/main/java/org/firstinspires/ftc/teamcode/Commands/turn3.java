@@ -41,8 +41,8 @@ public class turn3 extends Command{
         PID.setMaxInput(180);
         PID.setMinInput(-180);
         PID.setContinuous(true);
-        PID.setMinOutput(-1);
-        PID.setMaxOutput(1);
+        PID.setMinOutput(-0.3);
+        PID.setMaxOutput(0.3);
         navX.zeroYaw();
         System.out.println("zero yaw");
     }
