@@ -1,11 +1,9 @@
 package org.firstinspires.ftc.teamcode.Commands;
-
 import com.kauailabs.navx.ftc.AHRS;
 import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.PID;
 
@@ -64,8 +62,8 @@ public class strafeRight extends Command {
         PID.setMaxInput(180);
         PID.setMinInput(-180);
         PID.setContinuous(true);
-        PID.setMinOutput(-0.25);
-        PID.setMaxOutput(0.25);
+        PID.setMinOutput(-1);
+        PID.setMaxOutput(1);
         navX.zeroYaw();
     }
 
@@ -75,17 +73,20 @@ public class strafeRight extends Command {
         backLeft = Left_Back.getCurrentPosition();
         frontLeft = Left_Front.getCurrentPosition();
         frontRight  = Right_Front.getCurrentPosition();
-        avgEncoder = (backRight + frontLeft + frontRight) / 3;
+        avgEncoder = (backRight + frontLeft + frontRight + backLeft) / 4;
         DrivePID.updatePID(avgEncoder);
         currentPos = navX.getYaw();
         PID.updatePID(currentPos);
-
         double deviation = PID.getResult();
 
         Right_Front.setPower(-speed - deviation);
         Left_Front.setPower(speed + deviation);
         Right_Back.setPower(speed + deviation);
         Left_Back.setPower(-speed + deviation);
+        System.out.println(Right_Front.getPower()+ " Right_Front");
+        System.out.println(Right_Back.getPower()+ " Right_Back");
+        System.out.println(Left_Front.getPower()+ " Left_Front");
+        System.out.println(Left_Back.getPower()+ " Left_back");
     }
     public void end() {
         Left_Front.setPower(0);
@@ -96,10 +97,20 @@ public class strafeRight extends Command {
         Left_Back.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Right_Front.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         Right_Back.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
     }
 
     public boolean isFinished() {
-        if (Math.abs(avgEncoder) - 10 >= Math.abs(targetPos)) {
+        if (Math.abs(Right_Back.getCurrentPosition()) - 10 >= Math.abs(targetPos)) {
+            return true;
+        }
+        if (Math.abs(-Left_Back.getCurrentPosition()) - 10 >= Math.abs(targetPos)) {
+            return true;
+        }
+        if (Math.abs(Left_Front.getCurrentPosition()) - 10 >= Math.abs(targetPos)) {
+            return true;
+        }
+        if (Math.abs(-Right_Front.getCurrentPosition()) - 10 >= Math.abs(targetPos)) {
             return true;
         }
         return false;

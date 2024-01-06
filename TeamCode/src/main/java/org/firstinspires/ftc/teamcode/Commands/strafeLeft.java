@@ -74,17 +74,23 @@ public class strafeLeft extends Command{
             backLeft = Left_Back.getCurrentPosition();
             frontLeft = Left_Front.getCurrentPosition();
             frontRight  = Right_Front.getCurrentPosition();
-            avgEncoder = (backRight + frontLeft + frontRight) / 3;
+            avgEncoder = (backRight + frontLeft + frontRight + backLeft) / 4 ;
             DrivePID.updatePID(avgEncoder);
             currentPos = navX.getYaw();
             PID.updatePID(currentPos);
 
             double deviation = PID.getResult();
 
+
             Right_Front.setPower(speed + deviation);
             Left_Front.setPower(-speed - deviation);
             Right_Back.setPower(-speed - deviation);
             Left_Back.setPower(speed - deviation);
+            System.out.println(avgEncoder);
+            System.out.println(Right_Front.getPower()+ " Right_Front");
+            System.out.println(Right_Back.getPower()+ " Right_Back");
+            System.out.println(Left_Front.getPower()+ " Left_Front");
+            System.out.println(Left_Back.getPower()+ " Left_back");
         }
         public void end() {
             Left_Front.setPower(0);

@@ -78,7 +78,7 @@ public class drive2 extends Command {
         backLeft = Left_Back.getCurrentPosition();
         frontLeft = Left_Front.getCurrentPosition();
         frontRight  = Right_Front.getCurrentPosition();
-        avgEncoder = (backRight + frontLeft + frontRight) / 3;
+        avgEncoder = (backRight + frontLeft + frontRight + backLeft) / 4;
         DrivePID.updatePID(avgEncoder);
         currentPos = navX.getYaw();
         PID.updatePID(currentPos);
