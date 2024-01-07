@@ -15,10 +15,8 @@ public class strafeRight extends Command {
     public DcMotor Right_Back;
     public DcMotor Left_Front;
     public DcMotor Right_Front;
-    public double targetAngle;
 
     public double currentPos;
-    public double PIDOutput;
     public double speed;
     public double distance;
     public double targetPos;
@@ -28,7 +26,7 @@ public class strafeRight extends Command {
     public double frontLeft;
     public double frontRight;
     public DcMotor Arm_Motor;
-    private AHRS navX;
+    private final AHRS navX;
     PID ArmPID = new PID(0.001, 0, 0);
 
     public strafeRight(HardwareMap hardwareMap, double Speed, double Distance){
@@ -66,7 +64,6 @@ public class strafeRight extends Command {
         PID.setMaxOutput(1);
         navX.zeroYaw();
     }
-
     public void execute() {
         ArmPID.updatePID(Arm_Motor.getCurrentPosition());
         backRight = Right_Back.getCurrentPosition();
@@ -83,10 +80,11 @@ public class strafeRight extends Command {
         Left_Front.setPower(speed + deviation);
         Right_Back.setPower(speed + deviation);
         Left_Back.setPower(-speed + deviation);
-        System.out.println(Right_Front.getPower()+ " Right_Front");
-        System.out.println(Right_Back.getPower()+ " Right_Back");
+        System.out.println(-Left_Back.getCurrentPosition());
+        System.out.println(-Right_Front.getCurrentPosition());
         System.out.println(Left_Front.getPower()+ " Left_Front");
         System.out.println(Left_Back.getPower()+ " Left_back");
+
     }
     public void end() {
         Left_Front.setPower(0);
@@ -110,10 +108,6 @@ public class strafeRight extends Command {
         if (Math.abs(Left_Front.getCurrentPosition()) - 10 >= Math.abs(targetPos)) {
             return true;
         }
-        if (Math.abs(-Right_Front.getCurrentPosition()) - 10 >= Math.abs(targetPos)) {
-            return true;
-        }
-        return false;
+        return Math.abs(-Right_Front.getCurrentPosition()) - 10 >= Math.abs(targetPos);
     }
 }
-

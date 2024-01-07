@@ -57,7 +57,7 @@ public class turn3 extends Command{
         this.PIDOutput = power;
         System.out.println(power + "  " + PID.getError());
         System.out.println(navX.getYaw()+" yaw");
-
+        System.out.println(Left_Back.getPower());
         Right_Front.setPower(-power);
         Left_Front.setPower(power);
         Left_Back.setPower(power);
