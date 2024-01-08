@@ -8,13 +8,13 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.Constants;
-import org.firstinspires.ftc.teamcode.PID;
+import org.firstinspires.ftc.teamcode.Tools.Constants;
+import org.firstinspires.ftc.teamcode.Tools.PID;
+
 
 public class strafeRight extends Command {
-    org.firstinspires.ftc.teamcode.PID PID = new PID(0.0020, 0.0, 0.0);
-    org.firstinspires.ftc.teamcode.PID DrivePID = new PID(0.03, 0.0, 0.0);
+    org.firstinspires.ftc.teamcode.Tools.PID PID = new PID(0.03, 0.0, 0.015);
+    org.firstinspires.ftc.teamcode.Tools.PID DrivePID = new PID(0.03, 0.0, 0.0);
 
     public DcMotor Left_Back;
     public DcMotor Right_Back;
@@ -37,7 +37,7 @@ public class strafeRight extends Command {
 
     public strafeRight(HardwareMap hardwareMap, double Speed, double Distance){
         this.speed = Speed;
-        this.distance = Distance;
+        this.distance = Distance * 1.225;
         PID.setSetPoint(0);
         Left_Front = hardwareMap.dcMotor.get("Left_Front");
         Right_Front = hardwareMap.dcMotor.get("Right_Front");
@@ -58,6 +58,11 @@ public class strafeRight extends Command {
         //imu.resetYaw();
 
     }
+
+    public String getSubsystem() {
+        return "DriveTrain";
+    }
+
     public void start() {
         Right_Front.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Left_Front.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -69,7 +74,7 @@ public class strafeRight extends Command {
         Right_Back.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         Left_Back.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        targetPos = distance * Constants.motorTicksPerRotation;
+        targetPos = distance * Constants.motorTicksPerMeter;
         DrivePID.setSetPoint(targetPos);
         PID.setMaxInput(180);
         PID.setMinInput(-180);
@@ -77,6 +82,7 @@ public class strafeRight extends Command {
         PID.setMinOutput(-1);
         PID.setMaxOutput(1);
         currentPos = navX.getYaw();
+        PID.setSetPoint(0);
         //currentPos = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
     }
     public void execute() {
@@ -87,11 +93,12 @@ public class strafeRight extends Command {
         frontRight  = Right_Front.getCurrentPosition();
         avgEncoder = (backRight + frontLeft + frontRight + backLeft) / 4;
         DrivePID.updatePID(avgEncoder);
-        PID.updatePID(currentPos);
+        PID.updatePID(navX.getYaw());
+
         double deviation = PID.getResult();
 
-        Right_Front.setPower(-speed - deviation);
-        Left_Front.setPower(speed + deviation);
+        Right_Front.setPower(-speed + deviation);
+        Left_Front.setPower(-speed + deviation);
         Right_Back.setPower(speed + deviation);
         Left_Back.setPower(-speed + deviation);
         System.out.println(-Left_Back.getCurrentPosition());
