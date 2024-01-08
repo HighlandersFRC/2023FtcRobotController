@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Wrist;
 import org.firstinspires.ftc.teamcode.Tools.Constants;
 
 @Autonomous
-public class NewRedNearMiddle extends LinearOpMode {
+public class NewRedNearLeft extends LinearOpMode {
     Scheduler scheduler = new Scheduler();
     public void runOpMode() throws InterruptedException {
         waitForStart();
