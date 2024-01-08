@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.Commands.Drive;
 import org.firstinspires.ftc.teamcode.Commands.drive2;
 import org.firstinspires.ftc.teamcode.Commands.strafeLeft;
 import org.firstinspires.ftc.teamcode.Commands.strafeLeft;
@@ -34,7 +35,7 @@ public class navxcmdtest extends LinearOpMode {
                 //new strafeLeft(hardwareMap,.2,1)
                 //new strafeRight(hardwareMap,.2,10)
                 //Add your code here
-                new strafeRight(hardwareMap,0.5,1)
+                new strafeRight(hardwareMap,0.5,3)
 
         //new drive2(hardwareMap, -0.2, 0.05)
                /* new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.3, -0.1), new PixelTray(hardwareMap, 3000, -1, "R"), new CommandGroup(scheduler, new Wait(1000), new Intake(hardwareMap, 1000, -0.25))),

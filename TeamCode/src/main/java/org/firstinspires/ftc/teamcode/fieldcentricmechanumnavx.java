@@ -43,7 +43,7 @@ public class fieldcentricmechanumnavx extends LinearOpMode {
             double botHeading = -navX.getYaw();
             double pi = 3.1415926;
             double botHeadingRadian = -botHeading * pi/180;
-            if (botHeadingRadian != 0) {
+
                 // Rotate the movement direction counter to the bot's rotation
                 double rotX = (x * Math.cos(botHeadingRadian) - y * Math.sin(botHeadingRadian));// Changed to positive due to things(change back when need)
                 double rotY = (x * Math.sin(botHeadingRadian) + y * Math.cos(botHeadingRadian));//Changed to positive due to things(change back when need)
@@ -111,7 +111,7 @@ public class fieldcentricmechanumnavx extends LinearOpMode {
                 telemetry.addData("mag", navX.getRawMagZ());
                 telemetry.update();
 
-            }
+
         }
     }
 }

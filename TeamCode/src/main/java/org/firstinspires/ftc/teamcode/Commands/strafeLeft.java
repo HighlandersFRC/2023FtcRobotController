@@ -9,8 +9,8 @@ import org.firstinspires.ftc.teamcode.PID;
 
 public class strafeLeft extends Command{
 
-        org.firstinspires.ftc.teamcode.PID PID = new PID(0.015, 0.0, 0.0);
-        org.firstinspires.ftc.teamcode.PID DrivePID = new PID(0.03, 0.0, 0.0);
+        org.firstinspires.ftc.teamcode.PID PID = new PID(1, 0.0, 1);
+        org.firstinspires.ftc.teamcode.PID DrivePID = new PID(0.3, 0.0, 0.0);
 
         public DcMotor Left_Back;
         public DcMotor Right_Back;
@@ -63,8 +63,8 @@ public class strafeLeft extends Command{
             PID.setMaxInput(180);
             PID.setMinInput(-180);
             PID.setContinuous(true);
-            PID.setMinOutput(-0.25);
-            PID.setMaxOutput(0.25);
+            PID.setMinOutput(-1);
+            PID.setMaxOutput(1);
             navX.zeroYaw();
         }
 
@@ -85,7 +85,7 @@ public class strafeLeft extends Command{
             Right_Front.setPower(speed + deviation);
             Left_Front.setPower(-speed - deviation);
             Right_Back.setPower(-speed - deviation);
-            Left_Back.setPower(speed - deviation);
+            Left_Back.setPower(speed + deviation);
             System.out.println(avgEncoder);
             System.out.println(Right_Front.getPower()+ " Right_Front");
             System.out.println(Right_Back.getPower()+ " Right_Back");
@@ -104,10 +104,17 @@ public class strafeLeft extends Command{
         }
 
         public boolean isFinished() {
-            if (Math.abs(avgEncoder) - 10 >= Math.abs(targetPos)) {
+            if (Math.abs(-Right_Back.getCurrentPosition()) - 10 >= Math.abs(targetPos)) {
                 return true;
             }
-            return false;
+            if (Math.abs(Left_Back.getCurrentPosition()) - 10 >= Math.abs(targetPos)) {
+                return true;
+            }
+            if (Math.abs(-Left_Front.getCurrentPosition()) - 10 >= Math.abs(targetPos)) {
+                return true;
+            }
+            return Math.abs(Right_Front.getCurrentPosition()) - 10 >= Math.abs(targetPos);
         }
-    }
+}
+
 

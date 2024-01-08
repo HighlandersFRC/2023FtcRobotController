@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.PID;
 
 public class strafeRight extends Command {
-    org.firstinspires.ftc.teamcode.PID PID = new PID(0.015, 0.0, 0.0);
+    org.firstinspires.ftc.teamcode.PID PID = new PID(0.0020, 0.0, 0.0);
     org.firstinspires.ftc.teamcode.PID DrivePID = new PID(0.03, 0.0, 0.0);
 
     public DcMotor Left_Back;
@@ -43,6 +43,7 @@ public class strafeRight extends Command {
         Right_Back.setDirection(DcMotorSimple.Direction.REVERSE);
 
         Arm_Motor = hardwareMap.dcMotor.get("Arm_Motor");
+        navX.zeroYaw();
     }
     public void start() {
         Right_Front.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -62,7 +63,7 @@ public class strafeRight extends Command {
         PID.setContinuous(true);
         PID.setMinOutput(-1);
         PID.setMaxOutput(1);
-        navX.zeroYaw();
+
     }
     public void execute() {
         ArmPID.updatePID(Arm_Motor.getCurrentPosition());
@@ -99,15 +100,15 @@ public class strafeRight extends Command {
     }
 
     public boolean isFinished() {
-        if (Math.abs(Right_Back.getCurrentPosition()) - 10 >= Math.abs(targetPos)) {
+        if (Math.abs(Right_Back.getCurrentPosition()) - 5 >= Math.abs(targetPos)) {
             return true;
         }
-        if (Math.abs(-Left_Back.getCurrentPosition()) - 10 >= Math.abs(targetPos)) {
+        if (Math.abs(-Left_Back.getCurrentPosition()) - 5 >= Math.abs(targetPos)) {
             return true;
         }
-        if (Math.abs(Left_Front.getCurrentPosition()) - 10 >= Math.abs(targetPos)) {
+        if (Math.abs(Left_Front.getCurrentPosition()) - 5 >= Math.abs(targetPos)) {
             return true;
         }
-        return Math.abs(-Right_Front.getCurrentPosition()) - 10 >= Math.abs(targetPos);
+        return Math.abs(-Right_Front.getCurrentPosition()) - 5 >= Math.abs(targetPos);
     }
 }
