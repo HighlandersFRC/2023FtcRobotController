@@ -81,7 +81,6 @@ public class strafeRight extends Command {
         PID.setContinuous(true);
         PID.setMinOutput(-1);
         PID.setMaxOutput(1);
-        currentPos = navX.getYaw();
         PID.setSetPoint(0);
         //currentPos = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
     }
@@ -96,7 +95,7 @@ public class strafeRight extends Command {
         PID.updatePID(navX.getYaw());
 
         double deviation = PID.getResult();
-
+        currentPos = navX.getYaw();
         Right_Front.setPower(-speed + deviation);
         Left_Front.setPower(-speed + deviation);
         Right_Back.setPower(speed + deviation);

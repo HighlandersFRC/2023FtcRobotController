@@ -50,7 +50,7 @@ public class FieldCentric extends LinearOpMode {
             }
 
             double botHeading = -Peripherals.getYaw();
-            double pi = 3.1415926;
+            double pi = Math.PI;
             double botHeadingRadian = -botHeading * pi/180;
 
                 double rotX = (x * Math.cos(botHeadingRadian) - y * Math.sin(botHeadingRadian));
