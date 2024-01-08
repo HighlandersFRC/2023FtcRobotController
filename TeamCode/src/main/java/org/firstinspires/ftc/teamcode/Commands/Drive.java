@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 
 public class Drive extends Command {
     org.firstinspires.ftc.teamcode.Tools.
-            PID PID = new PID(0.015, 0.0, 0.0);
+            PID PID = new PID(0.03, 0.0, 0.0);
     org.firstinspires.ftc.teamcode.Tools.PID DrivePID = new PID(0.03, 0.0, 0.0);
 
     public HardwareMap hardwareMap;
@@ -46,8 +46,8 @@ public class Drive extends Command {
         return "DriveTrain";
     }
     public void start() {
-        currentPos = Math.toDegrees(navX.getYaw());
         targetPos = distance * Constants.motorTicksPerMeter;
+        PID.setSetPoint(0);
         DrivePID.setSetPoint(targetPos);
         PID.setMaxInput(180);
         PID.setMinInput(-180);
@@ -65,6 +65,7 @@ public class Drive extends Command {
         frontRight  = DriveTrain.getRightFrontEncoder();
         avgEncoder = (backRight + frontLeft + frontRight + backLeft) / 4;
         DrivePID.updatePID(avgEncoder);
+        currentPos = navX.getYaw();
         PID.updatePID(currentPos);
         /*currentPos = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);*/
 

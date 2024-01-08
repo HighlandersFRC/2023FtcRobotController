@@ -50,7 +50,7 @@ public class FieldCentric extends LinearOpMode {
             }
 
             double botHeading = -Peripherals.getYaw();
-            double pi = 3.1415926;
+            double pi = Math.PI;
             double botHeadingRadian = -botHeading * pi/180;
 
                 double rotX = (x * Math.cos(botHeadingRadian) - y * Math.sin(botHeadingRadian));
@@ -101,6 +101,9 @@ public class FieldCentric extends LinearOpMode {
             Elevators.moveElevatorsUsingPower(ElevatorPID.getResult());
             Arm.rotateArm(ArmPID.getResult());
             Intake.moveMotor(intakePower);
+
+            telemetry.addData("NavX Yaw", Peripherals.getYaw());
+            telemetry.update();
         }
     }
 }

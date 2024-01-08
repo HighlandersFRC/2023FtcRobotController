@@ -24,7 +24,6 @@ public class Scheduler {
         int length = commandList.size();
         List<Command> removeList = new ArrayList<>();
         for (int i = 0; i < length; i++){
-            checkForSubsystems();
             if (commandList.get(i).isFinished()){
                 commandList.get(i).end();
                 removeList.add(commandList.get(i));

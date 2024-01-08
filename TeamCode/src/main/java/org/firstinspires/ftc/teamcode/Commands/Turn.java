@@ -38,7 +38,7 @@ public class Turn extends Command{
         double power = PID.updatePID(-navX.getYaw());
         this.PIDOutput = power;
 
-        DriveTrain.Drive(power, power, power, power);
+        DriveTrain.Drive(power, -power, power, -power);
     }
 
     public void end() {
@@ -47,7 +47,7 @@ public class Turn extends Command{
 
     public boolean isFinished() {
         if (!(PID.getError() == 0)) {
-            return (Math.abs(PID.getError())) < .5;
+            return (Math.abs(PID.getError())) < 2;
         }
         return false;
     }
