@@ -16,7 +16,6 @@ public class Drive extends Command {
     org.firstinspires.ftc.teamcode.Tools.PID DrivePID = new PID(0.03, 0.0, 0.0);
 
     public HardwareMap hardwareMap;
-    public double targetAngle;
     public IMU imu;
     public AHRS navX;
     public double currentPos;
