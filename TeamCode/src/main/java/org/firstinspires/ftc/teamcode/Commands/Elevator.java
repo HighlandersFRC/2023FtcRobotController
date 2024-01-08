@@ -10,6 +10,9 @@ public class Elevator extends Command {
     private DcMotor Arm1;
     private DcMotor Arm2;
     double targetPosition;
+    public String getSubsystem() {
+        return "Elevator";
+    }
     org.firstinspires.ftc.teamcode.Tools.PID PID = new PID(0.1, 0, 0);
     public Elevator(HardwareMap hardwareMap, double targetPosition){
         Arm1 = hardwareMap.dcMotor.get("Arm_Left");

@@ -10,7 +10,9 @@ public class MainIntake extends Command {
     public double speed;
     public long endTime;
 
-
+    public String getSubsystem() {
+        return "Intake";
+    }
     public MainIntake(HardwareMap hardwareMap, long Time, double Speed) {
         Intake = hardwareMap.dcMotor.get("Right_Intake");
 

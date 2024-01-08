@@ -17,7 +17,9 @@ public class PixelTray extends Command {
     PID ArmPID = new PID(0.001, 0, 0);
 
 
-
+    public String getSubsystem() {
+        return "PixelIntake";
+    }
     public PixelTray(HardwareMap hardwareMap, long Time, double Speed, String LR) {
         holderservo_left = hardwareMap.crservo.get("HolderServo_Left");
         holderservo_right = hardwareMap.crservo.get("HolderServo_Right");
@@ -42,8 +44,9 @@ public class PixelTray extends Command {
         endTime = System.currentTimeMillis() + time;
     }
     public void execute() {
-/*        ArmPID.updatePID(Arm_Motor.getCurrentPosition());
-        Arm_Motor.setPower(ArmPID.getResult());*/
+        ArmPID.updatePID(Arm_Motor.getCurrentPosition());
+        Arm_Motor.setPower(ArmPID.getResult());
+
     }
 
     public void end() {

@@ -36,6 +36,9 @@ public class AprilTagDetection extends Command{
     public IMU imu;
     public double speed;
     PID PID = new PID(0.015, 0.0, 0.0);
+    public String getSubsystem() {
+        return "Camera";
+    }
     public AprilTagDetection(HardwareMap hardwareMap, double Speed){
         PID.setSetPoint(0);
         Left_Front = hardwareMap.dcMotor.get("Left_Front");

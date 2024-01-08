@@ -2,10 +2,12 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 public class Wrist extends Subsystems {
-    String name = "WristServo";
+    public static String name = "WristServo";
     public static Servo WristServo;
-    public static void Wrist(HardwareMap hardwareMap,double TargetPos){
+    public static void initialize(HardwareMap hardwareMap){
         WristServo = hardwareMap.servo.get("WristServo");
+    }
+    public static void Wrist(double TargetPos){
         WristServo.setPosition(TargetPos);
     }
 }

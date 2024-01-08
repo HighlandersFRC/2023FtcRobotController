@@ -9,11 +9,15 @@ import org.firstinspires.ftc.teamcode.Commands.Command;
 import org.firstinspires.ftc.teamcode.Commands.MainIntake;
 
 public class Intake extends Subsystems{
-    String name = "Intake";
+    public static String name = "Intake";
     Command DefaultCommand = new MainIntake(hardwareMap, 0, 0);
 
-    public DcMotor Intake;
-    public static void Intake(HardwareMap hardwareMap, double Power){
+    public static DcMotor Intake;
 
+    public static void initialize(HardwareMap hardwareMap){
+        Intake = hardwareMap.dcMotor.get("Right_Intake");
+    }
+    public static void moveMotor(double Power){
+        Intake.setPower(-Power);
     }
 }

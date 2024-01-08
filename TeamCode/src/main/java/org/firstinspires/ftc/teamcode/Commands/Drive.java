@@ -11,7 +11,8 @@ import org.firstinspires.ftc.teamcode.Tools.PID;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 
 public class Drive extends Command {
-    org.firstinspires.ftc.teamcode.Tools.PID PID = new PID(0.015, 0.0, 0.0);
+    org.firstinspires.ftc.teamcode.Tools.
+            PID PID = new PID(0.015, 0.0, 0.0);
     org.firstinspires.ftc.teamcode.Tools.PID DrivePID = new PID(0.03, 0.0, 0.0);
 
     public HardwareMap hardwareMap;
@@ -33,7 +34,7 @@ public class Drive extends Command {
         this.speed = Speed;
         this.distance = Distance;
         PID.setSetPoint(0);
-        DriveTrain.initializeMotors(hardwareMap);
+        DriveTrain.initialize(hardwareMap);
         imu = hardwareMap.get(IMU.class, "imu");
         navX = AHRS.getInstance(hardwareMap.get(NavxMicroNavigationSensor.class, "navX"), AHRS.DeviceDataType.kProcessedData);
         this.hardwareMap = hardwareMap;
@@ -42,7 +43,11 @@ public class Drive extends Command {
                 RevHubOrientationOnRobot.UsbFacingDirection.UP));
         imu.initialize(parameters);
     }
+    public String getSubsystem() {
+        return "DriveTrain";
+    }
     public void start() {
+        currentPos = Math.toDegrees(navX.getYaw());
         targetPos = distance * Constants.motorTicksPerMeter;
         DrivePID.setSetPoint(targetPos);
         PID.setMaxInput(180);
@@ -55,14 +60,14 @@ public class Drive extends Command {
     }
 
     public void execute() {
-        backRight = -DriveTrain.getRightBackEncoder();
+        backRight = DriveTrain.getRightBackEncoder();
         backLeft = DriveTrain.getLeftBackEncoder();
         frontLeft = DriveTrain.getLeftFrontEncoder();
-        frontRight  = -DriveTrain.getRightFrontEncoder();
+        frontRight  = DriveTrain.getRightFrontEncoder();
         avgEncoder = (backRight + frontLeft + frontRight + backLeft) / 4;
         DrivePID.updatePID(avgEncoder);
+        PID.updatePID(currentPos);
         /*currentPos = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);*/
-        currentPos = Math.toDegrees(navX.getYaw());
 
         double correction = PID.getResult();
 
@@ -71,10 +76,10 @@ public class Drive extends Command {
         double RightBackPower = (-speed - correction);
         double LeftBackPower = (-speed + correction);
 
-        DriveTrain.Drive(hardwareMap, RightFrontPower, LeftFrontPower, RightBackPower, LeftBackPower);
+        DriveTrain.Drive(RightFrontPower, LeftFrontPower, RightBackPower, LeftBackPower);
     }
     public void end() {
-        DriveTrain.Drive(hardwareMap, 0, 0, 0, 0);
+        DriveTrain.Drive(0, 0, 0, 0);
     }
 
     public boolean isFinished() {
