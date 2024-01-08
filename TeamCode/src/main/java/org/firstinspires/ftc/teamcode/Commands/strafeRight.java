@@ -1,9 +1,14 @@
 package org.firstinspires.ftc.teamcode.Commands;
 import com.kauailabs.navx.ftc.AHRS;
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.IMU;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.PID;
 
@@ -27,6 +32,7 @@ public class strafeRight extends Command {
     public double frontRight;
     public DcMotor Arm_Motor;
     private final AHRS navX;
+    private IMU imu;
     PID ArmPID = new PID(0.001, 0, 0);
 
     public strafeRight(HardwareMap hardwareMap, double Speed, double Distance){
@@ -37,6 +43,11 @@ public class strafeRight extends Command {
         Right_Front = hardwareMap.dcMotor.get("Right_Front");
         Left_Back = hardwareMap.dcMotor.get("Left_Back");
         Right_Back = hardwareMap.dcMotor.get("Right_Back");
+        imu = hardwareMap.get(IMU.class, "imu");
+        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
+                RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
+                RevHubOrientationOnRobot.UsbFacingDirection.UP));
+        imu.initialize(parameters);
         navX = com.kauailabs.navx.ftc.AHRS.getInstance(hardwareMap.get(NavxMicroNavigationSensor.class, "navX"), com.kauailabs.navx.ftc.AHRS.DeviceDataType.kProcessedData);
 
         Right_Front.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -44,6 +55,8 @@ public class strafeRight extends Command {
 
         Arm_Motor = hardwareMap.dcMotor.get("Arm_Motor");
         navX.zeroYaw();
+        //imu.resetYaw();
+
     }
     public void start() {
         Right_Front.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -63,7 +76,8 @@ public class strafeRight extends Command {
         PID.setContinuous(true);
         PID.setMinOutput(-1);
         PID.setMaxOutput(1);
-
+        currentPos = navX.getYaw();
+        //currentPos = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
     }
     public void execute() {
         ArmPID.updatePID(Arm_Motor.getCurrentPosition());
@@ -73,7 +87,6 @@ public class strafeRight extends Command {
         frontRight  = Right_Front.getCurrentPosition();
         avgEncoder = (backRight + frontLeft + frontRight + backLeft) / 4;
         DrivePID.updatePID(avgEncoder);
-        currentPos = navX.getYaw();
         PID.updatePID(currentPos);
         double deviation = PID.getResult();
 

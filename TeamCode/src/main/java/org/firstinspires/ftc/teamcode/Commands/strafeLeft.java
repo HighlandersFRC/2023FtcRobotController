@@ -57,7 +57,7 @@ public class strafeLeft extends Command{
             Left_Front.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             Right_Back.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             Left_Back.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
+            currentPos = navX.getYaw();
             targetPos = distance * Constants.motorTicksPerRotation;
             DrivePID.setSetPoint(targetPos);
             PID.setMaxInput(180);
@@ -76,7 +76,6 @@ public class strafeLeft extends Command{
             frontRight  = Right_Front.getCurrentPosition();
             avgEncoder = (backRight + frontLeft + frontRight + backLeft) / 4 ;
             DrivePID.updatePID(avgEncoder);
-            currentPos = navX.getYaw();
             PID.updatePID(currentPos);
 
             double deviation = PID.getResult();
@@ -85,7 +84,7 @@ public class strafeLeft extends Command{
             Right_Front.setPower(speed + deviation);
             Left_Front.setPower(-speed - deviation);
             Right_Back.setPower(-speed - deviation);
-            Left_Back.setPower(speed + deviation);
+            Left_Back.setPower(speed - deviation);
             System.out.println(avgEncoder);
             System.out.println(Right_Front.getPower()+ " Right_Front");
             System.out.println(Right_Back.getPower()+ " Right_Back");
