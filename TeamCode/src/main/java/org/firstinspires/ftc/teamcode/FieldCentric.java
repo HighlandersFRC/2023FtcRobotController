@@ -101,6 +101,9 @@ public class FieldCentric extends LinearOpMode {
             Elevators.moveElevatorsUsingPower(ElevatorPID.getResult());
             Arm.rotateArm(ArmPID.getResult());
             Intake.moveMotor(intakePower);
+
+            telemetry.addData("NavX Yaw", Peripherals.getYaw());
+            telemetry.update();
         }
     }
 }
