@@ -22,7 +22,7 @@ public class Constants {
   /*  public static double getOffsetFromVoltage(double voltage){
         return -2.21-30 + 7.13-03*voltage+ -1.46-5*Math.pow(voltage, 2) + 8.95-9*Math.pow(voltage, 3) + -2.1-12*Math.pow(voltage, 4) + 1.68-16*Math.pow(voltage, 5);
     }*/
-    public static double wristDown = 0.33;//comp bot
+    public static double wristDown = 0.36;//comp bot
 
     public static double wristUp = 0.95;//comp bot
     public static double lowWrist = 0.85;
