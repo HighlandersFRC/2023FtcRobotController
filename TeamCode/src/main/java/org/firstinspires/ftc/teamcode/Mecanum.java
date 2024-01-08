@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import android.os.Handler;
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.AnalogInput;
@@ -9,19 +7,12 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.NextLock;
-import com.qualcomm.robotcore.wifi.WifiDirectAssistantAndroid10Extensions;
 
-import org.firstinspires.ftc.robotcore.internal.network.ControlHubDeviceNameManager;
-import org.firstinspires.ftc.robotcore.internal.network.WifiDirectDeviceNameManager;
-import org.firstinspires.ftc.teamcode.Commands.CommandGroup;
-import org.firstinspires.ftc.teamcode.Commands.MoveWrist;
-import org.firstinspires.ftc.teamcode.Commands.ParallelCommandGroup;
-import org.firstinspires.ftc.teamcode.Commands.RotateArm;
 import org.firstinspires.ftc.teamcode.Commands.Scheduler;
-import org.firstinspires.ftc.teamcode.Commands.Wait;
+import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
+import org.firstinspires.ftc.teamcode.Tools.Constants;
+import org.firstinspires.ftc.teamcode.Tools.PID;
 
-import java.sql.Time;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -47,8 +38,8 @@ public class Mecanum extends LinearOpMode {
     private boolean armCurrentlyRetracting = false;
     private boolean wristCurrentlyGoingDown = false;
 
-    org.firstinspires.ftc.teamcode.PID PID = new PID(0.03, 0.0, 0.0);
-    org.firstinspires.ftc.teamcode.PID PID2 = new PID(0.03, 0.0, 0.0);
+    org.firstinspires.ftc.teamcode.Tools.PID PID = new PID(0.03, 0.0, 0.0);
+    org.firstinspires.ftc.teamcode.Tools.PID PID2 = new PID(0.03, 0.0, 0.0);
     PID ArmPID = new PID(0.001, 0.0, 0.0);
 
     @Override
@@ -72,23 +63,23 @@ public class Mecanum extends LinearOpMode {
 
 
         waitForStart();
-        Arm_Motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Arm_Motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 /*        double voltageDelta = Constants.absoluteArmZero - armEncoder.getVoltage();
         double ticksOffset = voltageDelta / Constants.voltsPer1000Ticks * 1000;*/
-        Constants.armOffset = -Constants.getOffsetFromVoltage(Constants.absoluteArmZero - armEncoder.getVoltage());
 //arm 1 is positive 600 max extension
         //arm 2 is -510 max extension
         if (isStopRequested()) return;
-
+        DriveTrain.initialize(hardwareMap);
+        Constants.armOffset = -Constants.getOffsetFromVoltage(Constants.absoluteArmZero - armEncoder.getVoltage());
+        Arm_Motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         while (opModeIsActive()) {
             //arm2 is reversed
             Scheduler scheduler = new Scheduler();
 
 
-            Right_Front.setDirection(DcMotorSimple.Direction.REVERSE);
-            Right_Back.setDirection(DcMotorSimple.Direction.REVERSE);
+/*            Right_Front.setDirection(DcMotorSimple.Direction.REVERSE);
+            Right_Back.setDirection(DcMotorSimple.Direction.REVERSE);*/
+/*            Left_Back.setDirection(DcMotorSimple.Direction.REVERSE);*///comment for comp bot
 
             double leftTrigger = gamepad1.left_trigger;
             double rightTrigger = gamepad1.right_trigger;
@@ -98,7 +89,10 @@ public class Mecanum extends LinearOpMode {
 
             double r2Trigger =  gamepad2.right_trigger;
             double l2Trigger =  gamepad2.left_trigger;
-            double intakePower = -(rightTrigger - leftTrigger) ;
+            double intakePower = -(rightTrigger - leftTrigger);
+            if (intakePower > 0){
+                intakePower = intakePower / 2;
+            }
 
             PID.setMaxOutput(1);
             PID.setMinOutput(-1);
@@ -108,10 +102,18 @@ public class Mecanum extends LinearOpMode {
             PID2.setPID(0.003, 0, 0.001);
             PID.updatePID(Arm1.getCurrentPosition());
             PID2.updatePID(Arm2.getCurrentPosition());
-            ArmPID.setMaxOutput(0.75);
-            ArmPID.setMinOutput(-0.75);
+            ArmPID.setMaxOutput(0.5);
+            ArmPID.setMinOutput(-0.5);
             ArmPID.updatePID(Arm_Motor.getCurrentPosition() - Constants.armOffset);
 
+            if(gamepad1.a){
+                WristServo.setPosition(0.5);
+            }
+            if (gamepad1.y){
+                ArmPID.setSetPoint(Constants.armPlace);
+            }else if (gamepad1.x){
+                ArmPID.setSetPoint(Constants.armIntake);
+            }
             Arm_Motor.setPower(-ArmPID.getResult());
             Arm2.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -122,32 +124,32 @@ public class Mecanum extends LinearOpMode {
             }else if (gamepad2.y){
                 WristServo.setPosition(1);
             }
-            if (gamepad1.a){
+/*            if (gamepad1.a){
                 PID.setSetPoint(0);
                 PID2.setSetPoint(0);
             }else
             if (gamepad1.b){
-                WristServo.setPosition(Constants.wristUp);
+                WristServo.setPosition(1);
                 PID.setSetPoint(1650);
                 PID2.setSetPoint(1650);
             }else if (gamepad2.right_bumper){
-                /*PID.setSetPoint(900);
-                PID2.setSetPoint(900);*/
+                *//*PID.setSetPoint(900);
+                PID2.setSetPoint(900);*//*
                 holderservo_left.setPower(1);
             }else if (gamepad2.left_bumper){
                 PID.setSetPoint(0);
                 PID2.setSetPoint(0);
                 holderservo_right.setPower(-1);
-            }
-            if (gamepad1.y){
+            }*/
+/*            if (gamepad1.y){
                 Arm1.setPower(-0.75);
                 Arm2.setPower(-0.75);
                 PID.setSetPoint(0);
                 PID2.setSetPoint(0);
                 WristServo.setPosition(Constants.wristUp);
                 LServo.setPosition(0.8);
-                RServo.setPosition(0.2);
-            }else {
+                RServo.setPosition(0.2);*/
+            /*}*/else {
                 Arm1.setPower(PID.getResult());
                 Arm2.setPower(PID2.getResult());
             }
@@ -196,28 +198,12 @@ public class Mecanum extends LinearOpMode {
 
             double y = gamepad1.left_stick_y;
             double x = -gamepad1.left_stick_x * 1.1;
-            double rx = -gamepad1.right_stick_x;
+            double rx = gamepad1.right_stick_x;
 
-
-            if (Math.abs(gamepad1.left_stick_x) < 0.1){
-                Left_Front.setPower(0);
-                Left_Back.setPower(0);
-                Right_Front.setPower(0);
-                Right_Back.setPower(0);
-            }
-            //3304, 2.91
-            //0 is 2.91V and 3304 as
-            //0.5V as back
-            if (Math.abs(gamepad1.left_stick_y) < 0.1){
-                Left_Front.setPower(0);
-                Left_Back.setPower(0);
-                Right_Front.setPower(0);
-                Right_Back.setPower(0);
-            }
-
+/*
             if (Math.abs(Arm_Motor.getCurrentPosition() - Constants.getOffsetFromVoltage(armEncoder.getVoltage())) <= 100) {
                 Constants.armIntake = Arm_Motor.getCurrentPosition() - Constants.getOffsetFromVoltage(armEncoder.getVoltage());
-            }
+            }*/
 
             double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
             double frontLeftPower = (y + x + rx) / denominator;
@@ -225,17 +211,7 @@ public class Mecanum extends LinearOpMode {
             double frontRightPower = (y - x - rx) / denominator;
             double backRightPower = (y + x - rx) / denominator;
 
-            if (!(gamepad2.right_trigger == 0)){
-            frontRightPower = frontRightPower / 4;
-            backLeftPower = backLeftPower / 4;
-            frontLeftPower = frontLeftPower / 4;
-            backRightPower = backRightPower / 4;
-            }
-
-            Left_Front.setPower(frontLeftPower);
-            Left_Back.setPower(-backLeftPower);
-            Right_Front.setPower(frontRightPower);
-            Right_Back.setPower(backRightPower);
+            DriveTrain.Drive(frontRightPower, frontLeftPower, backRightPower, backLeftPower);
 
             telemetry.addLine("Motor Positions");
             telemetry.addData("TicksOffset", Constants.armOffset);

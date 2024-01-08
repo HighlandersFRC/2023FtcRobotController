@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.Tools;
 
 public class PID {
     private double error;
@@ -96,5 +96,4 @@ public class PID {
     public double getError(){
         return prevError;
     }
-
 }

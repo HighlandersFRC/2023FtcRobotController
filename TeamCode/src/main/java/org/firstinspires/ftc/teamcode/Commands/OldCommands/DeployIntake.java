@@ -1,11 +1,13 @@
-package org.firstinspires.ftc.teamcode.Commands;
+package org.firstinspires.ftc.teamcode.Commands.OldCommands;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.Commands.Command;
+
 import java.util.Objects;
 
-public class DeployIntake extends Command{
+public class DeployIntake extends Command {
     public Servo LServo;
     public Servo RServo;
     Boolean Done = false;
@@ -14,6 +16,9 @@ public class DeployIntake extends Command{
         LServo = hardwareMap.servo.get("LServo");
         RServo = hardwareMap.servo.get("RServo");
         this.Deploy = DeployOrRetract;
+    }
+    public String getSubsystem() {
+        return "IntakeServo";
     }
 
     public void start(){

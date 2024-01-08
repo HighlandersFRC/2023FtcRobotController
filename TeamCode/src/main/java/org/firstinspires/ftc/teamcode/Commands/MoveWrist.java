@@ -6,7 +6,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class MoveWrist extends Command{
     public Servo WristServo;
     public double target;
-
+    public String getSubsystem() {
+        return "Wrist";
+    }
     public MoveWrist(HardwareMap hardwareMap, double targetPos){
     WristServo = hardwareMap.servo.get("WristServo");
     this.target = targetPos;

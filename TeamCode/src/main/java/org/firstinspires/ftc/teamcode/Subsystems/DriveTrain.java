@@ -1,23 +1,34 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
-
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.Commands.Command;
-import org.firstinspires.ftc.teamcode.Commands.Drive;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class DriveTrain extends Subsystems{
     String name = "DriveTrain";
-    Command DefaultCommand = new Drive(hardwareMap, 0.01, 0);
-    static DcMotor Left_Front = hardwareMap.dcMotor.get("Left_Front");
-    static DcMotor Right_Front = hardwareMap.dcMotor.get("Right_Front");
-    static DcMotor Left_Back = hardwareMap.dcMotor.get("Left_Back");
-    static DcMotor Right_Back = hardwareMap.dcMotor.get("Right_Back");
 
-    public static void Drive(){
+    public static DcMotor Left_Front;
+    public static DcMotor Right_Front;
+    public static DcMotor Left_Back;
+    public static DcMotor Right_Back;
+    public static void Drive(double RightFrontPower, double LeftFrontPower, double RightBackPower, double LeftBackPower){
+
+        //new comp bot
+        Right_Front.setPower(RightFrontPower);
+        Right_Back.setPower(RightBackPower);
+        Left_Front.setPower(LeftFrontPower);
+        Left_Back.setPower(-LeftBackPower);
+
+        //old comp bot
+/*        Right_Front.setPower(-RightFrontPower);
+        Right_Back.setPower(-RightBackPower);
+        Left_Front.setPower(LeftFrontPower);
+        Left_Back.setPower(LeftBackPower);*/
+    }
+    public static void initialize(HardwareMap hardwareMap){
+        Right_Front = hardwareMap.dcMotor.get("Right_Front");
+        Left_Front = hardwareMap.dcMotor.get("Left_Front");
+        Right_Back = hardwareMap.dcMotor.get("Right_Back");
+        Left_Back = hardwareMap.dcMotor.get("Left_Back");
 
         Right_Front.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Left_Front.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -28,8 +39,45 @@ public class DriveTrain extends Subsystems{
         Left_Front.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         Right_Back.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         Left_Back.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        Right_Front.setDirection(DcMotorSimple.Direction.REVERSE);
-        Right_Back.setDirection(DcMotorSimple.Direction.REVERSE);
+    }
+    public static DcMotor getRightFront(){
+        return Right_Front;
+    }
+    public static DcMotor getLeftFront(){
+        return Left_Front;
+    }
+    public static DcMotor getRightBack(){
+        return Right_Back;
+    }
+    public static DcMotor getLeftBack(){
+        return Left_Back;
+    }
+/*    public static double getRightFrontEncoder(){
+        return -Right_Front.getCurrentPosition();
+    }
+    public static double getLeftFrontEncoder(){
+        return Left_Front.getCurrentPosition();
+    }
+    public static double getRightBackEncoder(){
+        return -Right_Back.getCurrentPosition();
+    }
+    public static double getLeftBackEncoder(){
+        return Left_Back.getCurrentPosition();
+    }
+    public static double getRightBackEncoder(){
+        return Right_Back.getCurrentPosition();
+    }*/
+    //new bot
+    public static double getRightFrontEncoder(){
+        return Right_Front.getCurrentPosition();
+    }
+    public static double getLeftFrontEncoder(){
+        return -Left_Front.getCurrentPosition();
+    }
+    public static double getLeftBackEncoder(){
+        return Left_Back.getCurrentPosition();
+    }
+    public static double getRightBackEncoder(){
+        return -Right_Back.getCurrentPosition();
     }
 }

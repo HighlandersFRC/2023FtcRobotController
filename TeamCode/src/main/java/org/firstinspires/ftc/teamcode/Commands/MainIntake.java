@@ -3,15 +3,17 @@ package org.firstinspires.ftc.teamcode.Commands;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public class Intake extends Command {
+public class MainIntake extends Command {
     public DcMotor Intake;
 
     public long time;
     public double speed;
     public long endTime;
 
-
-    public Intake(HardwareMap hardwareMap, long Time, double Speed) {
+    public String getSubsystem() {
+        return "Intake";
+    }
+    public MainIntake(HardwareMap hardwareMap, long Time, double Speed) {
         Intake = hardwareMap.dcMotor.get("Right_Intake");
 
         this.speed = Speed;

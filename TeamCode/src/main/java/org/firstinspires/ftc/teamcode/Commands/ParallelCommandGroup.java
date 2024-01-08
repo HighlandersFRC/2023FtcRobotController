@@ -8,7 +8,9 @@ public class ParallelCommandGroup extends Command {
     List<Command> commands = new ArrayList<>();
 
     Scheduler scheduler;
-
+    public String getSubsystem() {
+        return "ipfaujas;ldkfjaoidlfjkaepifjasdfpueowakdjaipfs[asasdfasdf asdf asd;flkasj goirejfdlvmfb soeuhijsafdj akjds;lkfjas;ieol jdlkf asljfkdslflkas;djf alksjdfl;kasjd;fl";
+    }
     public ParallelCommandGroup(Scheduler scheduler, Command... commands) {
         this.scheduler = scheduler;
         Collections.addAll(this.commands, commands);

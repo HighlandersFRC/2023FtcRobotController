@@ -1,25 +1,24 @@
 package org.firstinspires.ftc.teamcode.Commands;
 
+import com.kauailabs.navx.ftc.AHRS;
+import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.teamcode.Constants;
-import org.firstinspires.ftc.teamcode.PID;
+import org.firstinspires.ftc.teamcode.Tools.Constants;
+import org.firstinspires.ftc.teamcode.Tools.PID;
+import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 
 public class Drive extends Command {
-    org.firstinspires.ftc.teamcode.PID PID = new PID(0.015, 0.0, 0.0);
-    org.firstinspires.ftc.teamcode.PID DrivePID = new PID(0.03, 0.0, 0.0);
+    org.firstinspires.ftc.teamcode.Tools.
+            PID PID = new PID(0.015, 0.0, 0.0);
+    org.firstinspires.ftc.teamcode.Tools.PID DrivePID = new PID(0.03, 0.0, 0.0);
 
-    public DcMotor Left_Back;
-    public DcMotor Right_Back;
-    public DcMotor Left_Front;
-    public DcMotor Right_Front;
+    public HardwareMap hardwareMap;
     public double targetAngle;
     public IMU imu;
+    public AHRS navX;
     public double currentPos;
     public double PIDOutput;
     public double speed;
@@ -30,39 +29,26 @@ public class Drive extends Command {
     public double backRight;
     public double frontLeft;
     public double frontRight;
-    public DcMotor Arm_Motor;
-    PID ArmPID = new PID(0.001, 0, 0);
 
     public Drive(HardwareMap hardwareMap, double Speed, double Distance){
         this.speed = Speed;
         this.distance = Distance;
         PID.setSetPoint(0);
-        Left_Front = hardwareMap.dcMotor.get("Left_Front");
-        Right_Front = hardwareMap.dcMotor.get("Right_Front");
-        Left_Back = hardwareMap.dcMotor.get("Left_Back");
-        Right_Back = hardwareMap.dcMotor.get("Right_Back");
+        DriveTrain.initialize(hardwareMap);
         imu = hardwareMap.get(IMU.class, "imu");
+        navX = AHRS.getInstance(hardwareMap.get(NavxMicroNavigationSensor.class, "navX"), AHRS.DeviceDataType.kProcessedData);
+        this.hardwareMap = hardwareMap;
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
                 RevHubOrientationOnRobot.UsbFacingDirection.UP));
         imu.initialize(parameters);
-        Right_Front.setDirection(DcMotorSimple.Direction.REVERSE);
-        Right_Back.setDirection(DcMotorSimple.Direction.REVERSE);
-/*        Left_Back.setDirection(DcMotorSimple.Direction.REVERSE);*/
-        Arm_Motor = hardwareMap.dcMotor.get("Arm_Motor");
+    }
+    public String getSubsystem() {
+        return "DriveTrain";
     }
     public void start() {
-        Right_Front.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Left_Front.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Right_Back.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Left_Back.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        Right_Front.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        Left_Front.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        Right_Back.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        Left_Back.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        targetPos = distance * Constants.motorTicksPerRotation;
+        currentPos = Math.toDegrees(navX.getYaw());
+        targetPos = distance * Constants.motorTicksPerMeter;
         DrivePID.setSetPoint(targetPos);
         PID.setMaxInput(180);
         PID.setMinInput(-180);
@@ -70,35 +56,30 @@ public class Drive extends Command {
         PID.setMinOutput(-0.25);
         PID.setMaxOutput(0.25);
         imu.resetYaw();
+        navX.zeroYaw();
     }
 
     public void execute() {
-        ArmPID.updatePID(Arm_Motor.getCurrentPosition());
-        backRight = Right_Back.getCurrentPosition();
-        backLeft = Left_Back.getCurrentPosition();
-        frontLeft = Left_Front.getCurrentPosition();
-        frontRight  = Right_Front.getCurrentPosition();
-        avgEncoder = (backRight + frontLeft + frontRight) / 3;
+        backRight = DriveTrain.getRightBackEncoder();
+        backLeft = DriveTrain.getLeftBackEncoder();
+        frontLeft = DriveTrain.getLeftFrontEncoder();
+        frontRight  = DriveTrain.getRightFrontEncoder();
+        avgEncoder = (backRight + frontLeft + frontRight + backLeft) / 4;
         DrivePID.updatePID(avgEncoder);
-        currentPos = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
         PID.updatePID(currentPos);
+        /*currentPos = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);*/
 
-        double deviation = PID.getResult();
+        double correction = PID.getResult();
 
-        Right_Front.setPower(-speed - deviation);
-        Left_Front.setPower(-speed + deviation);
-        Right_Back.setPower(-speed - deviation);
-        Left_Back.setPower(-speed + deviation);
+        double RightFrontPower = (-speed - correction);
+        double LeftFrontPower = (-speed + correction);
+        double RightBackPower = (-speed - correction);
+        double LeftBackPower = (-speed + correction);
+
+        DriveTrain.Drive(RightFrontPower, LeftFrontPower, RightBackPower, LeftBackPower);
     }
     public void end() {
-        Left_Front.setPower(0);
-        Left_Back.setPower(0);
-        Right_Back.setPower(0);
-        Right_Front.setPower(0);
-        Left_Front.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        Left_Back.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        Right_Front.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        Right_Back.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        DriveTrain.Drive(0, 0, 0, 0);
     }
 
     public boolean isFinished() {

@@ -4,6 +4,9 @@ package org.firstinspires.ftc.teamcode.Commands;
 import org.firstinspires.ftc.teamcode.Commands.Command;
 
 public class Wait extends Command {
+    public String getSubsystem() {
+        return "Misc";
+    }
         long time;
     long endTime;
     public Wait(long time){
