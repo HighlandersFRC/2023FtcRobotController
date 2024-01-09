@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
@@ -16,6 +17,8 @@ import org.firstinspires.ftc.teamcode.Tools.PID;
 public class FieldCentric extends LinearOpMode {
     PID ElevatorPID = new PID(0.03, 0.0, 0.0);
     PID ArmPID = new PID(0.001, 0.0, 0.0);
+    private DcMotor Arm_Motor;
+
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -103,6 +106,7 @@ public class FieldCentric extends LinearOpMode {
             Intake.moveMotor(intakePower);
 
             telemetry.addData("NavX Yaw", Peripherals.getYaw());
+            telemetry.addData("Arm_Motor.getCurrentPosition() - Constants.armOffset",Arm_Motor.getCurrentPosition() - Constants.armOffset);
             telemetry.update();
         }
     }

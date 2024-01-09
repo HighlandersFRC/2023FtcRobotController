@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Commands;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
@@ -7,11 +8,13 @@ import org.firstinspires.ftc.teamcode.Subsystems.Subsystems;
 import org.firstinspires.ftc.teamcode.Tools.PID;
 
 public class Arm extends Command {
+    private final DcMotor Arm;
     double targetPosition;
     public static String Subsystem = "Arm";
     PID PID = new PID(0.01, 0, 0);
     public Arm(HardwareMap hardwareMap, double targetPosition){
-        org.firstinspires.ftc.teamcode.Subsystems.Arm.initialize(hardwareMap);
+
+        Arm = hardwareMap.dcMotor.get("Arm");
         this.targetPosition = targetPosition;
     }
 
@@ -31,7 +34,7 @@ public class Arm extends Command {
 
     public boolean isFinished() {
         if (!(PID.getError() == 0)) {
-            if ((Math.abs(PID.getError())) <= 100) {
+            if ((Math.abs(PID.getError())) <= 1) {
                 return true;
             }
         }

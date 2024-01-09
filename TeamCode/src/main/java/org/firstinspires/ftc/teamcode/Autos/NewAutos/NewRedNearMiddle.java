@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.Commands.Arm;
 import org.firstinspires.ftc.teamcode.Commands.CommandGroup;
 import org.firstinspires.ftc.teamcode.Commands.Drive;
 import org.firstinspires.ftc.teamcode.Commands.MainIntake;
@@ -29,7 +30,8 @@ public class NewRedNearMiddle extends LinearOpMode {
                 new MainIntake(hardwareMap, 1000, -0.3),
                 new MoveWrist(hardwareMap, Constants.wristUp),
                 new Turn(hardwareMap, -90),
-                new Drive(hardwareMap, -0.5, 0.5)
+                new Drive(hardwareMap, -0.5, 0.5),
+                new Arm(hardwareMap,100)
         ));
         while(opModeIsActive()){
             telemetry.addData("Encoders", DriveTrain.getLeftBackEncoder() + " " + DriveTrain.getLeftFrontEncoder() + " " + DriveTrain.getRightFrontEncoder() + " " + DriveTrain.getRightBackEncoder());
