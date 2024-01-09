@@ -26,7 +26,8 @@ public class Arm extends Command {
         PID.setSetPoint(targetPosition);
     }
     public void execute(){
-        PID.updatePID(org.firstinspires.ftc.teamcode.Subsystems.Arm.getArmEncoder());
+        targetPosition = org.firstinspires.ftc.teamcode.Subsystems.Arm.getArmEncoder();
+        PID.updatePID(targetPosition);
         org.firstinspires.ftc.teamcode.Subsystems.Arm.rotateArm(PID.getResult());
     }
     public void end(){
