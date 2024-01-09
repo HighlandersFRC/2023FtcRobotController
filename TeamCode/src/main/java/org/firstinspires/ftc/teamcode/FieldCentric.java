@@ -98,6 +98,7 @@ public class FieldCentric extends LinearOpMode {
             }
             if (intakePower == 0) {
                 Wrist.Wrist(Constants.wristUp);
+
             }else{
                 Wrist.Wrist(Constants.wristDown);
             }
