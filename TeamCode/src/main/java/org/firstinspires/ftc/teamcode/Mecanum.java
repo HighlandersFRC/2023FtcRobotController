@@ -221,7 +221,8 @@ public class Mecanum extends LinearOpMode {
             telemetry.addData("Back-Right Position", Right_Back.getCurrentPosition());
             telemetry.addData("Arm One Encoder", Arm1.getCurrentPosition());
             telemetry.addData("Arm Two Encoder", Arm2.getCurrentPosition());
-            telemetry.addData("Arm Encoder", Arm_Motor.getCurrentPosition() - Constants.armOffset);
+            telemetry.addData("Absolute Arm Encoder", Arm_Motor.getCurrentPosition() - Constants.armOffset);
+            telemetry.addData("Arm Encoder", Arm_Motor.getCurrentPosition());
             telemetry.addData("Wrist Servo Position", WristServo.getPosition());
             telemetry.addData("Arm Voltage", armEncoder.getVoltage());
 

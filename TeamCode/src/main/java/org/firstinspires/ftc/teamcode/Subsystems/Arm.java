@@ -10,7 +10,7 @@ public class Arm extends Subsystems {
         public static AnalogInput armEncoder;
 
         public static void rotateArm(double power) {
-            Arm_Motor.setPower(power);
+            Arm_Motor.setPower(-power);
         }
         public static void initialize(HardwareMap hardwareMap){
             Arm_Motor = hardwareMap.dcMotor.get("Arm_Motor");
@@ -21,7 +21,7 @@ public class Arm extends Subsystems {
             Arm_Motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         }
         public static void brakeMotors(){
-            Arm_Motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            /*Arm_Motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);*/
         }
         public static double getArmEncoder() {
             return (Arm_Motor.getCurrentPosition() - Constants.armOffset);
