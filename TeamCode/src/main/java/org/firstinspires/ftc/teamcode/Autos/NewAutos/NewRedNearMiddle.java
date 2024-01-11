@@ -23,13 +23,11 @@ public class NewRedNearMiddle extends LinearOpMode {
         scheduler.add(new CommandGroup(scheduler,
                 new MoveWrist(hardwareMap,Constants.wristDown),
                 new Drive(hardwareMap, -0.3, -0.13),
-                new Turn(hardwareMap, 180),
+                new Turn(hardwareMap, -180),
                 new MoveWrist(hardwareMap, Constants.wristDown),
-                new Drive(hardwareMap, 0.5, 0.25),
-                new Drive(hardwareMap, -0.2, 0.1),
                 new MoveWrist(hardwareMap, Constants.wristDown),
                 new MainIntake(hardwareMap, 1000, -0.2),
-                new Turn(hardwareMap, -90),
+                new Turn(hardwareMap, 80),
                 new Drive(hardwareMap, -0.5, 0.5),
                 new Drive(hardwareMap,-0.5,0.71)
 

@@ -52,11 +52,11 @@ public class FieldCentric extends LinearOpMode {
             double botHeading = -Peripherals.getYaw();
             double pi = Math.PI;
             double botHeadingRadian = -botHeading * pi/180;
-
+                x = x *1.1;
                 double rotX = (x * Math.cos(botHeadingRadian) - y * Math.sin(botHeadingRadian));
                 double rotY = (x * Math.sin(botHeadingRadian) + y * Math.cos(botHeadingRadian));
 
-                x = x *1.1;
+
 
                 double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1.0);
                 double frontLeftPower = (rotY + rotX + rx) / denominator;
@@ -103,6 +103,7 @@ public class FieldCentric extends LinearOpMode {
             Intake.moveMotor(intakePower);
             telemetry.addData("intake voltage",Intake.IntakeEncoder.getVoltage());
             telemetry.addData("voltage",Arm.armEncoder.getVoltage());
+            telemetry.addData("test",Arm.getArmEncoder());
             telemetry.addData("NavX Yaw", Peripherals.getYaw());
             telemetry.update();
         }

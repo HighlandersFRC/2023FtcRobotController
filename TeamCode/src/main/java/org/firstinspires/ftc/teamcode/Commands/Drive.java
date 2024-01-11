@@ -52,8 +52,8 @@ public class Drive extends Command {
         PID.setMaxInput(180);
         PID.setMinInput(-180);
         PID.setContinuous(true);
-        PID.setMinOutput(-0.25);
-        PID.setMaxOutput(0.25);
+        PID.setMinOutput(-0.75);
+        PID.setMaxOutput(.75);
         imu.resetYaw();
         navX.zeroYaw();
     }
