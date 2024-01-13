@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
@@ -15,9 +16,9 @@ import org.firstinspires.ftc.teamcode.Tools.PID;
 
 public class FieldCentric extends LinearOpMode {
     PID ElevatorPID = new PID(0.03, 0.0, 0.0);
-    PID ArmPID = new PID(0.001, 0.0, 0.0);
+    PID ArmPID = new PID(0.004, 0.0, 0.0);
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void runOpMode() {
 
         waitForStart();
 
@@ -29,6 +30,18 @@ public class FieldCentric extends LinearOpMode {
         Wrist.initialize(hardwareMap);
 
         while (opModeIsActive()) {
+            double rightTrigger =  gamepad1.right_trigger;
+            double leftTrigger =  gamepad1.left_trigger;
+            double intakePower = (rightTrigger - leftTrigger);
+
+            if (intakePower > 0){
+                intakePower = intakePower / 2;
+            }
+
+            Elevators.moveElevatorsUsingPower(ElevatorPID.getResult());
+            Arm.rotateArm(ArmPID.getResult());
+            Intake.moveMotor(-intakePower);
+
             ElevatorPID.setMaxOutput(1);
             ElevatorPID.setMinOutput(-1);
             ElevatorPID.updatePID((Elevators.getArmLPosition() + Elevators.getArmRPosition()) / 2);
@@ -41,22 +54,14 @@ public class FieldCentric extends LinearOpMode {
             double x = -gamepad1.left_stick_x;
             double rx = gamepad1.right_stick_x;
 
-            double rightTrigger =  gamepad1.right_trigger;
-            double leftTrigger =  gamepad1.left_trigger;
-            double intakePower = (rightTrigger - leftTrigger);
-
-            if (intakePower > 0){
-                intakePower = intakePower / 2;
-            }
-
             double botHeading = -Peripherals.getYaw();
             double pi = Math.PI;
             double botHeadingRadian = -botHeading * pi/180;
-                x = x *1.1;
+
                 double rotX = (x * Math.cos(botHeadingRadian) - y * Math.sin(botHeadingRadian));
                 double rotY = (x * Math.sin(botHeadingRadian) + y * Math.cos(botHeadingRadian));
 
-
+                x = x *1.1;
 
                 double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1.0);
                 double frontLeftPower = (rotY + rotX + rx) / denominator;
@@ -70,19 +75,19 @@ public class FieldCentric extends LinearOpMode {
                 Peripherals.resetYaw();
             }
 
-            if (gamepad1.a){
+            if (gamepad2.a){
                 ElevatorPID.setSetPoint(Constants.retractedElevator);
             }
 
-            if (gamepad1.b){
+            if (gamepad2.b){
                 ElevatorPID.setSetPoint(Constants.deployedElevator);
             }
 
-            if (gamepad2.a){
+            if (gamepad1.a){
                 ArmPID.setSetPoint(Constants.armIntake);
             }
 
-            if (gamepad2.b){
+            if (gamepad1.b){
                 ArmPID.setSetPoint(Constants.armPlace);
             }
 
@@ -95,18 +100,18 @@ public class FieldCentric extends LinearOpMode {
             }
             if (intakePower == 0) {
                 Wrist.Wrist(Constants.wristUp);
-            }else{
+            }else if (Arm.getArmEncoder() <= 100){
                 Wrist.Wrist(Constants.wristDown);
+            }else{
+                Wrist.Wrist(Constants.wristUp);
             }
-            Elevators.moveElevatorsUsingPower(ElevatorPID.getResult());
-            Arm.rotateArm(ArmPID.getResult());
-            Intake.moveMotor(intakePower);
-            telemetry.addData("intake voltage",Intake.IntakeEncoder.getVoltage());
-            telemetry.addData("voltage",Arm.armEncoder.getVoltage());
-            telemetry.addData("test",Arm.getArmEncoder());
+
+
             telemetry.addData("NavX Yaw", Peripherals.getYaw());
+            telemetry.addData("ArmPID Power", ArmPID.getResult());
+            telemetry.addData("Arm Encoder", Arm.getArmEncoder());
+            telemetry.addData("Arm Offset", Arm.getOffset());
             telemetry.update();
         }
     }
 }
-//ke qus passcode 9487
