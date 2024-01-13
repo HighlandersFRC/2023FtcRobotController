@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Tools.PID;
 
 public class Turn extends Command{
-    org.firstinspires.ftc.teamcode.Tools.PID PID = new PID(0.06, 0.0001, 0.0);
+    org.firstinspires.ftc.teamcode.Tools.PID PID = new PID(0.05, 0.0001, 0.0);
     public String getSubsystem() {
         return "DriveTrain";
     }
