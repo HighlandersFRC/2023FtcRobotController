@@ -7,8 +7,8 @@ public class Constants {
     public static double lowArm = -4500;
     //old comp bot
 /*    public static double absoluteArmZero = 3.241;*/
-    public static double absoluteArmZero = 1.49;
-    public static double armOffset = 0;
+    public static double absoluteArmZero =0.666;
+    public static double armOffset;
     public static double motorTicksPerMeter = 1685;
     public static double leftServoUp = 0.8;
     public static double rightServoUp = 0.2;
@@ -19,8 +19,11 @@ public class Constants {
         return 0 + -4506*(voltage) + 1852*Math.pow(voltage, 2) + -93.9*Math.pow(voltage, 3) + -85.8*Math.pow(voltage, 4);
     }*/
     //new bot
-    public static double getOffsetFromVoltage(double voltage){
+/*    public static double getOffsetFromVoltage(double voltage){
         return -35.2 + 6620 * voltage + -9626*Math.pow(voltage, 2) + 5329*Math.pow(voltage, 3) + -1162*Math.pow(voltage, 4) + 85.4*Math.pow(voltage, 5);
+    }*/
+    public static double getOffsetFromVoltage(double voltage){
+        return -2.11 + -2478 * voltage + -1581 * Math.pow(voltage, 2)+ -522 * Math.pow(voltage, 3);
     }
     public static double wristDown = 0.33;//comp bot
 

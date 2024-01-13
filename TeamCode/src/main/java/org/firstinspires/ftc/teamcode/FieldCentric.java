@@ -16,8 +16,7 @@ import org.firstinspires.ftc.teamcode.Tools.PID;
 
 public class FieldCentric extends LinearOpMode {
     PID ElevatorPID = new PID(0.03, 0.0, 0.0);
-    PID ArmPID = new PID(1, 0.0, 0.0);
-    public DcMotor Arm_Motor;
+    PID ArmPID = new PID(0.002, 0.0, 0.0);
     @Override
     public void runOpMode() {
 
@@ -30,7 +29,6 @@ public class FieldCentric extends LinearOpMode {
         Peripherals.initialize(hardwareMap);
         Wrist.initialize(hardwareMap);
 
-        Arm_Motor = hardwareMap.dcMotor.get("Arm_Motor");
         while (opModeIsActive()) {
             double rightTrigger =  gamepad1.right_trigger;
             double leftTrigger =  gamepad1.left_trigger;
@@ -41,9 +39,8 @@ public class FieldCentric extends LinearOpMode {
             }
 
             Elevators.moveElevatorsUsingPower(ElevatorPID.getResult());
-            Arm.rotateArm(1);
-            Arm_Motor.setPower(1);
-            Intake.moveMotor(intakePower);
+            Arm.rotateArm(ArmPID.getResult());
+            Intake.moveMotor(-intakePower);
 
             ElevatorPID.setMaxOutput(1);
             ElevatorPID.setMinOutput(-1);
@@ -103,15 +100,18 @@ public class FieldCentric extends LinearOpMode {
             }
             if (intakePower == 0) {
                 Wrist.Wrist(Constants.wristUp);
-            }else{
+            }else if (Arm.getArmEncoder() <= 100){
                 Wrist.Wrist(Constants.wristDown);
+            }else{
+                Wrist.Wrist(Constants.wristUp);
             }
 
 
             telemetry.addData("NavX Yaw", Peripherals.getYaw());
             telemetry.addData("ArmPID Power", ArmPID.getResult());
+            telemetry.addData("Arm Encoder", Arm.getArmEncoder());
+            telemetry.addData("Arm Offset", Arm.getOffset());
             telemetry.update();
         }
     }
 }
-//ke qus passcode 9487
