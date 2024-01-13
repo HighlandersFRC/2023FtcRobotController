@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.Commands.Arm;
 import org.firstinspires.ftc.teamcode.Commands.CommandGroup;
 import org.firstinspires.ftc.teamcode.Commands.Drive;
 import org.firstinspires.ftc.teamcode.Commands.MainIntake;
@@ -23,14 +24,13 @@ public class NewRedNearMiddle extends LinearOpMode {
         scheduler.add(new CommandGroup(scheduler,
                 new MoveWrist(hardwareMap,Constants.wristDown),
                 new Drive(hardwareMap, -0.3, -0.13),
-                new Turn(hardwareMap, -180),
+                new Turn(hardwareMap, 180),
                 new MoveWrist(hardwareMap, Constants.wristDown),
                 new MoveWrist(hardwareMap, Constants.wristDown),
                 new MainIntake(hardwareMap, 1000, -0.2),
-                new Turn(hardwareMap, 80),
-                new Drive(hardwareMap, -0.5, 0.5),
-                new Drive(hardwareMap,-0.5,0.71)
-
+                new Turn(hardwareMap, 85),
+                new Drive(hardwareMap,-0.5,0.725),
+                new Arm(hardwareMap,-3800)
 
         ));
         while(opModeIsActive()){

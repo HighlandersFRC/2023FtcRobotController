@@ -102,7 +102,7 @@ public class FieldCentric extends LinearOpMode {
             Arm.rotateArm(ArmPID.getResult());
             Intake.moveMotor(intakePower);
             telemetry.addData("intake voltage",Intake.IntakeEncoder.getVoltage());
-            telemetry.addData("voltage",Arm.armEncoder.getVoltage());
+            telemetry.addData("voltage",Arm.Arm_Motor.getCurrentPosition());
             telemetry.addData("test",Arm.getArmEncoder());
             telemetry.addData("NavX Yaw", Peripherals.getYaw());
             telemetry.update();
