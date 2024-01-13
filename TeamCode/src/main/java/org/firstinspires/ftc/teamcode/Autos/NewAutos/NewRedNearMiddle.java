@@ -23,15 +23,15 @@ public class NewRedNearMiddle extends LinearOpMode {
         waitForStart();
         scheduler.add(new CommandGroup(scheduler,
                 new MoveWrist(hardwareMap,Constants.wristDown),
-                new Drive(hardwareMap, -0.3, -0.13),
+                new Drive(hardwareMap, -0.3, -0.14),
                 new Turn(hardwareMap, 180),
                 new MoveWrist(hardwareMap, Constants.wristDown),
                 new MoveWrist(hardwareMap, Constants.wristDown),
-                new MainIntake(hardwareMap, 1000, -0.2),
+                new MainIntake(hardwareMap, 1000, 0.2),
                 new Turn(hardwareMap, 85),
-                new Drive(hardwareMap,-0.5,0.725),
-                new Arm(hardwareMap,-3800)
-
+                new Drive(hardwareMap,-0.5,-0.725),
+                new Arm(hardwareMap,-3800),
+                new  MoveWrist(hardwareMap,Constants.wristUp)
         ));
         while(opModeIsActive()){
             //telemetry.addData("Encoders", DriveTrain.getLeftBackEncoder() + " " + DriveTrain.getLeftFrontEncoder() + " " + DriveTrain.getRightFrontEncoder() + " " + DriveTrain.getRightBackEncoder());
