@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.Tools;
 
 public class Constants {
     //constants for arm positions
-    public static double armPlace = 3800;
+    public static double armPlace = 4000;
     public static double armIntake = 0;
     public static double lowArm = -4500;
     //old comp bot
