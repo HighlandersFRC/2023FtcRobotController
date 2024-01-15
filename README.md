@@ -2,7 +2,7 @@
 
 **This is the programming repository for the 2023-2024 Centerstage Season for the FTC team 23477 The Highlanders**
 
-The Comp branch is the main branch for competition
+The state branch is the main branch for our next competition
 
 
 **_Important Links and Resources_**
