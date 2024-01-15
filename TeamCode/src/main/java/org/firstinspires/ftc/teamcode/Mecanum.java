@@ -58,8 +58,8 @@ public class Mecanum extends LinearOpMode {
 
         waitForStart();
 
-/*        double voltageDelta = Constants.absoluteArmZero - armEncoder.getVoltage();
-        double ticksOffset = voltageDelta / Constants.voltsPer1000Ticks * 1000;*/
+//        double voltageDelta = Constants.absoluteArmZero - armEncoder.getVoltage();
+// double ticksOffset = voltageDelta / Constants.voltsPer1000Ticks * 1000;
 //arm 1 is positive 600 max extension
         //arm 2 is -510 max extension
         if (isStopRequested()) return;
@@ -70,9 +70,9 @@ public class Mecanum extends LinearOpMode {
             //arm2 is reversed
             Scheduler scheduler = new Scheduler();
 
-/*            Right_Front.setDirection(DcMotorSimple.Direction.REVERSE);
-            Right_Back.setDirection(DcMotorSimple.Direction.REVERSE);*/
-/*            Left_Back.setDirection(DcMotorSimple.Direction.REVERSE);*///comment for comp bot
+//            Right_Front.setDirection(DcMotorSimple.Direction.REVERSE);
+// Right_Back.setDirection(DcMotorSimple.Direction.REVERSE);
+            /*            Left_Back.setDirection(DcMotorSimple.Direction.REVERSE);*///comment for comp bot
 
             double leftTrigger = gamepad1.left_trigger;
             double rightTrigger = gamepad1.right_trigger;
@@ -126,7 +126,7 @@ public class Mecanum extends LinearOpMode {
                 PID.setSetPoint(1650);
                 PID2.setSetPoint(1650);
             }else if (gamepad2.right_bumper){
-                *//*PID.setSetPoint(900);
+                //*PID.setSetPoint(900);
                 PID2.setSetPoint(900);*//*
                 holderservo_left.setPower(1);
             }else if (gamepad2.left_bumper){
@@ -177,7 +177,7 @@ public class Mecanum extends LinearOpMode {
                     }, 750);
                    /* scheduler.add(new CommandGroup(scheduler,new MoveWrist(hardwareMap, Constants.wristUp), new Wait(500), new RotateArm(hardwareMap, Constants.armPlace)));*/
                 }
-//For Competion Bot Use these values
+//For Competition Bot Use these values
             if (gamepad2.dpad_up) {
                 LServo.setPosition(Constants.leftServoUp);
                 RServo.setPosition(Constants.rightServoUp);
@@ -193,10 +193,9 @@ public class Mecanum extends LinearOpMode {
             double x = -gamepad1.left_stick_x * 1.1;
             double rx = gamepad1.right_stick_x;
 
-/*
-            if (Math.abs(Arm_Motor.getCurrentPosition() - Constants.getOffsetFromVoltage(armEncoder.getVoltage())) <= 100) {
-                Constants.armIntake = Arm_Motor.getCurrentPosition() - Constants.getOffsetFromVoltage(armEncoder.getVoltage());
-            }*/
+            // if (Math.abs(Arm_Motor.getCurrentPosition() - Constants.getOffsetFromVoltage(armEncoder.getVoltage())) <= 100) {
+            //     Constants.armIntake = Arm_Motor.getCurrentPosition() - Constants.getOffsetFromVoltage(armEncoder.getVoltage());
+            // }
 
             double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
             double frontLeftPower = (y + x + rx) / denominator;
