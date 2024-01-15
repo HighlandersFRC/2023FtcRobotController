@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Autos.NewAutos;
+package org.firstinspires.ftc.teamcode.Autos.NewAutos.RedNear;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.Commands.Arm;
@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.Tools.Constants;
 
 @Autonomous
 public class NewRedNearMiddle extends LinearOpMode {
+
     Scheduler scheduler = new Scheduler();
     public void runOpMode() throws InterruptedException {
         waitForStart();
