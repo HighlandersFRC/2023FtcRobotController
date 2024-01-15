@@ -16,22 +16,22 @@ import java.util.TimerTask;
 @TeleOp
 //23477
 public class Mecanum extends LinearOpMode {
-    private DcMotor Left_Front;
-    private DcMotor Right_Front;
-    private DcMotor Left_Back;
-    private DcMotor Right_Back;
-    private DcMotor Arm_Motor;
-    private DcMotor Right_Intake;
-    private DcMotor Arm1;
-    private DcMotor Arm2;
-    private Servo LServo;
-    private Servo RServo;
-    private CRServo holderservo_left;
-    private CRServo holderservo_right;
+    public DcMotor Left_Front;
+    public DcMotor Right_Front;
+    public DcMotor Left_Back;
+    public DcMotor Right_Back;
+    public DcMotor Arm_Motor;
+    public DcMotor Right_Intake;
+    public DcMotor Arm1;
+    public DcMotor Arm2;
+    public Servo LServo;
+    public Servo RServo;
+    public CRServo holderservo_left;
+    public CRServo holderservo_right;
     private Servo WristServo;
-    private long startTime = System.currentTimeMillis();
-    private long endTime = startTime + 50;
-    private AnalogInput armEncoder;
+    public long startTime = System.currentTimeMillis();
+    public long endTime = startTime + 50;
+    public AnalogInput armEncoder;
     private boolean armCurrentlyRetracting = false;
     private boolean wristCurrentlyGoingDown = false;
     org.firstinspires.ftc.teamcode.Tools.PID PID = new PID(0.03, 0.0, 0.0);
