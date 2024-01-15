@@ -1,10 +1,6 @@
 package org.firstinspires.ftc.teamcode.Autos.NewAutos;
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Commands.Arm;
 import org.firstinspires.ftc.teamcode.Commands.CommandGroup;
 import org.firstinspires.ftc.teamcode.Commands.Drive;
@@ -13,9 +9,7 @@ import org.firstinspires.ftc.teamcode.Commands.MoveWrist;
 import org.firstinspires.ftc.teamcode.Commands.Scheduler;
 import org.firstinspires.ftc.teamcode.Commands.Turn;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
-import org.firstinspires.ftc.teamcode.Subsystems.Wrist;
 import org.firstinspires.ftc.teamcode.Tools.Constants;
-
 @Autonomous
 public class NewRedNearLeft extends LinearOpMode {
     Scheduler scheduler = new Scheduler();

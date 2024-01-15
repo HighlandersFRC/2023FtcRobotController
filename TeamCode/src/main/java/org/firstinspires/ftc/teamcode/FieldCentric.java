@@ -51,7 +51,7 @@ public class FieldCentric extends LinearOpMode {
             ArmPID.updatePID(Arm.getArmEncoder());
 
             double y = gamepad1.left_stick_y;
-            double x = -gamepad1.left_stick_x;
+            double x  = -gamepad1.left_stick_x;
             double rx = gamepad1.right_stick_x;
 
             double botHeading = -Peripherals.getYaw();
