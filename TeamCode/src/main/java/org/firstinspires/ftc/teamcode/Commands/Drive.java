@@ -1,15 +1,12 @@
 package org.firstinspires.ftc.teamcode.Commands;
-
 import com.kauailabs.navx.ftc.AHRS;
 import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
-
 import org.firstinspires.ftc.teamcode.Tools.Constants;
 import org.firstinspires.ftc.teamcode.Tools.PID;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
-
 public class Drive extends Command {
     org.firstinspires.ftc.teamcode.Tools.
             PID PID = new PID(0.03, 0.0, 0.0);
@@ -19,7 +16,6 @@ public class Drive extends Command {
     public IMU imu;
     public AHRS navX;
     public double currentPos;
-    public double PIDOutput;
     public double speed;
     public double distance;
     public double targetPos;
@@ -57,7 +53,6 @@ public class Drive extends Command {
         imu.resetYaw();
         navX.zeroYaw();
     }
-
     public void execute() {
         backRight = DriveTrain.getRightBackEncoder();
         backLeft = DriveTrain.getLeftBackEncoder();
@@ -83,9 +78,6 @@ public class Drive extends Command {
     }
 
     public boolean isFinished() {
-        if (Math.abs(avgEncoder) - 10 >= Math.abs(targetPos)) {
-          return true;
-        }
-        return false;
+        return Math.abs(avgEncoder) - 10 >= Math.abs(targetPos);
     }
 }
