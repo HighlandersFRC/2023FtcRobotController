@@ -24,8 +24,8 @@ public class Arm extends Subsystems {
         public static void brakeMotors(){
             /*Arm_Motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);*/
         }
-        public static double getArmEncoder() {
-            return (Arm_Motor.getCurrentPosition() - Constants.armOffset);
+        public static int getArmEncoder() {
+            return (int) (Arm_Motor.getCurrentPosition() - Constants.armOffset);
         }
         public static double getOffset(){
             return Constants.armOffset;

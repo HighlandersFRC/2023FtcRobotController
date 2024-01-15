@@ -16,15 +16,12 @@ public class NewRedNearLeft extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         waitForStart();
         scheduler.add(new CommandGroup(scheduler,
-                new Drive(hardwareMap, -0.3, 0.1),
-                new Turn(hardwareMap, 180),
-                new Drive(hardwareMap, 0.5, 0.25),
+                new Drive(hardwareMap, -0.3, -0.1),
+                new Turn(hardwareMap, -270),
                 new MoveWrist(hardwareMap, Constants.wristDown),
-                new Drive(hardwareMap, -0.2, 0.1),
                 new MainIntake(hardwareMap, 1000, -0.3),
                 new MoveWrist(hardwareMap, Constants.wristUp),
-                new Turn(hardwareMap, -90),
-                new Drive(hardwareMap, -0.5, 0.5),
+                new Drive(hardwareMap, -0.5, -0.72),
                 new Arm(hardwareMap, 1)
         ));
         while(opModeIsActive()){

@@ -1,20 +1,15 @@
 package org.firstinspires.ftc.teamcode.Commands;
-
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-
-import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
-import org.firstinspires.ftc.teamcode.Subsystems.Subsystems;
 import org.firstinspires.ftc.teamcode.Tools.PID;
 
 public class Arm extends Command {
-    private final DcMotor Arm;
+
     double targetPosition;
     public static String Subsystem = "Arm";
     PID PID = new PID(0.004, 0.0, 0.0);
     public Arm(HardwareMap hardwareMap, double targetPosition){
 
-        Arm = hardwareMap.dcMotor.get("Arm");
+
         this.targetPosition = targetPosition;
     }
 
