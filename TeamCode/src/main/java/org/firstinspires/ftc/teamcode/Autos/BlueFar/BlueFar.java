@@ -67,30 +67,34 @@ public class BlueFar extends LinearOpMode {
         imu.initialize(parameters);
 
         telemetry.addData("autoside", autoside);
-        if (autoside.equals("Right")){
-            scheduler.add(new CommandGroup(scheduler,
-                    new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.2, 0.65), new CommandGroup(scheduler, new Wait(1000), new DeployIntake(hardwareMap, "Deploy"))),
-                    new MoveWrist(hardwareMap, Constants.wristDown),
-                    new Turn(hardwareMap, 90),
-                    new Drive(hardwareMap, -0.2, 0.28),
-                    new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.3, -0.1), new PixelTray(hardwareMap, 3000, -1, "R"), new CommandGroup(scheduler, new Wait(1000), new MainIntake(hardwareMap, 1000, -0.25)))
-            ));
-        } else if (autoside.equals("Left")){
-            scheduler.add(new CommandGroup(scheduler,
-                    new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.2, 0.75), new CommandGroup(scheduler, new Wait(1000), new DeployIntake(hardwareMap, "Deploy"))),
-                    new MoveWrist(hardwareMap, Constants.wristDown),
-                    new Turn(hardwareMap, 90),
-                    new Drive(hardwareMap, 0.3, 0.4),
-                    new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.15, -0.1), new PixelTray(hardwareMap, 3000, -1, "R"), new CommandGroup(scheduler, new Wait(1000),  new MainIntake(hardwareMap, 1000, -0.25)))
-            ));
-        } else if (autoside.equals("Middle")){
-            scheduler.add(new CommandGroup(scheduler,
-                    new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.2, 0.4), new CommandGroup(scheduler, new Wait(1000), new DeployIntake(hardwareMap, "Deploy"))),
-                    new MoveWrist(hardwareMap, Constants.wristDown),
-                    new Turn(hardwareMap, 180),
-                    new Drive(hardwareMap, -0.2, 0.35),
-                    new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.15, -0.1), new PixelTray(hardwareMap, 3000, -1, "R"), new CommandGroup(scheduler, new Wait(1000),  new MainIntake(hardwareMap, 1000, -0.25)))
-            ));
+        switch (autoside) {
+            case "Right":
+                scheduler.add(new CommandGroup(scheduler,
+                        new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.2, 0.65), new CommandGroup(scheduler, new Wait(1000), new DeployIntake(hardwareMap, "Deploy"))),
+                        new MoveWrist(hardwareMap, Constants.wristDown),
+                        new Turn(hardwareMap, 90),
+                        new Drive(hardwareMap, -0.2, 0.28),
+                        new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.3, -0.1), new PixelTray(hardwareMap, 3000, -1, "R"), new CommandGroup(scheduler, new Wait(1000), new MainIntake(hardwareMap, 1000, -0.25)))
+                ));
+                break;
+            case "Left":
+                scheduler.add(new CommandGroup(scheduler,
+                        new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.2, 0.75), new CommandGroup(scheduler, new Wait(1000), new DeployIntake(hardwareMap, "Deploy"))),
+                        new MoveWrist(hardwareMap, Constants.wristDown),
+                        new Turn(hardwareMap, 90),
+                        new Drive(hardwareMap, 0.3, 0.4),
+                        new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.15, -0.1), new PixelTray(hardwareMap, 3000, -1, "R"), new CommandGroup(scheduler, new Wait(1000), new MainIntake(hardwareMap, 1000, -0.25)))
+                ));
+                break;
+            case "Middle":
+                scheduler.add(new CommandGroup(scheduler,
+                        new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.2, 0.4), new CommandGroup(scheduler, new Wait(1000), new DeployIntake(hardwareMap, "Deploy"))),
+                        new MoveWrist(hardwareMap, Constants.wristDown),
+                        new Turn(hardwareMap, 180),
+                        new Drive(hardwareMap, -0.2, 0.35),
+                        new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.15, -0.1), new PixelTray(hardwareMap, 3000, -1, "R"), new CommandGroup(scheduler, new Wait(1000), new MainIntake(hardwareMap, 1000, -0.25)))
+                ));
+                break;
         }
         while (opModeIsActive()) {
             telemetry.addData("IMU yaw", imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
