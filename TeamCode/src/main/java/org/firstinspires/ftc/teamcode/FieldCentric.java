@@ -1,8 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-
 import org.firstinspires.ftc.teamcode.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Elevators;
@@ -11,9 +9,7 @@ import org.firstinspires.ftc.teamcode.Subsystems.Peripherals;
 import org.firstinspires.ftc.teamcode.Subsystems.Wrist;
 import org.firstinspires.ftc.teamcode.Tools.Constants;
 import org.firstinspires.ftc.teamcode.Tools.PID;
-
 @TeleOp
-
 public class FieldCentric extends LinearOpMode {
     PID ElevatorPID = new PID(0.03, 0.0, 0.0);
     PID ArmPID = new PID(0.004, 0.0, 0.0);
@@ -59,8 +55,6 @@ public class FieldCentric extends LinearOpMode {
 
                 double rotX = (x * Math.cos(botHeadingRadian) - y * Math.sin(botHeadingRadian));
                 double rotY = (x * Math.sin(botHeadingRadian) + y * Math.cos(botHeadingRadian));
-
-                x = x *1.1;
 
                 double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1.0);
                 double frontLeftPower = (rotY + rotX + rx) / denominator;
