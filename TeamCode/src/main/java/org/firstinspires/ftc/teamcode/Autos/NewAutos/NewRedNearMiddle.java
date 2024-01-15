@@ -26,7 +26,7 @@ public class NewRedNearMiddle extends LinearOpMode {
                 new MoveWrist(hardwareMap, Constants.wristDown),
                 new MainIntake(hardwareMap, 1000, -0.2),
                 new Turn(hardwareMap, -90),
-                new Drive(hardwareMap, -0.5, 0.5),
+                new Drive(hardwareMap, -0.5, 0.72),
                 new Arm(hardwareMap, Constants.armPlace),
                 new MoveWrist(hardwareMap, Constants.wristDown),
                 new ParallelCommandGroup(scheduler, new Drive(hardwareMap,-0.5,0.71), new Arm(hardwareMap, Constants.armPlace)),
