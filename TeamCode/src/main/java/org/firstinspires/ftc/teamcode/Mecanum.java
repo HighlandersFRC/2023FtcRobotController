@@ -7,15 +7,12 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
-
 import org.firstinspires.ftc.teamcode.Commands.Scheduler;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Tools.Constants;
 import org.firstinspires.ftc.teamcode.Tools.PID;
-
 import java.util.Timer;
 import java.util.TimerTask;
-
 @TeleOp
 //23477
 public class Mecanum extends LinearOpMode {
@@ -37,14 +34,12 @@ public class Mecanum extends LinearOpMode {
     private AnalogInput armEncoder;
     private boolean armCurrentlyRetracting = false;
     private boolean wristCurrentlyGoingDown = false;
-
     org.firstinspires.ftc.teamcode.Tools.PID PID = new PID(0.03, 0.0, 0.0);
     org.firstinspires.ftc.teamcode.Tools.PID PID2 = new PID(0.03, 0.0, 0.0);
     PID ArmPID = new PID(0.001, 0.0, 0.0);
 
     @Override
     public void runOpMode() throws InterruptedException {
-
 
         Left_Front = hardwareMap.dcMotor.get("Left_Front");
         Right_Front = hardwareMap.dcMotor.get("Right_Front");
@@ -61,7 +56,6 @@ public class Mecanum extends LinearOpMode {
         WristServo = hardwareMap.servo.get("WristServo");
         armEncoder = hardwareMap.analogInput.get("absEncoder");
 
-
         waitForStart();
 
 /*        double voltageDelta = Constants.absoluteArmZero - armEncoder.getVoltage();
@@ -75,7 +69,6 @@ public class Mecanum extends LinearOpMode {
         while (opModeIsActive()) {
             //arm2 is reversed
             Scheduler scheduler = new Scheduler();
-
 
 /*            Right_Front.setDirection(DcMotorSimple.Direction.REVERSE);
             Right_Back.setDirection(DcMotorSimple.Direction.REVERSE);*/
@@ -225,7 +218,6 @@ public class Mecanum extends LinearOpMode {
             telemetry.addData("Arm Encoder", Arm_Motor.getCurrentPosition());
             telemetry.addData("Wrist Servo Position", WristServo.getPosition());
             telemetry.addData("Arm Voltage", armEncoder.getVoltage());
-
             telemetry.addLine("");
             telemetry.addLine("Controller Inputs");
             telemetry.addData("Left Trigger", leftTrigger);
@@ -234,7 +226,6 @@ public class Mecanum extends LinearOpMode {
             telemetry.addData("Real Right Trigger", gamepad1.right_trigger);
             telemetry.addData("PID Result", PID.getResult());
             telemetry.addData("Arm_Motor PID", ArmPID.getResult());
-
             telemetry.addLine("");
             telemetry.update();
         }
