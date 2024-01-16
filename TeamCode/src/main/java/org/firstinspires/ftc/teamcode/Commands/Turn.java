@@ -2,9 +2,12 @@ package org.firstinspires.ftc.teamcode.Commands;
 
 import com.kauailabs.navx.ftc.AHRS;
 import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.IMU;
 
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Tools.PID;
 
@@ -17,6 +20,7 @@ public class Turn extends Command{
     public AHRS navX;
     public double currentPos;
     public double PIDOutput;
+    public IMU imu;
     public Turn(HardwareMap hardwareMap, double targetAngle){
         this.targetAngle = -targetAngle;
         PID.setSetPoint(-targetAngle);

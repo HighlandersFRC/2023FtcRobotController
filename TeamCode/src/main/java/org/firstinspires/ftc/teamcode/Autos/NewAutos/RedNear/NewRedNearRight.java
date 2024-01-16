@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.Autos.NewAutos.RedNear;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+
 import org.firstinspires.ftc.teamcode.Commands.Arm;
 import org.firstinspires.ftc.teamcode.Commands.CommandGroup;
 import org.firstinspires.ftc.teamcode.Commands.Drive;
@@ -19,14 +21,18 @@ public class NewRedNearRight extends LinearOpMode {
         waitForStart();
         scheduler.add(new CommandGroup(scheduler,
                 new MoveWrist(hardwareMap,Constants.wristDown),
-                new Drive(hardwareMap, -0.3, -0.13),
+                new Drive(hardwareMap, -0.3, -0.2),
                 new Turn(hardwareMap, -90),
                 new MoveWrist(hardwareMap, Constants.wristDown),
-                new MainIntake(hardwareMap, 1000, -0.2),
-                new Turn(hardwareMap, -180),
-                new ParallelCommandGroup(scheduler, new Drive(hardwareMap,-0.5,0.71), new Arm(hardwareMap, Constants.armPlace)),
+                new MainIntake(hardwareMap, 1000, 0.2),
                 new MoveWrist(hardwareMap,Constants.wristUp),
-                new MainIntake(hardwareMap, 3000, -0.5)
+                new Turn(hardwareMap, -180),
+                new Drive(hardwareMap,-.3,-0.55),
+                new Turn(hardwareMap,270),
+                new Drive(hardwareMap,-.3,-.86),
+                new MoveWrist(hardwareMap,Constants.wristUp),
+                new MainIntake(hardwareMap, 3000, 0.5),
+                new Arm(hardwareMap,4300)
         ));
         while(opModeIsActive()){
             scheduler.update();

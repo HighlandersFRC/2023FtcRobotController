@@ -6,9 +6,10 @@ public class Arm extends Command {
 
     double targetPosition;
     public static String Subsystem = "Arm";
-    PID PID = new PID(0.004, 0.0, 0.0);
-    public Arm(HardwareMap hardwareMap, double targetPosition){
+    PID PID = new PID(0.001, 0.0, 0.01);
 
+    public Arm(HardwareMap hardwareMap, double targetPosition){
+        org.firstinspires.ftc.teamcode.Subsystems.Arm.initialize(hardwareMap);
 
         this.targetPosition = targetPosition;
     }
@@ -20,9 +21,10 @@ public class Arm extends Command {
     public void start(){
         PID.setSetPoint(targetPosition);
     }
+
     public void execute(){
-        targetPosition = org.firstinspires.ftc.teamcode.Subsystems.Arm.getArmEncoder();
-        PID.updatePID(targetPosition);
+
+        PID.updatePID(org.firstinspires.ftc.teamcode.Subsystems.Arm.getArmEncoder());
         org.firstinspires.ftc.teamcode.Subsystems.Arm.rotateArm(PID.getResult());
     }
     public void end(){

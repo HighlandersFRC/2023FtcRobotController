@@ -4,6 +4,8 @@ import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Tools.Constants;
 import org.firstinspires.ftc.teamcode.Tools.PID;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
@@ -66,9 +68,9 @@ public class Drive extends Command {
 
         double correction = PID.getResult();
 
-        double RightFrontPower = (-speed - correction);
+        double RightFrontPower = (-speed + correction);
         double LeftFrontPower = (-speed + correction);
-        double RightBackPower = (-speed - correction);
+        double RightBackPower = (-speed + correction);
         double LeftBackPower = (-speed + correction);
 
         DriveTrain.Drive(RightFrontPower, LeftFrontPower, RightBackPower, LeftBackPower);
