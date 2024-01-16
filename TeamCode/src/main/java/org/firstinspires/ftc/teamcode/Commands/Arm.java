@@ -21,6 +21,8 @@ public class Arm extends Command {
 
     public void start(){
         PID.setSetPoint(targetPosition);
+        PID.setMaxOutput(0.5);
+        PID.setMinOutput(-0.5);
     }
     public void execute(){
         PID.updatePID(org.firstinspires.ftc.teamcode.Subsystems.Arm.getArmEncoder());
