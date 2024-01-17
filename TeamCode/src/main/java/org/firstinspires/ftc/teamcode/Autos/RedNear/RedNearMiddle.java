@@ -1,16 +1,18 @@
 package org.firstinspires.ftc.teamcode.Autos.RedNear;
 
-;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Commands.Arm;
 import org.firstinspires.ftc.teamcode.Tools.Constants;
 import org.firstinspires.ftc.teamcode.Commands.CommandGroup;
+import org.firstinspires.ftc.teamcode.Commands.OldCommands.DeployIntake;
 import org.firstinspires.ftc.teamcode.Commands.Drive;
 import org.firstinspires.ftc.teamcode.Commands.MainIntake;
 import org.firstinspires.ftc.teamcode.Commands.MoveWrist;
 import org.firstinspires.ftc.teamcode.Commands.ParallelCommandGroup;
-
+import org.firstinspires.ftc.teamcode.Commands.PixelTray;
+import org.firstinspires.ftc.teamcode.Commands.OldCommands.RotateArm;
 import org.firstinspires.ftc.teamcode.Commands.Scheduler;
 import org.firstinspires.ftc.teamcode.Commands.Turn;
 import org.firstinspires.ftc.teamcode.Commands.Wait;
@@ -35,9 +37,9 @@ public class RedNearMiddle extends LinearOpMode {
                 new Wait(1000),
                 new Drive(hardwareMap, -0.3, 0.05),
                 new Turn(hardwareMap, -90),
-                new Drive(hardwareMap,-0.3, -0.25),
-                new ParallelCommandGroup(scheduler, new MainIntake(hardwareMap, 1000, -0.5), /*new Arm(hardwareMap, 1000),*/new MoveWrist(hardwareMap,Constants.wristDown),new Drive(hardwareMap,.3,.75))
-
+                new Drive(hardwareMap,-0.3, 0.3),
+                new Arm(hardwareMap, Constants.armPlace),
+                new ParallelCommandGroup(scheduler, new MainIntake(hardwareMap, 1000, -0.5), new Arm(hardwareMap, Constants.armPlace))
         ));
         while (opModeIsActive()) {
             scheduler.update();

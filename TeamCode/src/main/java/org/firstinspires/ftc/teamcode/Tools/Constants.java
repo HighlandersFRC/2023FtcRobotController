@@ -6,7 +6,7 @@ public class Constants {
     public static double armIntake = 225;
     public static double lowArm = -4500;
     //old comp bot
-    /*    public static double absoluteArmZero = 3.241;*/
+/*    public static double absoluteArmZero = 3.241;*/
     public static double absoluteArmZero =0.306;
     public static double armOffset;
     public static double motorTicksPerMeter = 1685;

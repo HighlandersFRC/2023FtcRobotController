@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
+
 import org.firstinspires.ftc.teamcode.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Elevators;
@@ -17,7 +19,7 @@ public class FieldCentric extends LinearOpMode {
     PID ElevatorPID = new PID(0.03, 0.0, 0.0);
     PID ArmPID = new PID(0.0006, 0, 0.0065);
     public DigitalChannel limitSwitch;
-    @Override
+    @Override  
     public void runOpMode() {
 
         waitForStart();
@@ -43,6 +45,7 @@ public class FieldCentric extends LinearOpMode {
             }
 
             Elevators.moveElevatorsUsingPower(ElevatorPID.getResult());
+            Arm.rotateArm(ArmPID.getResult());
             Intake.moveMotor(intakePower);
 
             ElevatorPID.setMaxOutput(1);
@@ -61,18 +64,18 @@ public class FieldCentric extends LinearOpMode {
             double pi = Math.PI;
             double botHeadingRadian = -botHeading * pi/180;
 
-            double rotX = (x * Math.cos(botHeadingRadian) - y * Math.sin(botHeadingRadian));
-            double rotY = (x * Math.sin(botHeadingRadian) + y * Math.cos(botHeadingRadian));
+                double rotX = (x * Math.cos(botHeadingRadian) - y * Math.sin(botHeadingRadian));
+                double rotY = (x * Math.sin(botHeadingRadian) + y * Math.cos(botHeadingRadian));
 
-            x = x *1.1;
+                x = x *1.1;
 
-            double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1.0);
-            double frontLeftPower = (rotY + rotX + rx) / denominator;
-            double backLeftPower = (rotY - rotX + rx) / denominator;
-            double frontRightPower = (rotY - rotX - rx) / denominator;
-            double backRightPower = (rotY + rotX - rx) / denominator;
+                double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1.0);
+                double frontLeftPower = (rotY + rotX + rx) / denominator;
+                double backLeftPower = (rotY - rotX + rx) / denominator;
+                double frontRightPower = (rotY - rotX - rx) / denominator;
+                double backRightPower = (rotY + rotX - rx) / denominator;
 
-            DriveTrain.Drive(frontRightPower, frontLeftPower, backRightPower, backLeftPower);
+                DriveTrain.Drive(frontRightPower, frontLeftPower, backRightPower, backLeftPower);
 
             if (gamepad1.right_bumper) {
                 Peripherals.resetYaw();
@@ -87,7 +90,7 @@ public class FieldCentric extends LinearOpMode {
             }
 
             if (gamepad1.a){
-                ArmPID.setSetPoint(-1100);
+                ArmPID.setSetPoint(Constants.armIntake);
             }
 
             if (gamepad1.b){
@@ -114,7 +117,6 @@ public class FieldCentric extends LinearOpMode {
             else {
                 telemetry.addLine("True");
             }
-            Arm.rotateArm(ArmPID.getResult());
             telemetry.addData("NavX Yaw", Peripherals.getYaw());
             telemetry.addData("ArmPID Power", ArmPID.getResult());
             telemetry.addData("Arm Encoder", Arm.getArmEncoder());

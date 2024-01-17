@@ -4,7 +4,11 @@ import android.util.Size;
 
 import com.kauailabs.navx.ftc.AHRS;
 import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.IMU;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -14,8 +18,15 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 public class Peripherals extends Subsystems{
     public static String name = "Peripherals";
     public static AHRS navX;
+    public static IMU imu;
+
 
     public static void initialize(HardwareMap hardwareMap){
+        imu = hardwareMap.get(IMU.class, "imu");
+        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
+                RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
+                RevHubOrientationOnRobot.UsbFacingDirection.UP));
+        imu.initialize(parameters);
         navX = com.kauailabs.navx.ftc.AHRS.getInstance(hardwareMap.get(NavxMicroNavigationSensor.class, "navX"), AHRS.DeviceDataType.kProcessedData);
         AprilTagProcessor tagProcessor = new AprilTagProcessor.Builder()
                 .setDrawAxes(true)
@@ -34,6 +45,12 @@ public class Peripherals extends Subsystems{
                 .setStreamFormat(VisionPortal.StreamFormat.MJPEG)
                 .build();
 
+    }
+    public static double getimuYaw(){
+        return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
+    }
+    public static void zeroIMU(){
+        imu.resetYaw();
     }
     public static double getYaw(){
         return navX.getYaw();
