@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.Tools.PID;
 
 public class FieldCentric extends LinearOpMode {
     PID ElevatorPID = new PID(0.03, 0.0, 0.0);
-    PID ArmPID = new PID(0.0006, 0, 0.0065);
+    PID ArmPID = new PID(0.001, 0, 0.0069);
     public DigitalChannel limitSwitch;
     @Override  
     public void runOpMode() {
