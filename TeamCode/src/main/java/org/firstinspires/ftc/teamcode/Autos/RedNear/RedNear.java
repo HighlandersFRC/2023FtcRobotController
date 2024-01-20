@@ -4,16 +4,14 @@ package org.firstinspires.ftc.teamcode.Autos.RedNear;
 
 import android.util.Size;
 
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.teamcode.Commands.Arm;
+import org.firstinspires.ftc.teamcode.Commands.strafeRight;
 import org.firstinspires.ftc.teamcode.Tools.Constants;
 import org.firstinspires.ftc.teamcode.Commands.CommandGroup;
 import org.firstinspires.ftc.teamcode.Commands.OldCommands.DeployIntake;
@@ -85,7 +83,8 @@ public class RedNear extends LinearOpMode {
                     new Turn(hardwareMap, 90),
                     new MainIntake(hardwareMap,750,-.2),
                     new MoveWrist(hardwareMap, Constants.wristUp),
-                    new Drive(hardwareMap,-0.3, 0.2),
+                    new Drive(hardwareMap,-0.3, 0.23),
+                    new strafeRight(hardwareMap,-.3,.7),
                     new Arm(hardwareMap,Constants.armHigh),
                     new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap,1000,-0.25)),
                     new Arm(hardwareMap, Constants.armIntake)
