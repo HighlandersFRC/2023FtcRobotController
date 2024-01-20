@@ -1,40 +1,31 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
-
 import android.util.Size;
 
+import com.google.gson.internal.bind.JsonAdapterAnnotationTypeAdapterFactory;
 import com.kauailabs.navx.ftc.AHRS;
 import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.IMU;
-
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.Commands.Command;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagGameDatabase;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Peripherals extends Subsystems{
     public static String name = "Peripherals";
     public static AHRS navX;
-    public static IMU imu;
-
-
     public static void initialize(HardwareMap hardwareMap){
-        imu = hardwareMap.get(IMU.class, "imu");
-        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
-                RevHubOrientationOnRobot.UsbFacingDirection.UP));
-        imu.initialize(parameters);
         navX = com.kauailabs.navx.ftc.AHRS.getInstance(hardwareMap.get(NavxMicroNavigationSensor.class, "navX"), AHRS.DeviceDataType.kProcessedData);
-        AprilTagProcessor tagProcessor = new AprilTagProcessor.Builder()
+/*        AprilTagProcessor tagProcessor = new AprilTagProcessor.Builder()
                 .setDrawAxes(true)
                 .setDrawCubeProjection(true)
                 .setDrawTagID(true)
                 .setDrawTagOutline(true)
-                //.setLensIntrinsics(515.155, 515.155, 284.375, 216.698)
-                .setLensIntrinsics(510.678, 510.678, 318.787, 228.335) //(secondary calc chasis bot)
+                .setLensIntrinsics(510.678, 510.678, 318.787, 228.335)
                 .setTagLibrary(AprilTagGameDatabase.getCurrentGameTagLibrary())
                 .setTagFamily(AprilTagProcessor.TagFamily.TAG_36h11)
                 .build();
@@ -43,14 +34,7 @@ public class Peripherals extends Subsystems{
                 .setCamera(hardwareMap.get(WebcamName.class, "webcam1"))
                 .setCameraResolution(new Size(640, 480))
                 .setStreamFormat(VisionPortal.StreamFormat.MJPEG)
-                .build();
-
-    }
-    public static double getimuYaw(){
-        return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
-    }
-    public static void zeroIMU(){
-        imu.resetYaw();
+                .build();*/
     }
     public static double getYaw(){
         return navX.getYaw();
@@ -64,5 +48,7 @@ public class Peripherals extends Subsystems{
     public static double getPitch(){
         return navX.getPitch();
     }
-    public static double getAprilTagYaw(double targetAprilTagID){return 0;}
+/*    public static double getAprilTagYaw(double targetAprilTagID){
+        return getAprilTagYaw(targetAprilTagID);
+    }*/
 }

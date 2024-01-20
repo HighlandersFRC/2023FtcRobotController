@@ -31,7 +31,7 @@ public class Arm extends Command {
 
     public boolean isFinished() {
         if (!(PID.getError() == 0)) {
-            if ((Math.abs(PID.getError())) <= 100) {
+            if ((Math.abs(PID.getError())) <= 20) {
                 return true;
             }
         }

@@ -5,6 +5,7 @@ public class Constants {
     public static double armPlace = 3900;
     public static double armIntake = 225;
     public static double lowArm = -4500;
+    public static double armHigh = 3800;
     //old comp bot
     /*    public static double absoluteArmZero = 3.241;*/
     public static double absoluteArmZero =0.306;
@@ -23,9 +24,9 @@ public class Constants {
         return 5.03 + -4950*voltage + -4731*Math.pow(voltage, 2) + -2098*Math.pow(voltage, 3) + -286*Math.pow(voltage, 4);
 
     }
-    public static double wristDown = 0.33;//comp bot
+    public static double wristDown = 0.45;//comp bot
 
-    public static double wristUp = 0.95;//comp bot
+    public static double wristUp = 1;//comp bot
     public static double lowWrist = 0.85;
     public static double lastSetElevatorPosition = 0;
     public static double retractedElevator = 0;
