@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.IMU;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -68,6 +69,7 @@ public class RedFar extends LinearOpMode {
 
         telemetry.addData("autoside", autoside);
         if (autoside.equals("Right")){
+            telemetry.addLine("Right");
             scheduler.add(new CommandGroup(scheduler,
                     new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.2, 0.675), new CommandGroup(scheduler, new Wait(1000), new DeployIntake(hardwareMap, "Deploy"))),
                     new MoveWrist(hardwareMap, Constants.wristDown),
@@ -75,6 +77,7 @@ public class RedFar extends LinearOpMode {
                     new Drive(hardwareMap, 0.3, 0.45),
                     new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.15, -0.1), new PixelTray(hardwareMap, 3000, -1, "R"), new CommandGroup(scheduler, new Wait(1000),  new MainIntake(hardwareMap, 1000, -0.25)))        ));
         } else if (autoside.equals("Left")){
+            telemetry.addLine("Left");
             scheduler.add(new CommandGroup(scheduler,
                     new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.2, 1), new CommandGroup(scheduler, new Wait(1000), new DeployIntake(hardwareMap, "Deploy"))),
                     new MoveWrist(hardwareMap, Constants.wristDown),
@@ -90,7 +93,7 @@ public class RedFar extends LinearOpMode {
                     new MoveWrist(hardwareMap, Constants.wristDown)
             ));
         } else if (autoside.equals("Middle")){
-
+            telemetry.addLine("Middle");
             scheduler.add(new CommandGroup(scheduler,
                     new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.2, 0.37), new CommandGroup(scheduler, new Wait(1000), new DeployIntake(hardwareMap, "Deploy"))),
                     new MoveWrist(hardwareMap, Constants.wristDown),

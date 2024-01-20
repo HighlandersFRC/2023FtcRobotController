@@ -47,7 +47,9 @@ public class Turn extends Command{
 
     public boolean isFinished() {
         if (!(PID.getError() == 0)) {
-            return (Math.abs(PID.getError())) < 2;
+            if (Math.abs(PID.getError()) < 2){
+                return true;
+            }
         }
         return false;
     }
