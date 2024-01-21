@@ -17,7 +17,6 @@ public class strafeRight extends Command {
     org.firstinspires.ftc.teamcode.Tools.PID PID = new PID(0.03, 0.0, 0.015);
     org.firstinspires.ftc.teamcode.Tools.PID DrivePID = new PID(0.03, 0.0, 0.0);
 
-
     public double currentPos;
     public double speed;
     public double distance;
@@ -27,7 +26,6 @@ public class strafeRight extends Command {
     public double backRight;
     public double frontLeft;
     public double frontRight;
-    public DcMotor Arm_Motor;
     private final AHRS navX;
 
     PID ArmPID = new PID(0.001, 0, 0);
@@ -59,7 +57,7 @@ public class strafeRight extends Command {
         PID.setContinuous(true);
         PID.setMinOutput(-1);
         PID.setMaxOutput(1);
-        PID.setSetPoint(0);
+        PID.setSetPoint(navX.getYaw());
         //currentPos = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
 
     }
@@ -75,9 +73,9 @@ public class strafeRight extends Command {
         double deviation = PID.getResult();
         currentPos = navX.getYaw();
 
-        double RightFrontPower = (-speed + deviation);
+        double RightFrontPower = (-speed - deviation);
         double LeftFrontPower = (-speed + deviation);
-        double RightBackPower = (speed + deviation);
+        double RightBackPower = (speed - deviation);
         double LeftBackPower = (-speed + deviation);
         DriveTrain.Drive(RightFrontPower, -LeftFrontPower, RightBackPower, LeftBackPower);
     }
