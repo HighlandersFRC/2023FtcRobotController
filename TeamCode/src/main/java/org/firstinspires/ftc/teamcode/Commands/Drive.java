@@ -1,12 +1,16 @@
 package org.firstinspires.ftc.teamcode.Commands;
+
 import com.kauailabs.navx.ftc.AHRS;
 import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
+
+import org.firstinspires.ftc.teamcode.Subsystems.Peripherals;
 import org.firstinspires.ftc.teamcode.Tools.Constants;
 import org.firstinspires.ftc.teamcode.Tools.PID;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
+
 public class Drive extends Command {
     org.firstinspires.ftc.teamcode.Tools.
             PID PID = new PID(0.03, 0.0, 0.0);
@@ -16,6 +20,7 @@ public class Drive extends Command {
     public IMU imu;
     public AHRS navX;
     public double currentPos;
+    public double PIDOutput;
     public double speed;
     public double distance;
     public double targetPos;
@@ -30,13 +35,8 @@ public class Drive extends Command {
         this.distance = Distance;
         PID.setSetPoint(0);
         DriveTrain.initialize(hardwareMap);
-        imu = hardwareMap.get(IMU.class, "imu");
-        navX = AHRS.getInstance(hardwareMap.get(NavxMicroNavigationSensor.class, "navX"), AHRS.DeviceDataType.kProcessedData);
+        Peripherals.initialize(hardwareMap);
         this.hardwareMap = hardwareMap;
-        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
-                RevHubOrientationOnRobot.UsbFacingDirection.UP));
-        imu.initialize(parameters);
     }
     public String getSubsystem() {
         return "DriveTrain";
@@ -48,11 +48,11 @@ public class Drive extends Command {
         PID.setMaxInput(180);
         PID.setMinInput(-180);
         PID.setContinuous(true);
-        PID.setMinOutput(-0.75);
-        PID.setMaxOutput(.75);
-        imu.resetYaw();
-        navX.zeroYaw();
+        PID.setMinOutput(-0.25);
+        PID.setMaxOutput(0.25);
+        Peripherals.resetYaw();
     }
+
     public void execute() {
         backRight = DriveTrain.getRightBackEncoder();
         backLeft = DriveTrain.getLeftBackEncoder();
@@ -60,7 +60,7 @@ public class Drive extends Command {
         frontRight  = DriveTrain.getRightFrontEncoder();
         avgEncoder = (backRight + frontLeft + frontRight + backLeft) / 4;
         DrivePID.updatePID(avgEncoder);
-        currentPos = navX.getYaw();
+        currentPos = Peripherals.getYaw();
         PID.updatePID(currentPos);
         /*currentPos = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);*/
 
@@ -78,6 +78,9 @@ public class Drive extends Command {
     }
 
     public boolean isFinished() {
-        return Math.abs(avgEncoder) - 10 >= Math.abs(targetPos);
+        if (Math.abs(avgEncoder) - 10 >= Math.abs(targetPos)) {
+            return true;
+        }
+        return false;
     }
 }

@@ -21,7 +21,7 @@ public class MainIntake extends Command {
     }
 
     public void start() {
-        Intake.setPower(speed);
+        Intake.setPower(-speed);
         endTime = System.currentTimeMillis() + time;
     }
     public void execute() {

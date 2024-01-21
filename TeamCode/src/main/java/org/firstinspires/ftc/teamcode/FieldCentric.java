@@ -1,6 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
+
 import org.firstinspires.ftc.teamcode.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Elevators;
@@ -14,8 +17,9 @@ import org.firstinspires.ftc.teamcode.Tools.PID;
 
 public class FieldCentric extends LinearOpMode {
     PID ElevatorPID = new PID(0.03, 0.0, 0.0);
-    PID ArmPID = new PID(0.004, 0.0, 0.0);
-    @Override
+    PID ArmPID = new PID(0.001, 0, 0.0069);
+    public DigitalChannel limitSwitch;
+    @Override  
     public void runOpMode() {
 
         waitForStart();
@@ -26,18 +30,23 @@ public class FieldCentric extends LinearOpMode {
         Intake.initialize(hardwareMap);
         Peripherals.initialize(hardwareMap);
         Wrist.initialize(hardwareMap);
+        limitSwitch = hardwareMap.get(DigitalChannel.class, "limitSwitch");
+        limitSwitch.setMode(DigitalChannel.Mode.INPUT);
 
         while (opModeIsActive()) {
+            boolean isOn = limitSwitch.getState();
+
             double rightTrigger =  gamepad1.right_trigger;
             double leftTrigger =  gamepad1.left_trigger;
-            double intakePower = (rightTrigger - leftTrigger);
+            double intakePower = -(leftTrigger - rightTrigger);
 
-            if (intakePower > 0){
+            if (intakePower < 0){
                 intakePower = intakePower / 2;
             }
 
             Elevators.moveElevatorsUsingPower(ElevatorPID.getResult());
-            Intake.moveMotor(-intakePower);
+            Arm.rotateArm(ArmPID.getResult());
+            Intake.moveMotor(intakePower);
 
             ElevatorPID.setMaxOutput(1);
             ElevatorPID.setMinOutput(-1);
@@ -58,7 +67,7 @@ public class FieldCentric extends LinearOpMode {
                 double rotX = (x * Math.cos(botHeadingRadian) - y * Math.sin(botHeadingRadian));
                 double rotY = (x * Math.sin(botHeadingRadian) + y * Math.cos(botHeadingRadian));
 
-
+                x = x *1.1;
 
                 double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1.0);
                 double frontLeftPower = (rotY + rotX + rx) / denominator;
@@ -82,7 +91,7 @@ public class FieldCentric extends LinearOpMode {
 
             if (gamepad1.a){
                 ArmPID.setSetPoint(Constants.armIntake);
-             }
+            }
 
             if (gamepad1.b){
                 ArmPID.setSetPoint(Constants.armPlace);
@@ -102,8 +111,12 @@ public class FieldCentric extends LinearOpMode {
             }else{
                 Wrist.Wrist(Constants.wristUp);
             }
-
-            Arm.rotateArm(ArmPID.getResult());
+            if (isOn){
+                telemetry.addLine("False");
+            }
+            else {
+                telemetry.addLine("True");
+            }
             telemetry.addData("NavX Yaw", Peripherals.getYaw());
             telemetry.addData("ArmPID Power", ArmPID.getResult());
             telemetry.addData("Arm Encoder", Arm.getArmEncoder());
