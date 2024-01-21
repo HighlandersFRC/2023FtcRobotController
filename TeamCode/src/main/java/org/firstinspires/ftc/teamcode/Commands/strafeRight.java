@@ -75,11 +75,11 @@ public class strafeRight extends Command {
         double deviation = PID.getResult();
         currentPos = navX.getYaw();
 
-        double RightFrontPower = (speed + deviation);
+        double RightFrontPower = (-speed + deviation);
         double LeftFrontPower = (-speed + deviation);
         double RightBackPower = (speed + deviation);
         double LeftBackPower = (-speed + deviation);
-        DriveTrain.Drive(RightFrontPower, LeftFrontPower, -RightBackPower, -LeftBackPower);
+        DriveTrain.Drive(RightFrontPower, -LeftFrontPower, RightBackPower, LeftBackPower);
     }
     public void end() {
         DriveTrain.Drive(0, 0, 0, 0);
