@@ -40,6 +40,12 @@ public class DriveTrain extends Subsystems{
         Right_Back.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         Left_Back.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
+    public static void brakeMotors(){
+        Right_Front.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        Left_Front.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        Right_Back.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        Left_Back.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    }
     public static DcMotor getRightFront(){
         return Right_Front;
     }
