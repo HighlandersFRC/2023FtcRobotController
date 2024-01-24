@@ -82,12 +82,11 @@ public class RedFar extends LinearOpMode {
         } else if (autoside.equals("Middle")){
             scheduler.add(new CommandGroup(scheduler,
                     new MoveWrist(hardwareMap, Constants.wristDown),
-                    new Drive(hardwareMap, -0.4, 0.3),
-                    new Wait(1000),
-                    new MainIntake(hardwareMap, 750, -0.2),
-                    new Drive(hardwareMap, -0.4, 0.1),
+                    new Drive(hardwareMap, -0.4, 0.34),
+                    new MainIntake(hardwareMap, 750, -0.24),
                     new Turn(hardwareMap, 90),
-                    new Drive(hardwareMap, -0.5, 0.65)
+                    new Drive(hardwareMap, -0.5, 0.69),
+                    new strafe(hardwareMap,0.5,4)
             ));
         } else if (autoside.equals("None")) {
 
