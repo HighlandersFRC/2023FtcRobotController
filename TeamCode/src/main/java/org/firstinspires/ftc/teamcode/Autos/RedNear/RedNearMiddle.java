@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.Autos.RedNear;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-
 import org.firstinspires.ftc.robotcore.external.Const;
 import org.firstinspires.ftc.teamcode.Commands.Arm;
 import org.firstinspires.ftc.teamcode.Commands.ParallelCommandGroup;
@@ -12,8 +11,8 @@ import org.firstinspires.ftc.teamcode.Commands.MainIntake;
 import org.firstinspires.ftc.teamcode.Commands.MoveWrist;
 import org.firstinspires.ftc.teamcode.Commands.Scheduler;
 import org.firstinspires.ftc.teamcode.Commands.Turn;
-
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous
+
 /*@Disabled*/
 public class RedNearMiddle extends LinearOpMode {
 
@@ -34,7 +33,7 @@ public class RedNearMiddle extends LinearOpMode {
                 new Drive(hardwareMap,-0.3, 0.76),
                 new Arm(hardwareMap,Constants.armHigh),
                 new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap,1000,-0.25)),
-                new Arm(hardwareMap, Constants.armIntake)
+                new Arm(hardwareMap,Constants.armIntake)
         ));
         while (opModeIsActive()) {
             scheduler.update();
