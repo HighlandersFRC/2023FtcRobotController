@@ -75,6 +75,7 @@ public class Drive extends Command {
     }
     public void end() {
         DriveTrain.Drive(0, 0, 0, 0);
+        DriveTrain.brakeMotors();
     }
 
     public boolean isFinished() {

@@ -1,19 +1,14 @@
 package org.firstinspires.ftc.teamcode.Commands;
 import com.kauailabs.navx.ftc.AHRS;
-import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.IMU;
-
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
+import org.firstinspires.ftc.teamcode.Subsystems.Peripherals;
 import org.firstinspires.ftc.teamcode.Tools.Constants;
 import org.firstinspires.ftc.teamcode.Tools.PID;
 
 
-public class strafeRight extends Command {
+public class strafe extends Command {
     org.firstinspires.ftc.teamcode.Tools.PID PID = new PID(0.03, 0.0, 0.015);
     org.firstinspires.ftc.teamcode.Tools.PID DrivePID = new PID(0.03, 0.0, 0.0);
 
@@ -26,23 +21,16 @@ public class strafeRight extends Command {
     public double backRight;
     public double frontLeft;
     public double frontRight;
-    private final AHRS navX;
 
-    PID ArmPID = new PID(0.001, 0, 0);
 
-    public strafeRight(HardwareMap hardwareMap, double Speed, double Distance){
+    public strafe(HardwareMap hardwareMap, double Speed, double Distance){
         this.speed = Speed;
         this.distance = Distance * 1.225;
         PID.setSetPoint(0);
         DriveTrain.initialize(hardwareMap);
-
-        navX = com.kauailabs.navx.ftc.AHRS.getInstance(hardwareMap.get(NavxMicroNavigationSensor.class, "navX"), com.kauailabs.navx.ftc.AHRS.DeviceDataType.kProcessedData);
-
-
-
-        navX.zeroYaw();
+        Peripherals.initialize(hardwareMap);
+        Peripherals.resetYaw();
         //imu.resetYaw();
-
     }
 
     public String getSubsystem() {
@@ -54,10 +42,9 @@ public class strafeRight extends Command {
         DrivePID.setSetPoint(targetPos);
         PID.setMaxInput(180);
         PID.setMinInput(-180);
-        PID.setContinuous(true);
         PID.setMinOutput(-1);
         PID.setMaxOutput(1);
-        PID.setSetPoint(navX.getYaw());
+        PID.setSetPoint(0);
         //currentPos = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
 
     }
@@ -68,20 +55,25 @@ public class strafeRight extends Command {
         frontRight  = DriveTrain.getRightFrontEncoder();
         avgEncoder = (backRight + frontLeft + frontRight + backLeft) / 4;
         DrivePID.updatePID(avgEncoder);
-        PID.updatePID(navX.getYaw());
+        currentPos = Peripherals.getYaw();
+        PID.updatePID(currentPos);
 
-        double deviation = PID.getResult();
-        currentPos = navX.getYaw();
+        double correction = PID.getResult();
 
-        double RightFrontPower = (-speed - deviation);
-        double LeftFrontPower = (-speed + deviation);
-        double RightBackPower = (speed - deviation);
-        double LeftBackPower = (-speed + deviation);
-        DriveTrain.Drive(RightFrontPower, -LeftFrontPower, RightBackPower, LeftBackPower);
+        double RightFrontPower = (-speed - correction);
+        double LeftFrontPower = (-speed + correction);
+        double RightBackPower = (-speed - correction);
+        double LeftBackPower = (-speed + correction);
+
+        DriveTrain.Drive(RightFrontPower, LeftFrontPower, RightBackPower, LeftBackPower);
+        System.out.println(RightBackPower+"Rightback");
+        System.out.println(LeftFrontPower+"leftfront");
+        System.out.println(RightBackPower+"rightBack");
+        System.out.println(LeftBackPower+"LeftBack");
     }
     public void end() {
         DriveTrain.Drive(0, 0, 0, 0);
-
+        DriveTrain.brakeMotors();
     }
 
     public boolean isFinished() {
