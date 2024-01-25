@@ -41,4 +41,6 @@ public class Peripherals extends Subsystems {
     public static double getPitch(){
         return navX.getPitch();
     }
+    public static boolean getMagCal(){return navX.isMagnetometerCalibrated();}
+
 }
