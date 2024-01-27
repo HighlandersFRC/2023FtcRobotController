@@ -40,8 +40,7 @@ public class FieldCentric extends LinearOpMode {
             Arm.rotateArm(ArmPID.getResult());
             Intake.moveMotor(intakePower);
 
-            ElevatorPID.setMaxOutput(1);
-            ElevatorPID.setMinOutput(-1);
+                           ElevatorPID.setMinOutput(-1);
             ElevatorPID.updatePID((Elevators.getArmLPosition() + Elevators.getArmRPosition()) / 2);
 
             ArmPID.setMaxOutput(0.5);
@@ -73,13 +72,15 @@ public class FieldCentric extends LinearOpMode {
                 Peripherals.resetYaw();
             }
 
-//            if (gamepad2.a){
-//                ElevatorPID.setSetPoint(Constants.retractedElevator);
-//            }
-//
-//            if (gamepad2.b){
-//                ElevatorPID.setSetPoint(Constants.deployedElevator);
-//            }
+/*
+            if (gamepad2.a){
+                ElevatorPID.setSetPoint(Constants.retractedElevator);
+            }
+
+            if (gamepad2.b){
+                ElevatorPID.setSetPoint(Constants.deployedElevator);
+            }
+*/
 
             if (gamepad1.a){
                 ArmPID.setSetPoint(Constants.armIntake);
