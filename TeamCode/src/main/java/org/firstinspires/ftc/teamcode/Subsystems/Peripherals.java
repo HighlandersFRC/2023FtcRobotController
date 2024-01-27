@@ -5,6 +5,8 @@ import com.google.gson.internal.bind.JsonAdapterAnnotationTypeAdapterFactory;
 import com.kauailabs.navx.ftc.AHRS;
 import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import org.firstinspires.ftc.robotcore.external.hardware.camera.Camera;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.Commands.Command;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -18,9 +20,12 @@ import java.util.List;
 public class Peripherals extends Subsystems{
     public static String name = "Peripherals";
     public static AHRS navX;
+     static VisionPortal visionPortal;
+     static AprilTagProcessor tagProcessor;
     public static void initialize(HardwareMap hardwareMap){
         navX = com.kauailabs.navx.ftc.AHRS.getInstance(hardwareMap.get(NavxMicroNavigationSensor.class, "navX"), AHRS.DeviceDataType.kProcessedData);
-/*        AprilTagProcessor tagProcessor = new AprilTagProcessor.Builder()
+
+        tagProcessor = new AprilTagProcessor.Builder()
                 .setDrawAxes(true)
                 .setDrawCubeProjection(true)
                 .setDrawTagID(true)
@@ -29,12 +34,12 @@ public class Peripherals extends Subsystems{
                 .setTagLibrary(AprilTagGameDatabase.getCurrentGameTagLibrary())
                 .setTagFamily(AprilTagProcessor.TagFamily.TAG_36h11)
                 .build();
-        VisionPortal visionPortal = new VisionPortal.Builder()
+        visionPortal = new VisionPortal.Builder()
                 .addProcessor(tagProcessor)
                 .setCamera(hardwareMap.get(WebcamName.class, "webcam1"))
-                .setCameraResolution(new Size(640, 480))
-                .setStreamFormat(VisionPortal.StreamFormat.MJPEG)
-                .build();*/
+                .setCameraResolution(new Size(320, 240))
+                .setStreamFormat(VisionPortal.StreamFormat.YUY2)
+                .build();
     }
     public static double getYaw(){
         return navX.getYaw();
@@ -48,7 +53,10 @@ public class Peripherals extends Subsystems{
     public static double getPitch(){
         return navX.getPitch();
     }
-/*    public static double getAprilTagYaw(double targetAprilTagID){
-        return getAprilTagYaw(targetAprilTagID);
-    }*/
+    public static double getAprilTagYaw(int targetAprilTagID){
+        if (tagProcessor.getDetections().contains(targetAprilTagID)){
+            return tagProcessor.getDetections().get(targetAprilTagID).ftcPose.yaw;
+        }
+        return 0;
+    }
 }

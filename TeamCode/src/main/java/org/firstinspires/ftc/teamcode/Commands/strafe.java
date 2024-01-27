@@ -1,7 +1,10 @@
 package org.firstinspires.ftc.teamcode.Commands;
 import com.kauailabs.navx.ftc.AHRS;
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
@@ -14,6 +17,7 @@ import org.firstinspires.ftc.teamcode.Tools.PID;
 public class strafe extends Command {
     org.firstinspires.ftc.teamcode.Tools.PID PID = new PID(0.03, 0.0, 0.015);
     org.firstinspires.ftc.teamcode.Tools.PID DrivePID = new PID(0.03, 0.0, 0.0);
+
     public double currentPos;
     public double speed;
     public double distance;
@@ -25,14 +29,14 @@ public class strafe extends Command {
     public double frontRight;
     PID ArmPID = new PID(0.001, 0, 0);
 
-    public strafe(HardwareMap hardwareMap, double Speed, double Distance) {
+    public strafe(HardwareMap hardwareMap, double Speed, double Distance){
         this.speed = Speed;
         this.distance = Distance * 1.225;
-        DriveTrain.initialize(hardwareMap);
-        Peripherals.initialize(hardwareMap);
-
-        Peripherals.resetYaw();
         PID.setSetPoint(0);
+        DriveTrain.initialize(hardwareMap);
+        
+        //imu.resetYaw();
+
     }
 
     public String getSubsystem() {
@@ -47,40 +51,43 @@ public class strafe extends Command {
         PID.setContinuous(true);
         PID.setMinOutput(-1);
         PID.setMaxOutput(1);
-        PID.setSetPoint(0);
+        PID.setSetPoint(Peripherals.getYaw());
         //currentPos = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
 
     }
-
     public void execute() {
         backRight = DriveTrain.getRightBackEncoder();
         backLeft = DriveTrain.getLeftBackEncoder();
         frontLeft = DriveTrain.getLeftFrontEncoder();
-        frontRight = DriveTrain.getRightFrontEncoder();
+        frontRight  = DriveTrain.getRightFrontEncoder();
         avgEncoder = (backRight + frontLeft + frontRight + backLeft) / 4;
         DrivePID.updatePID(avgEncoder);
         PID.updatePID(Peripherals.getYaw());
 
-        double correction = PID.getResult();
+        double deviation = PID.getResult();
         currentPos = Peripherals.getYaw();
 
-        double RightFrontPower = (speed + correction);
-        double LeftFrontPower = (-speed + correction);
-        double RightBackPower = (speed + correction);
-        double LeftBackPower = (-speed + correction);
-
-        DriveTrain.Drive(RightFrontPower, LeftFrontPower, -RightBackPower, -LeftBackPower);
+        double RightFrontPower = (-speed - deviation);
+        double LeftFrontPower = (-speed + deviation);
+        double RightBackPower = (speed - deviation);
+        double LeftBackPower = (-speed + deviation);
+        DriveTrain.Drive(RightFrontPower, -LeftFrontPower, RightBackPower, LeftBackPower);
     }
-
     public void end() {
         DriveTrain.Drive(0, 0, 0, 0);
 
     }
 
     public boolean isFinished() {
-        if (Math.abs(avgEncoder) - 5 >= Math.abs(targetPos)) {
+        if (Math.abs(backRight) - 5 >= Math.abs(targetPos)) {
             return true;
         }
-        return false;
+        if (Math.abs(-backLeft) - 5 >= Math.abs(targetPos)) {
+            return true;
+        }
+        if (Math.abs(frontLeft) - 5 >= Math.abs(targetPos)) {
+            return true;
+        }
+        return Math.abs(-frontRight) - 5 >= Math.abs(targetPos);
     }
 }

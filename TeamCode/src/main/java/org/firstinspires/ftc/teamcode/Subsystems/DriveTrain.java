@@ -14,8 +14,8 @@ public class DriveTrain extends Subsystems{
 
         //new comp bot
         Right_Front.setPower(RightFrontPower);
-        Right_Back.setPower(RightBackPower);
-        Left_Front.setPower(LeftFrontPower);
+        Right_Back.setPower(-RightBackPower);
+        Left_Front.setPower(-LeftFrontPower);
         Left_Back.setPower(-LeftBackPower);
 
         //old comp bot

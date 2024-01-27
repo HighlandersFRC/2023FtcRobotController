@@ -16,7 +16,8 @@ import org.firstinspires.ftc.teamcode.Tools.PID;
 @TeleOp
 
 public class FieldCentric extends LinearOpMode {
-    PID ElevatorPID = new PID(0.03, 0.0, 0.0);
+    PID ElevatorPIDL = new PID(0.0007, 0.0, 0.0007);
+    PID ElevatorPIDR = new PID(0.0007, 0.0, 0.0007);
     PID ArmPID = new PID(0.0006, 0, 0.0065);
     public DigitalChannel limitSwitch;
     @Override  
@@ -30,27 +31,26 @@ public class FieldCentric extends LinearOpMode {
         Intake.initialize(hardwareMap);
         Peripherals.initialize(hardwareMap);
         Wrist.initialize(hardwareMap);
-        limitSwitch = hardwareMap.get(DigitalChannel.class, "limitSwitch");
-        limitSwitch.setMode(DigitalChannel.Mode.INPUT);
 
         while (opModeIsActive()) {
-            boolean isOn = limitSwitch.getState();
 
             double rightTrigger =  gamepad1.right_trigger;
             double leftTrigger =  gamepad1.left_trigger;
             double intakePower = -(leftTrigger - rightTrigger);
 
-            if (intakePower < 0){
+            if (intakePower < 0) {
                 intakePower = intakePower / 2;
             }
 
-            Elevators.moveElevatorsUsingPower(ElevatorPID.getResult());
             Arm.rotateArm(ArmPID.getResult());
             Intake.moveMotor(intakePower);
 
-            ElevatorPID.setMaxOutput(1);
-            ElevatorPID.setMinOutput(-1);
-            ElevatorPID.updatePID((Elevators.getArmLPosition() + Elevators.getArmRPosition()) / 2);
+            ElevatorPIDL.setMaxOutput(0.75);
+            ElevatorPIDL.setMinOutput(-0.75);
+            ElevatorPIDL.updatePID(Elevators.getArmLPosition());
+            ElevatorPIDR.setMaxOutput(0.75);
+            ElevatorPIDR.setMinOutput(-0.75);
+            ElevatorPIDR.updatePID(Elevators.getArmRPosition());
 
             ArmPID.setMaxOutput(0.5);
             ArmPID.setMinOutput(-0.5);
@@ -80,15 +80,24 @@ public class FieldCentric extends LinearOpMode {
             if (gamepad1.right_bumper) {
                 Peripherals.resetYaw();
             }
+            if (gamepad1.left_bumper){
+                Elevators.moveElevatorsL(-0.75);
+                Elevators.moveElevatorsR(-0.75);
+                ElevatorPIDL.setSetPoint(Elevators.getArmLPosition());
+                ElevatorPIDR.setSetPoint(Elevators.getArmRPosition());
 
-            if (gamepad2.a){
-                ElevatorPID.setSetPoint(Constants.retractedElevator);
+            }else {
+                Elevators.moveElevatorsL(ElevatorPIDL.getResult());
+                Elevators.moveElevatorsR(ElevatorPIDR.getResult());
             }
-
-            if (gamepad2.b){
-                ElevatorPID.setSetPoint(Constants.deployedElevator);
+            if (gamepad1.x){
+                ElevatorPIDL.setSetPoint(Constants.deployedElevator);
+                ElevatorPIDR.setSetPoint(Constants.deployedElevator);
             }
-
+            if (gamepad1.y){
+                ElevatorPIDL.setSetPoint(Constants.retractedElevator);
+                ElevatorPIDR.setSetPoint(Constants.retractedElevator);
+            }
             if (gamepad1.a){
                 ArmPID.setSetPoint(Constants.armIntake);
             }
@@ -111,12 +120,8 @@ public class FieldCentric extends LinearOpMode {
             }else{
                 Wrist.Wrist(Constants.wristUp);
             }
-            if (isOn){
-                telemetry.addLine("False");
-            }
-            else {
-                telemetry.addLine("True");
-            }
+            telemetry.addData("ArmL", Elevators.getArmLPosition());
+            telemetry.addData("ArmR", Elevators.getArmRPosition());
             telemetry.addData("NavX Yaw", Peripherals.getYaw());
             telemetry.addData("ArmPID Power", ArmPID.getResult());
             telemetry.addData("Arm Encoder", Arm.getArmEncoder());
