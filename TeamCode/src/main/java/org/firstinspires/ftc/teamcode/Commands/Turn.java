@@ -6,36 +6,36 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
+import org.firstinspires.ftc.teamcode.Subsystems.Peripherals;
 import org.firstinspires.ftc.teamcode.Tools.PID;
 
 public class Turn extends Command{
-    org.firstinspires.ftc.teamcode.Tools.PID PID = new PID(0.05, 0.0001, 0.0);
+    org.firstinspires.ftc.teamcode.Tools.PID PID = new PID(0.5, 0.0, 0.0);
     public String getSubsystem() {
         return "DriveTrain";
     }
     public double targetAngle;
-    public AHRS navX;
     public double currentPos;
     public double PIDOutput;
     public Turn(HardwareMap hardwareMap, double targetAngle){
-        this.targetAngle = -targetAngle;
-        PID.setSetPoint(-targetAngle);
+        this.targetAngle = targetAngle;
+        PID.setSetPoint(targetAngle);
         DriveTrain.initialize(hardwareMap);
-        navX = com.kauailabs.navx.ftc.AHRS.getInstance(hardwareMap.get(NavxMicroNavigationSensor.class, "navX"), com.kauailabs.navx.ftc.AHRS.DeviceDataType.kProcessedData);
         PID.setMaxInput(180);
         PID.setMinInput(-180);
-        PID.setContinuous(true);
         PID.setMinOutput(-0.3);
         PID.setMaxOutput(0.3);
-        navX.zeroYaw();
+        PID.setContinuous(false);
+        Peripherals.initialize(hardwareMap);
+        Peripherals.resetYaw();
     }
     public void start() {
 
     }
     public void execute() {
-        currentPos = navX.getYaw();
+        currentPos = Peripherals.getYaw();
 
-        double power = PID.updatePID(-navX.getYaw());
+        double power = PID.updatePID(-currentPos);
         this.PIDOutput = power;
 
         DriveTrain.Drive(power, -power, power, -power);

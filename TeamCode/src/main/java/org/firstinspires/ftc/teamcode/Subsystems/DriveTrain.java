@@ -80,9 +80,7 @@ public class DriveTrain extends Subsystems{
     public static double getLeftFrontEncoder(){
         return -Left_Front.getCurrentPosition();
     }
-    public static double getLeftBackEncoder(){
-        return Left_Back.getCurrentPosition();
-    }
+    public static double getLeftBackEncoder(){return -Left_Back.getCurrentPosition();}
     public static double getRightBackEncoder(){
         return -Right_Back.getCurrentPosition();
     }

@@ -18,8 +18,7 @@ import org.firstinspires.ftc.teamcode.Tools.PID;
 public class FieldCentric extends LinearOpMode {
     PID ElevatorPIDL = new PID(0.0007, 0.0, 0.0007);
     PID ElevatorPIDR = new PID(0.0007, 0.0, 0.0007);
-    PID ArmPID = new PID(0.0006, 0, 0.0065);
-    public DigitalChannel limitSwitch;
+    PID ArmPID = new PID(0.001, 0.0, 0.009);
     @Override  
     public void runOpMode() {
 
@@ -52,8 +51,8 @@ public class FieldCentric extends LinearOpMode {
             ElevatorPIDR.setMinOutput(-0.75);
             ElevatorPIDR.updatePID(Elevators.getArmRPosition());
 
-            ArmPID.setMaxOutput(0.5);
-            ArmPID.setMinOutput(-0.5);
+            ArmPID.setMaxOutput(0.75);
+            ArmPID.setMinOutput(-0.75);
             ArmPID.updatePID(Arm.getArmEncoder());
 
             double y = gamepad1.left_stick_y;
@@ -104,14 +103,6 @@ public class FieldCentric extends LinearOpMode {
 
             if (gamepad1.b){
                 ArmPID.setSetPoint(Constants.armPlace);
-            }
-
-            if (gamepad2.x){
-                Wrist.Wrist(Constants.wristDown);
-            }
-
-            if (gamepad2.y){
-                Wrist.Wrist(Constants.wristUp);
             }
             if (intakePower == 0) {
                 Wrist.Wrist(Constants.wristUp);

@@ -80,12 +80,12 @@ public class RedNear extends LinearOpMode {
             ));
         } else if (autoside.equals("Middle")){
             scheduler.add(new CommandGroup(scheduler,
-                    new Drive(hardwareMap, -0.4, 0.135),
                     new MoveWrist(hardwareMap, Constants.wristDown),
+                    new Drive(hardwareMap, -0.4, 0.135),
                     new Turn(hardwareMap, 180),
                     new MainIntake(hardwareMap,750,-.2),
                     new MoveWrist(hardwareMap, Constants.wristUp),
-                    new Turn(hardwareMap, 87),
+                    new Turn(hardwareMap, -90),
                     new Drive(hardwareMap,-0.3, 0.759),
                     new Arm(hardwareMap,Constants.armHigh),
                     new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap,1750,-0.25)),
