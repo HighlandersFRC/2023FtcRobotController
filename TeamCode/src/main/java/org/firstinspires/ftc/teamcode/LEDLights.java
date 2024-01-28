@@ -1,7 +1,6 @@
-package org.firstinspires.ftc.teamcode.Autos.NewAutos.RedNear;
+package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.LED;
 
 public class LEDLights extends OpMode {
     RevBlinkinLedDriver LEDLights;
