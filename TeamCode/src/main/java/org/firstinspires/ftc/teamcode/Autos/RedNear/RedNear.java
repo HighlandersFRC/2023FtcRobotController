@@ -55,25 +55,25 @@ public class RedNear extends LinearOpMode {
         telemetry.addData("autoside", autoside);
         if (autoside.equals("Right")){
             scheduler.add(new CommandGroup(scheduler,
-                    new ParallelCommandGroup(scheduler, new Drive(hardwareMap, -0.4, 0.14), new MoveWrist(hardwareMap, Constants.wristDown)),
-                    new Turn(hardwareMap, 90),
-                    new Drive(hardwareMap, -0.2, 0.19),
-                    new MainIntake(hardwareMap,500,-.20),
+                    new ParallelCommandGroup(scheduler, new Drive(hardwareMap, -0.4, 0.17), new MoveWrist(hardwareMap, Constants.wristDown)),
+                    new Turn(hardwareMap, -90),
+                    new Drive(hardwareMap, -0.2, 0.16),
+                    new MainIntake(hardwareMap,500,-0.22),
                     new MoveWrist(hardwareMap, Constants.wristUp),
-                    new Drive(hardwareMap,-0.4, 0.24),
-                    new Arm(hardwareMap,Constants.armHigh),
-                    new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap,1000,-0.25)),
+                    new Drive(hardwareMap,-0.4, 0.03),
+                    new Arm(hardwareMap, 4230),
+                    new ParallelCommandGroup(scheduler, new Arm(hardwareMap, 4230), new MainIntake(hardwareMap,1000,-0.25)),
                     new Arm(hardwareMap, Constants.armIntake)
             ));
         } else if (autoside.equals("Left")){
             scheduler.add(new CommandGroup(scheduler,
                     new ParallelCommandGroup(scheduler, new Drive(hardwareMap, -0.4, 0.18), new MoveWrist(hardwareMap, Constants.wristDown)),
-                    new Turn(hardwareMap, 90),
+                    new Turn(hardwareMap, -90),
                     new Drive(hardwareMap, 0.2, 0.01),
                     new Drive(hardwareMap, -0.2, 0.01),
                     new MainIntake(hardwareMap,750,-.2),
                     new MoveWrist(hardwareMap, Constants.wristUp),
-                    new Drive(hardwareMap,-0.4, 0.28),
+                    new Drive(hardwareMap,-0.4, 0.215),
                     new Arm(hardwareMap,Constants.armHigh),
                     new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap,1000,-0.25)),
                     new Arm(hardwareMap, Constants.armIntake)
@@ -81,12 +81,12 @@ public class RedNear extends LinearOpMode {
         } else if (autoside.equals("Middle")){
             scheduler.add(new CommandGroup(scheduler,
                     new MoveWrist(hardwareMap, Constants.wristDown),
-                    new Drive(hardwareMap, -0.4, 0.135),
+                    new Drive(hardwareMap, -0.4, 0.133),
                     new Turn(hardwareMap, 180),
                     new MainIntake(hardwareMap,750,-.2),
                     new MoveWrist(hardwareMap, Constants.wristUp),
                     new Turn(hardwareMap, -90),
-                    new Drive(hardwareMap,-0.3, 0.759),
+                    new Drive(hardwareMap,-0.3, 0.215),
                     new Arm(hardwareMap,Constants.armHigh),
                     new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap,1750,-0.25)),
                     new Arm(hardwareMap, Constants.armIntake)

@@ -57,12 +57,12 @@ public class RedFar extends LinearOpMode {
         telemetry.addData("autoside", autoside);
         if (autoside.equals("Right")){
             scheduler.add(new CommandGroup(scheduler,
-                    new ParallelCommandGroup(scheduler, new Drive(hardwareMap, -0.4, 0.145), new MoveWrist(hardwareMap, Constants.wristDown)),
-                    new Turn(hardwareMap, 90),
-                    new Drive(hardwareMap, -0.2, 0.22),
-                    new MainIntake(hardwareMap,500,-.20),
+                    new ParallelCommandGroup(scheduler, new Drive(hardwareMap, -0.4, 0.15), new MoveWrist(hardwareMap, Constants.wristDown)),
+                    new Turn(hardwareMap, -90),
+                    new Drive(hardwareMap, -0.2, 0.18),
+                    new MainIntake(hardwareMap,500,-0.2),
                     new MoveWrist(hardwareMap, Constants.wristUp),
-                    new Drive(hardwareMap, -0.5, 0.7),
+                    new Drive(hardwareMap, -1, 0.35),
                     new Arm(hardwareMap, Constants.armHigh),
                     new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap, 750, -0.3)),
                     new Arm(hardwareMap, Constants.armIntake)
@@ -70,11 +70,11 @@ public class RedFar extends LinearOpMode {
         } else if (autoside.equals("Left")){
             scheduler.add(new CommandGroup(scheduler,
                     new ParallelCommandGroup(scheduler, new Drive(hardwareMap, -0.4, 0.17), new MoveWrist(hardwareMap, Constants.wristDown)),
-                    new Turn(hardwareMap, 95),
-                    new Drive(hardwareMap, -0.2, 0.07),
+                    new Turn(hardwareMap, -89),
+                    new Drive(hardwareMap, -0.4, 0.025),
                     new MainIntake(hardwareMap,750,-.2),
                     new MoveWrist(hardwareMap, Constants.wristUp),
-                    new Drive(hardwareMap, -1, 0.57),
+                    new Drive(hardwareMap, -1, 0.49),
                     new Arm(hardwareMap, Constants.armHigh),
                     new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap, 750, -0.3)),
                     new Arm(hardwareMap, Constants.armIntake)
@@ -82,12 +82,12 @@ public class RedFar extends LinearOpMode {
         } else if (autoside.equals("Middle")){
             scheduler.add(new CommandGroup(scheduler,
                     new MoveWrist(hardwareMap, Constants.wristDown),
-                    new Drive(hardwareMap, -0.4, 0.3),
-                    new Wait(1000),
+                    new Drive(hardwareMap, -0.4, 0.34),
                     new MainIntake(hardwareMap, 750, -0.2),
-                    new Drive(hardwareMap, -0.4, 0.1),
-                    new Turn(hardwareMap, 90),
-                    new Drive(hardwareMap, -0.5, 0.65)
+                    new Turn(hardwareMap, -90),
+                    new Drive(hardwareMap, -0.5, 0.45),
+                    new strafe(hardwareMap, -1, 0.3),
+                    new Arm(hardwareMap, Constants.armPlace)
             ));
         } else if (autoside.equals("None")) {
 

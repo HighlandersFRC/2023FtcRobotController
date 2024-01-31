@@ -42,6 +42,7 @@ public class Drive extends Command {
         return "DriveTrain";
     }
     public void start() {
+        DriveTrain.resetEncoders();
         targetPos = distance * Constants.motorTicksPerMeter;
         PID.setSetPoint(0);
         DrivePID.setSetPoint(targetPos);
