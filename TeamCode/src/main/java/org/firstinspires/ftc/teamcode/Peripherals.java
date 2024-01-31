@@ -38,9 +38,9 @@ public class Peripherals extends Subsystems {
     public static double getRoll(){
         return navX.getRoll();
     }
-    public static double getPitch(){
-        return navX.getPitch();
+    public static boolean getPitch(){
+        return navX.isConnected();
     }
-    public static boolean getMagCal(){return navX.isMagnetometerCalibrated();}
+
 
 }

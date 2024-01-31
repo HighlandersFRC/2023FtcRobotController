@@ -29,7 +29,6 @@ public class FieldCentric extends LinearOpMode {
         Wrist.initialize(hardwareMap);
 
         while (opModeIsActive()) {
-            boolean isOn = limitSwitch.getState();
             double rightTrigger =  gamepad1.right_trigger;
             double leftTrigger =  gamepad1.left_trigger;
             double intakePower = -(leftTrigger - rightTrigger);
@@ -104,10 +103,8 @@ public class FieldCentric extends LinearOpMode {
             }else{
                 Wrist.Wrist(Constants.wristUp);
             }
-            if (isOn){
-                telemetry.addLine("False");
-            }
-            else {
+
+
                 telemetry.addLine("True");
                 telemetry.addData("NavX Yaw", Peripherals.getYaw());
                 telemetry.addData("ArmPID Power", ArmPID.getResult());
@@ -116,7 +113,7 @@ public class FieldCentric extends LinearOpMode {
                 telemetry.addData("elevatorL pos",Elevators.getArmLPosition());
                 telemetry.addData("elevatorR pos",Elevators.getArmRPosition());
                 telemetry.update();
-            }
+
         }
     }
 }
