@@ -35,7 +35,7 @@ public class FieldCentric extends LinearOpMode {
             if (intakePower < 0){
                 intakePower = intakePower / 2;
             }
-            //Elevators.moveElevatorsUsingPower(ElevatorPID.getResult());
+            Elevators.moveElevatorsUsingPower(ElevatorPID.getResult());
             Arm.rotateArm(ArmPID.getResult());
             Intake.moveMotor(intakePower);
 
@@ -50,9 +50,9 @@ public class FieldCentric extends LinearOpMode {
             double x = -gamepad1.left_stick_x;
             double rx = gamepad1.right_stick_x;
 
-            double botHeading = -Peripherals.getYaw();
+            double botHeading = Peripherals.getYaw();
             double pi = Math.PI;
-            double botHeadingRadian = -botHeading * pi/180;
+            double botHeadingRadian = botHeading * pi/180;
             x = x *1.1;
             double rotX = (x * Math.cos(botHeadingRadian) - y * Math.sin(botHeadingRadian));
             double rotY = (x * Math.sin(botHeadingRadian) + y * Math.cos(botHeadingRadian));

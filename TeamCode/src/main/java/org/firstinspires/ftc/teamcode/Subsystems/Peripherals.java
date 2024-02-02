@@ -15,6 +15,7 @@ public class Peripherals extends Subsystems{
     public static AHRS navX;
     static VisionPortal visionPortal;
     static AprilTagProcessor tagProcessor;
+    public static double navxOffset;
     public static void initialize(HardwareMap hardwareMap){
         navX = com.kauailabs.navx.ftc.AHRS.getInstance(hardwareMap.get(NavxMicroNavigationSensor.class, "navX"), AHRS.DeviceDataType.kProcessedData);
         tagProcessor = new AprilTagProcessor.Builder()
@@ -34,10 +35,11 @@ public class Peripherals extends Subsystems{
                 .build();
     }
     public static double getYaw(){
-        return navX.getYaw();
+        return navX.getYaw()-navxOffset;
     }
     public static void resetYaw(){
-        navX.zeroYaw();
+       navxOffset = navX.getYaw();
+
     }
     public static double getRoll(){
         return navX.getRoll();
