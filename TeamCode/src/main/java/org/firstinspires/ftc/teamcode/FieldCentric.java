@@ -18,7 +18,8 @@ import org.firstinspires.ftc.teamcode.Tools.PID;
 public class FieldCentric extends LinearOpMode {
     PID ElevatorPIDL = new PID(0.0007, 0.0, 0.0007);
     PID ElevatorPIDR = new PID(0.0007, 0.0, 0.0007);
-    PID ArmPID = new PID(0.001, 0.0, 0.004);
+    PID ArmPID = new PID(0.001, 0.0, 0.004
+    );
     @Override  
     public void runOpMode() {
 
@@ -100,7 +101,6 @@ public class FieldCentric extends LinearOpMode {
             if (gamepad1.a){
                 ArmPID.setSetPoint(Constants.armIntake);
             }
-
             if (gamepad1.b){
                 ArmPID.setSetPoint(Constants.armPlace);
             }

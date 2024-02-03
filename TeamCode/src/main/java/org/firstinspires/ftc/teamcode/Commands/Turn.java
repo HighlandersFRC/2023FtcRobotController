@@ -18,7 +18,9 @@ public class Turn extends Command{
     public double currentPos;
     public double PIDOutput;
     public Turn(HardwareMap hardwareMap, double targetAngle){
+        Peripherals.initialize(hardwareMap);
         this.targetAngle = targetAngle;
+        System.out.println("Target Angle" + " " + targetAngle);
         PID.setSetPoint(targetAngle);
         DriveTrain.initialize(hardwareMap);
         PID.setMaxInput(180);
@@ -26,16 +28,15 @@ public class Turn extends Command{
         PID.setMinOutput(-0.3);
         PID.setMaxOutput(0.3);
         PID.setContinuous(false);
-        Peripherals.initialize(hardwareMap);
-        Peripherals.resetYaw();
     }
     public void start() {
-
+        Peripherals.resetYaw();
     }
     public void execute() {
+        System.out.println("NavX Yaw" + " " + Peripherals.getYaw());
         currentPos = Peripherals.getYaw();
 
-        double power = PID.updatePID(-currentPos);
+        double power = PID.updatePID(currentPos);
         this.PIDOutput = power;
 
         DriveTrain.Drive(power, -power, power, -power);
