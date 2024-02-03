@@ -4,29 +4,21 @@ package org.firstinspires.ftc.teamcode.Autos.RedNear;
 
 import android.util.Size;
 
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.teamcode.Constants;
-import org.firstinspires.ftc.teamcode.CameraConstants;
+import org.firstinspires.ftc.teamcode.Commands.Arm;
+import org.firstinspires.ftc.teamcode.Tools.Constants;
 import org.firstinspires.ftc.teamcode.Commands.CommandGroup;
-import org.firstinspires.ftc.teamcode.Commands.DeployIntake;
 import org.firstinspires.ftc.teamcode.Commands.Drive;
-import org.firstinspires.ftc.teamcode.Commands.Intake;
+import org.firstinspires.ftc.teamcode.Commands.MainIntake;
 import org.firstinspires.ftc.teamcode.Commands.MoveWrist;
 import org.firstinspires.ftc.teamcode.Commands.ParallelCommandGroup;
-import org.firstinspires.ftc.teamcode.Commands.PixelTray;
-import org.firstinspires.ftc.teamcode.Commands.RetractIntake;
-import org.firstinspires.ftc.teamcode.Commands.RotateArm;
 import org.firstinspires.ftc.teamcode.Commands.Scheduler;
 import org.firstinspires.ftc.teamcode.Commands.Turn;
-import org.firstinspires.ftc.teamcode.Commands.Wait;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 import java.util.List;
@@ -54,74 +46,55 @@ public class RedNear extends LinearOpMode {
 
     };
     Scheduler scheduler = new Scheduler();
-    public IMU imu;
-
-
-
     @Override
     public void runOpMode() {
         initTfod();
         waitForStart();
         String autoside = getLeftRightCenter();
-        imu = hardwareMap.get(IMU.class, "imu");
-        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
-                RevHubOrientationOnRobot.UsbFacingDirection.UP));
-        imu.initialize(parameters);
 
         telemetry.addData("autoside", autoside);
         if (autoside.equals("Right")){
             scheduler.add(new CommandGroup(scheduler,
-                    new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.2, 0.75), new CommandGroup(scheduler, new Wait(1000), new DeployIntake(hardwareMap, "Deploy"))),
-                    new MoveWrist(hardwareMap, Constants.wristDown),
+                    new ParallelCommandGroup(scheduler, new Drive(hardwareMap, -0.4, 0.17), new MoveWrist(hardwareMap, Constants.wristDown)),
                     new Turn(hardwareMap, -90),
-                    new Drive(hardwareMap, -0.2, 0.28),
-                    new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.3, -0.1), new PixelTray(hardwareMap, 3000, -1, "L"), new CommandGroup(scheduler, new Wait(1000), new Intake(hardwareMap, 1000, 0.25))),
+                    new Drive(hardwareMap, -0.2, 0.16),
+                    new MainIntake(hardwareMap,500,-0.22),
                     new MoveWrist(hardwareMap, Constants.wristUp),
-                    new Wait(1000),
-                    new RetractIntake(hardwareMap),
-                    new Drive(hardwareMap, 0.2, 0.4),
-                    new DeployIntake(hardwareMap, "Deploy"),
-                    new Drive(hardwareMap, 0.2, 0.15),
-                    new Drive(hardwareMap, 0.2, 0.52),
-                    new RotateArm(hardwareMap, Constants.armPlace),
-                    new ParallelCommandGroup(scheduler, new PixelTray(hardwareMap, 3000, -1, "R"), new RotateArm(hardwareMap, Constants.armPlace))
+                    new Drive(hardwareMap,-0.4, 0.03),
+                    new Arm(hardwareMap, 4230),
+                    new ParallelCommandGroup(scheduler, new Arm(hardwareMap, 4230), new MainIntake(hardwareMap,1000,-0.25)),
+                    new Arm(hardwareMap, Constants.armIntake)
             ));
         } else if (autoside.equals("Left")){
             scheduler.add(new CommandGroup(scheduler,
-            new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.2, 0.675), new CommandGroup(scheduler, new Wait(1000), new DeployIntake(hardwareMap, "Deploy"))),
-                    new MoveWrist(hardwareMap, Constants.wristDown),
+                    new ParallelCommandGroup(scheduler, new Drive(hardwareMap, -0.4, 0.18), new MoveWrist(hardwareMap, Constants.wristDown)),
                     new Turn(hardwareMap, -90),
-                    new Drive(hardwareMap, 0.3, 0.45),
-                    new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.15, -0.1), new PixelTray(hardwareMap, 3000, -1, "L"), new CommandGroup(scheduler, new Wait(1000),  new Intake(hardwareMap, 1000, -0.25))),
+                    new Drive(hardwareMap, 0.2, 0.01),
+                    new Drive(hardwareMap, -0.2, 0.01),
+                    new MainIntake(hardwareMap,750,-.2),
                     new MoveWrist(hardwareMap, Constants.wristUp),
-                    new Wait(1000),
-                    new RetractIntake(hardwareMap),
-                    new Drive(hardwareMap, 0.25, 0.34),
-                    new DeployIntake(hardwareMap, "Deploy"),
-                    new Wait(1000),
-                    new RotateArm(hardwareMap, Constants.armPlace),
-                    new ParallelCommandGroup(scheduler, new PixelTray(hardwareMap, 3000, -1, "R"), new RotateArm(hardwareMap, Constants.armPlace))
+                    new Drive(hardwareMap,-0.4, 0.215),
+                    new Arm(hardwareMap,Constants.armHigh),
+                    new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap,1000,-0.25)),
+                    new Arm(hardwareMap, Constants.armIntake)
             ));
         } else if (autoside.equals("Middle")){
             scheduler.add(new CommandGroup(scheduler,
-                    new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.2, 0.35), new CommandGroup(scheduler, new Wait(1000), new DeployIntake(hardwareMap, "Deploy"))),
                     new MoveWrist(hardwareMap, Constants.wristDown),
-                    new Turn(hardwareMap, 179),
-                    new Drive(hardwareMap, -0.2, 0.3),
-                    new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.15, -0.1), new PixelTray(hardwareMap, 3000, -1, "L"), new CommandGroup(scheduler, new Wait(1000),  new Intake(hardwareMap, 1000, 0.25))),
+                    new Drive(hardwareMap, -0.4, 0.133),
+                    new Turn(hardwareMap, 180),
+                    new MainIntake(hardwareMap,750,-.2),
                     new MoveWrist(hardwareMap, Constants.wristUp),
-                    new Wait(1000),
-                    new DeployIntake(hardwareMap, "Retract"),
-                    new Drive(hardwareMap, 0.3, 0.05),
-                    new Turn(hardwareMap, 90),
-                    new Drive(hardwareMap,0.3, 0.85),
-                    new RotateArm(hardwareMap, Constants.armPlace),
-                    new ParallelCommandGroup(scheduler, new PixelTray(hardwareMap, 3000, -1, "R"), new RotateArm(hardwareMap, Constants.armPlace))
+                    new Turn(hardwareMap, -90),
+                    new Drive(hardwareMap,-0.3, 0.215),
+                    new Arm(hardwareMap,Constants.armHigh),
+                    new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap,1750,-0.25)),
+                    new Arm(hardwareMap, Constants.armIntake)
             ));
+        } else if (autoside.equals("None")) {
+
         }
         while (opModeIsActive()) {
-            telemetry.addData("IMU yaw", imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
             telemetry.update();
             scheduler.update();
         }
@@ -175,22 +148,19 @@ public class RedNear extends LinearOpMode {
             float y = (recognition.getTop() + recognition.getBottom()) / 2;
 System.out.println("Detected X" + "" + x);
             if (x < 125 && !(x == 0)) {
-                CameraConstants.autoSide = "Left";
                 visionPortal.stopStreaming();
                 return "Left";
             }
             if (x > 175) {
-                CameraConstants.autoSide = "Right";
                 visionPortal.stopStreaming();
                 return "Right";
             }
             if (x > 125 && x < 175) {
-                CameraConstants.autoSide = "Middle";
                 visionPortal.stopStreaming();
                 return  "Middle";
             }
             if (frames > 100){
-                return "Middle";
+                return "Undetected";
             }
             /*if (Float.isNaN(x)) {
                 CameraConstants.autoSide = "Middle";

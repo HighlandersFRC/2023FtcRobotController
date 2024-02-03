@@ -7,7 +7,9 @@ public class CommandGroup extends Command {
     List<Command> commands = new ArrayList<>();
 
     Scheduler scheduler;
-
+    public String getSubsystem() {
+        return "";
+    }
     public CommandGroup(Scheduler scheduler, Command... commands) {
         this.scheduler = scheduler;
         for (Command c : commands) {

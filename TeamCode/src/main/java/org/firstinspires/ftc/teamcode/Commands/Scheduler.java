@@ -2,15 +2,23 @@ package org.firstinspires.ftc.teamcode.Commands;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Scheduler {
     List<Command> commandList = new ArrayList<>();
-    public String getActive(){
-        return commandList.get(0).toString();
+    public Command getActive(){
+        return commandList.get(0);
     }
     public void add(Command command){
         commandList.add(command);
         command.start();
+    }
+    public void checkForSubsystems(){
+        Command currentCommand = commandList.get(0);
+        Command nextCommand = commandList.get(1);
+        if (Objects.equals(nextCommand.getSubsystem(), currentCommand.getSubsystem())){
+            commandList.remove(0);
+        }
     }
     public void update(){
         int length = commandList.size();

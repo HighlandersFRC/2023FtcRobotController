@@ -11,7 +11,9 @@ public class navxzero extends Command{
     public navxzero(HardwareMap hardwareMap){
         navX = com.kauailabs.navx.ftc.AHRS.getInstance(hardwareMap.get(NavxMicroNavigationSensor.class, "navX"), com.kauailabs.navx.ftc.AHRS.DeviceDataType.kProcessedData);
     }
-
+    public String getSubsystem() {
+        return "NavX";
+    }
     public void start() {
     navX.zeroYaw();
     }

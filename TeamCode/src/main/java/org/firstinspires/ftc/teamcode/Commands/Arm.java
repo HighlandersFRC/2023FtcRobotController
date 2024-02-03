@@ -1,37 +1,41 @@
 package org.firstinspires.ftc.teamcode.Commands;
 
-
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.PID1;
+import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
+import org.firstinspires.ftc.teamcode.Subsystems.Subsystems;
+import org.firstinspires.ftc.teamcode.Tools.PID;
 
 public class Arm extends Command {
-    private DcMotor Arm1;
     double targetPosition;
-    PID1 PID = new PID1(0.1, 0, 0);
+    public static String Subsystem = "Arm";
+    PID PID = new PID(0.0006, 0, 0.0065);
     public Arm(HardwareMap hardwareMap, double targetPosition){
-        Arm1 = hardwareMap.dcMotor.get("Arm1");
+        org.firstinspires.ftc.teamcode.Subsystems.Arm.initialize(hardwareMap);
         this.targetPosition = targetPosition;
     }
+
+    public String getSubsystem() {
+        return "Arm";
+    }
+
     public void start(){
-        Arm1.setPower(1);
         PID.setSetPoint(targetPosition);
-        Arm1.setTargetPosition(PID.getSetPoint());
-        Arm1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        PID.setMaxOutput(0.5);
+        PID.setMinOutput(-0.5);
     }
     public void execute(){
-        PID.updatePID(Arm1.getCurrentPosition());
-        Arm1.setTargetPosition(PID.getSetPoint());
-        Arm1.setPower(1);
+        PID.updatePID(org.firstinspires.ftc.teamcode.Subsystems.Arm.getArmEncoder());
+        org.firstinspires.ftc.teamcode.Subsystems.Arm.rotateArm(PID.getResult());
     }
     public void end(){
-        Arm1.setPower(0);
     }
 
     public boolean isFinished() {
-        if (Arm1.getCurrentPosition() >= targetPosition + 15||  Arm1.getCurrentPosition() >= targetPosition - 15) {
-            return true;
+        if (!(PID.getError() == 0)) {
+            if ((Math.abs(PID.getError())) <= 15) {
+                return true;
+            }
         }
         return false;
     }
