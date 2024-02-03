@@ -14,8 +14,8 @@ public class DriveTrain extends Subsystems{
 
         //new comp bot
         Right_Front.setPower(RightFrontPower);
-        Right_Back.setPower(RightBackPower);
-        Left_Front.setPower(LeftFrontPower);
+        Right_Back.setPower(-RightBackPower);
+        Left_Front.setPower(-LeftFrontPower);
         Left_Back.setPower(-LeftBackPower);
 
         //old comp bot
@@ -58,21 +58,21 @@ public class DriveTrain extends Subsystems{
     public static DcMotor getLeftBack(){
         return Left_Back;
     }
-/*    public static double getRightFrontEncoder(){
-        return -Right_Front.getCurrentPosition();
-    }
-    public static double getLeftFrontEncoder(){
-        return Left_Front.getCurrentPosition();
-    }
-    public static double getRightBackEncoder(){
-        return -Right_Back.getCurrentPosition();
-    }
-    public static double getLeftBackEncoder(){
-        return Left_Back.getCurrentPosition();
-    }
-    public static double getRightBackEncoder(){
-        return Right_Back.getCurrentPosition();
-    }*/
+    /*    public static double getRightFrontEncoder(){
+            return -Right_Front.getCurrentPosition();
+        }
+        public static double getLeftFrontEncoder(){
+            return Left_Front.getCurrentPosition();
+        }
+        public static double getRightBackEncoder(){
+            return -Right_Back.getCurrentPosition();
+        }
+        public static double getLeftBackEncoder(){
+            return Left_Back.getCurrentPosition();
+        }
+        public static double getRightBackEncoder(){
+            return Right_Back.getCurrentPosition();
+        }*/
     //new bot
     public static double getRightFrontEncoder(){
         return Right_Front.getCurrentPosition();

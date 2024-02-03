@@ -17,8 +17,6 @@ import org.firstinspires.ftc.teamcode.Commands.Turn;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 import java.util.List;
-
-
 @Autonomous
 //@Disabled
 public class RedNear extends LinearOpMode {
@@ -38,7 +36,6 @@ public class RedNear extends LinearOpMode {
     private static final String[] LABELS = {
             "bluecube",
             "redcube"
-
     };
     Scheduler scheduler = new Scheduler();
     @Override
@@ -119,13 +116,8 @@ public class RedNear extends LinearOpMode {
         builder.setStreamFormat(VisionPortal.StreamFormat.YUY2);
         builder.setAutoStopLiveView(false);
         builder.addProcessor(tfod);
-
-
         visionPortal = builder.build();
-
         tfod.setMinResultConfidence(0.50f);
-
-
         visionPortal.setProcessorEnabled(tfod, true);
 
     }
@@ -146,6 +138,12 @@ System.out.println("Detected X" + "" + x);
                 visionPortal.stopStreaming();
                 return "Left";
             }
+            try {
+                if (x > 125 && x < 175) {
+                    visionPortal.stopStreaming();
+                    return  "Middle";
+                }
+            }catch (Exception e){telemetry.addData("details",e.getMessage());}
             if (x > 175) {
                 visionPortal.stopStreaming();
                 return "Right";
@@ -160,11 +158,7 @@ System.out.println("Detected X" + "" + x);
             /*if (Float.isNaN(x)) {
                 CameraConstants.autoSide = "Middle";
             }*/
-
-
             currentRecognitions = tfod.getFreshRecognitions();
-
-
         }   // end for() loop
 
         return "Middle";

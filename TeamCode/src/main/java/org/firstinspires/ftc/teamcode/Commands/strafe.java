@@ -19,8 +19,6 @@ public class strafe extends Command {
     public double backRight;
     public double frontLeft;
     public double frontRight;
-
-
     public strafe(HardwareMap hardwareMap, double Speed, double Distance){
         this.speed = Speed;
         this.distance = Distance * 1.225;

@@ -29,7 +29,6 @@ public class FieldCentric extends LinearOpMode {
         Wrist.initialize(hardwareMap);
 
         while (opModeIsActive()) {
-            boolean isOn = limitSwitch.getState();
             double rightTrigger =  gamepad1.right_trigger;
             double leftTrigger =  gamepad1.left_trigger;
             double intakePower = -(leftTrigger - rightTrigger);
@@ -40,7 +39,7 @@ public class FieldCentric extends LinearOpMode {
             Arm.rotateArm(ArmPID.getResult());
             Intake.moveMotor(intakePower);
 
-                           ElevatorPID.setMinOutput(-1);
+                           ElevatorPID.setMinOutput(-.1);
             ElevatorPID.updatePID((Elevators.getArmLPosition() + Elevators.getArmRPosition()) / 2);
 
             ArmPID.setMaxOutput(0.5);
@@ -51,9 +50,9 @@ public class FieldCentric extends LinearOpMode {
             double x = -gamepad1.left_stick_x;
             double rx = gamepad1.right_stick_x;
 
-            double botHeading = -Peripherals.getYaw();
+            double botHeading = Peripherals.getYaw();
             double pi = Math.PI;
-            double botHeadingRadian = -botHeading * pi/180;
+            double botHeadingRadian = botHeading * pi/180;
             x = x *1.1;
             double rotX = (x * Math.cos(botHeadingRadian) - y * Math.sin(botHeadingRadian));
             double rotY = (x * Math.sin(botHeadingRadian) + y * Math.cos(botHeadingRadian));
@@ -72,7 +71,7 @@ public class FieldCentric extends LinearOpMode {
                 Peripherals.resetYaw();
             }
 
-/*
+
             if (gamepad2.a){
                 ElevatorPID.setSetPoint(Constants.retractedElevator);
             }
@@ -80,15 +79,15 @@ public class FieldCentric extends LinearOpMode {
             if (gamepad2.b){
                 ElevatorPID.setSetPoint(Constants.deployedElevator);
             }
-*/
 
-            if (gamepad1.a){
-                ArmPID.setSetPoint(Constants.armIntake);
-            }
 
-            if (gamepad1.b){
-                ArmPID.setSetPoint(Constants.armPlace);
-            }
+//            if (gamepad1.a){
+//                ArmPID.setSetPoint(Constants.armIntake);
+//            }
+//
+//            if (gamepad1.b){
+//                ArmPID.setSetPoint(Constants.armPlace);
+//            }
 
             if (gamepad2.x){
                 Wrist.Wrist(Constants.wristDown);
@@ -104,10 +103,8 @@ public class FieldCentric extends LinearOpMode {
             }else{
                 Wrist.Wrist(Constants.wristUp);
             }
-            if (isOn){
-                telemetry.addLine("False");
-            }
-            else {
+
+
                 telemetry.addLine("True");
                 telemetry.addData("NavX Yaw", Peripherals.getYaw());
                 telemetry.addData("ArmPID Power", ArmPID.getResult());
@@ -116,7 +113,7 @@ public class FieldCentric extends LinearOpMode {
                 telemetry.addData("elevatorL pos",Elevators.getArmLPosition());
                 telemetry.addData("elevatorR pos",Elevators.getArmRPosition());
                 telemetry.update();
-            }
+
         }
     }
 }
