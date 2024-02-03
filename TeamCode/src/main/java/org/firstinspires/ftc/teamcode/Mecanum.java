@@ -171,7 +171,7 @@ public class Mecanum extends LinearOpMode {
             else
                 if(gamepad2.b && !wristCurrentlyGoingDown){
                     wristCurrentlyGoingDown = true;
-                    WristServo.setPosition(Constants.lowWrist);
+                    WristServo.setPosition(Constants.wristUp);
                     Timer timer = new Timer();
                     timer.schedule(new TimerTask() {
                         @Override

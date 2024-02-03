@@ -124,7 +124,6 @@ private AHRS navX;
                 telemetry.addData("pitch",navX.getPitch());
                 telemetry.addData("roll",navX.getRoll());
                 telemetry.addData("denominator", denominator);
-                telemetry.addData("botHeading", botHeading);
                 telemetry.addData("botHeadingRadian", botHeadingRadian);
                 telemetry.addData("frontLeftPower", frontLeftPower);
                 telemetry.addData("backLeftPower", backLeftPower);
@@ -144,7 +143,7 @@ private AHRS navX;
     }
 }
                   //W BOSS LEVEL ===============
-///IT WORKS -Written by Advik Sanghi and Ethan LULULULULULU
+///IT WORKS -Written by Advik Sanghi and Ethan LULULULU
 
 //lf   -48437    -18617             2982   velocity 10 sec
 //LB   33772         53502           1973 |
