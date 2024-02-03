@@ -18,39 +18,17 @@ public class Peripherals extends Subsystems{
     public static double navxOffset;
     public static void initialize(HardwareMap hardwareMap){
         navX = com.kauailabs.navx.ftc.AHRS.getInstance(hardwareMap.get(NavxMicroNavigationSensor.class, "navX"), AHRS.DeviceDataType.kProcessedData);
-        tagProcessor = new AprilTagProcessor.Builder()
-                .setDrawAxes(true)
-                .setDrawCubeProjection(true)
-                .setDrawTagID(true)
-                .setDrawTagOutline(true)
-                .setLensIntrinsics(510.678, 510.678, 318.787, 228.335)
-                .setTagLibrary(AprilTagGameDatabase.getCurrentGameTagLibrary())
-                .setTagFamily(AprilTagProcessor.TagFamily.TAG_36h11)
-                .build();
-        visionPortal = new VisionPortal.Builder()
-                .addProcessor(tagProcessor)
-                .setCamera(hardwareMap.get(WebcamName.class, "webcam1"))
-                .setCameraResolution(new Size(320, 240))
-                .setStreamFormat(VisionPortal.StreamFormat.YUY2)
-                .build();
     }
     public static double getYaw(){
         return navX.getYaw()-navxOffset;
     }
     public static void resetYaw(){
        navxOffset = navX.getYaw();
-
     }
     public static double getRoll(){
         return navX.getRoll();
     }
     public static double getPitch(){
         return navX.getPitch();
-    }
-    public static double getAprilTagYaw(int targetAprilTagID){
-        if (tagProcessor.getDetections().contains(targetAprilTagID)){
-            return tagProcessor.getDetections().get(0).ftcPose.yaw;
-        }
-        return 0;
     }
 }
