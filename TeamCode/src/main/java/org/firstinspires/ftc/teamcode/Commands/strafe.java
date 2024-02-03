@@ -1,5 +1,9 @@
 package org.firstinspires.ftc.teamcode.Commands;
+import static org.firstinspires.ftc.teamcode.Peripherals.imu;
+
 import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Peripherals;
 import org.firstinspires.ftc.teamcode.Tools.Constants;
@@ -9,7 +13,6 @@ import org.firstinspires.ftc.teamcode.Tools.PID;
 public class strafe extends Command {
     org.firstinspires.ftc.teamcode.Tools.PID PID = new PID(0.03, 0.0, 0.015);
     org.firstinspires.ftc.teamcode.Tools.PID DrivePID = new PID(0.03, 0.0, 0.0);
-
     public double currentPos;
     public double speed;
     public double distance;
@@ -24,8 +27,7 @@ public class strafe extends Command {
         this.distance = Distance * 1.225;
         PID.setSetPoint(0);
         DriveTrain.initialize(hardwareMap);
-        Peripherals.initialize(hardwareMap);
-        Peripherals.resetYaw();
+       Peripherals.initialize(hardwareMap);
         //imu.resetYaw();
     }
 
@@ -41,8 +43,7 @@ public class strafe extends Command {
         PID.setMinOutput(-1);
         PID.setMaxOutput(1);
         PID.setSetPoint(0);
-        //currentPos = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
-
+        Peripherals.resetYaw();
     }
     public void execute() {
         backRight = DriveTrain.getRightBackEncoder();
@@ -55,13 +56,12 @@ public class strafe extends Command {
         PID.updatePID(currentPos);
 
         double correction = PID.getResult();
-
         double RightFrontPower = (-speed - correction);
         double LeftFrontPower = (-speed + correction);
         double RightBackPower = (-speed - correction);
         double LeftBackPower = (-speed + correction);
 
-        DriveTrain.Drive(RightFrontPower, LeftFrontPower, RightBackPower, LeftBackPower);
+        DriveTrain.Drive(RightFrontPower, -LeftFrontPower, RightBackPower, LeftBackPower);
         System.out.println(RightBackPower+"Rightback");
         System.out.println(LeftFrontPower+"leftfront");
         System.out.println(RightBackPower+"rightBack");

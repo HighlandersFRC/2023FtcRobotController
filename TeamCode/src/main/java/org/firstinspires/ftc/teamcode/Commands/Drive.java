@@ -1,5 +1,4 @@
 package org.firstinspires.ftc.teamcode.Commands;
-
 import com.kauailabs.navx.ftc.AHRS;
 import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
@@ -15,7 +14,6 @@ public class Drive extends Command {
     org.firstinspires.ftc.teamcode.Tools.
             PID PID = new PID(0.03, 0.0, 0.0);
     org.firstinspires.ftc.teamcode.Tools.PID DrivePID = new PID(0.03, 0.0, 0.0);
-
     public HardwareMap hardwareMap;
     public IMU imu;
     public AHRS navX;
@@ -45,8 +43,8 @@ public class Drive extends Command {
         targetPos = distance * Constants.motorTicksPerMeter;
         PID.setSetPoint(0);
         DrivePID.setSetPoint(targetPos);
-        PID.setMaxInput(180);
-        PID.setMinInput(-180);
+        PID.setMaxInput(180- Peripherals.navxOffset);
+        PID.setMinInput(-180- Peripherals.navxOffset);
         PID.setContinuous(true);
         PID.setMinOutput(-0.25);
         PID.setMaxOutput(0.25);
@@ -71,7 +69,7 @@ public class Drive extends Command {
         double RightBackPower = (-speed - correction);
         double LeftBackPower = (-speed + correction);
 
-        DriveTrain.Drive(RightFrontPower, LeftFrontPower, RightBackPower, LeftBackPower);
+        DriveTrain.Drive(-RightFrontPower, -LeftFrontPower, -RightBackPower, -LeftBackPower);
     }
     public void end() {
         DriveTrain.Drive(0, 0, 0, 0);

@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.Commands.CommandGroup;
 import org.firstinspires.ftc.teamcode.Commands.Scheduler;
 import org.firstinspires.ftc.teamcode.Commands.Turn;
+import org.firstinspires.ftc.teamcode.Commands.strafe;
 import org.firstinspires.ftc.teamcode.Commands.strafeRight;
 import org.firstinspires.ftc.teamcode.Subsystems.Peripherals;
 @Autonomous
@@ -14,13 +15,10 @@ public class navxcmdtest extends LinearOpMode {
         waitForStart();
 
         scheduler.add(new CommandGroup(scheduler,
-   new Turn(hardwareMap, 90),
-new Turn(hardwareMap, -180)
+   new strafe(hardwareMap,.5,.2)
         ));
         while (opModeIsActive())
-        {
-         Peripherals.initialize(hardwareMap);
-         telemetry.addData("NavXYaw", Peripherals.getYaw());
+        {//telemetry.addData("NavXYaw", Peripherals.getYaw());
          telemetry.update();
             scheduler.update();
         }
