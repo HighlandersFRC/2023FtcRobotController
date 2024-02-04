@@ -40,6 +40,7 @@ public class Drive extends Command {
         return "DriveTrain";
     }
     public void start() {
+        DriveTrain.resetEncoders();
         targetPos = distance * Constants.motorTicksPerMeter;
         PID.setSetPoint(0);
         DrivePID.setSetPoint(targetPos);
@@ -64,13 +65,14 @@ public class Drive extends Command {
 
         double correction = PID.getResult();
 
-        double RightFrontPower = (-speed - correction);
-        double LeftFrontPower = (-speed + correction);
-        double RightBackPower = (-speed - correction);
-        double LeftBackPower = (-speed + correction);
+        double RightFrontPower = (speed + correction);
+        double LeftFrontPower = (speed - correction);
+        double RightBackPower = (speed + correction);
+        double LeftBackPower = (speed - correction);
 
         DriveTrain.Drive(-RightFrontPower, -LeftFrontPower, -RightBackPower, -LeftBackPower);
     }
+
     public void end() {
         DriveTrain.Drive(0, 0, 0, 0);
         DriveTrain.brakeMotors();

@@ -29,7 +29,8 @@ public class DriveTrain extends Subsystems{
         Left_Front = hardwareMap.dcMotor.get("Left_Front");
         Right_Back = hardwareMap.dcMotor.get("Right_Back");
         Left_Back = hardwareMap.dcMotor.get("Left_Back");
-
+    }
+    public static void resetEncoders(){
         Right_Front.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Left_Front.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Right_Back.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -39,6 +40,7 @@ public class DriveTrain extends Subsystems{
         Left_Front.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         Right_Back.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         Left_Back.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
     }
     public static void brakeMotors(){
         Right_Front.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -80,9 +82,7 @@ public class DriveTrain extends Subsystems{
     public static double getLeftFrontEncoder(){
         return -Left_Front.getCurrentPosition();
     }
-    public static double getLeftBackEncoder(){
-        return Left_Back.getCurrentPosition();
-    }
+    public static double getLeftBackEncoder(){return -Left_Back.getCurrentPosition();}
     public static double getRightBackEncoder(){
         return -Right_Back.getCurrentPosition();
     }
