@@ -7,6 +7,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.teamcode.Commands.Arm;
 import org.firstinspires.ftc.teamcode.Commands.Wait;
+import org.firstinspires.ftc.teamcode.Commands.strafe;
 import org.firstinspires.ftc.teamcode.Tools.Constants;
 import org.firstinspires.ftc.teamcode.Commands.CommandGroup;
 import org.firstinspires.ftc.teamcode.Commands.Drive;
@@ -56,8 +57,10 @@ public class RedNear extends LinearOpMode {
                     new Drive(hardwareMap,-0.4, 0.034),
                     new Arm(hardwareMap,Constants.armLow),
                     new Wait(1000),
+                    new strafe(hardwareMap,-1,0.1),
                     new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armLow), new MainIntake(hardwareMap,1000,-0.2)),
                     new Arm(hardwareMap, Constants.armIntake)
+
             ));
         } else if (autoside.equals("Left")){
             scheduler.add(new CommandGroup(scheduler,

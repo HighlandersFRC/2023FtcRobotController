@@ -8,6 +8,7 @@ import org.firstinspires.ftc.teamcode.Commands.navxzero;
 import org.firstinspires.ftc.teamcode.Commands.CommandGroup;
 import org.firstinspires.ftc.teamcode.Commands.Scheduler;
 import org.firstinspires.ftc.teamcode.Commands.strafe;
+import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Peripherals;
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous
@@ -18,14 +19,19 @@ public class navxcmdtest extends LinearOpMode {
     @Override
     public void runOpMode() {
         Peripherals.initialize(hardwareMap);
+        DriveTrain.initialize(hardwareMap);
         waitForStart();
 
         scheduler.add(new CommandGroup(scheduler,
-                new Turn(hardwareMap, 90)
+                new strafe(hardwareMap, .5, 10000)
         ));
         while (opModeIsActive())
         {
             telemetry.addData("NavX Yaw", Peripherals.getYaw());
+            telemetry.addData("rightfront",DriveTrain.getRightFrontEncoder());
+            telemetry.addData("rightBack",DriveTrain.getRightBackEncoder());
+            telemetry.addData("Leftfront",DriveTrain.getLeftFrontEncoder());
+            telemetry.addData("Leftback",DriveTrain.getLeftBackEncoder());
             telemetry.update();
             scheduler.update();
         }

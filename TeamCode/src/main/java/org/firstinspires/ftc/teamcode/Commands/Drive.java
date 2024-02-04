@@ -44,8 +44,8 @@ public class Drive extends Command {
         targetPos = distance * Constants.motorTicksPerMeter;
         PID.setSetPoint(0);
         DrivePID.setSetPoint(targetPos);
-        PID.setMaxInput(180- Peripherals.navxOffset);
-        PID.setMinInput(-180- Peripherals.navxOffset);
+        PID.setMaxInput(180);
+        PID.setMinInput(-180);
         PID.setContinuous(true);
         PID.setMinOutput(-0.25);
         PID.setMaxOutput(0.25);
@@ -70,7 +70,7 @@ public class Drive extends Command {
         double RightBackPower = (speed + correction);
         double LeftBackPower = (speed - correction);
 
-        DriveTrain.Drive(-RightFrontPower, -LeftFrontPower, -RightBackPower, -LeftBackPower);
+        DriveTrain.Drive(RightFrontPower, LeftFrontPower, RightBackPower, LeftBackPower);
     }
 
     public void end() {

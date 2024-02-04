@@ -1,5 +1,4 @@
 package org.firstinspires.ftc.teamcode.Commands;
-import static org.firstinspires.ftc.teamcode.Peripherals.imu;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -8,8 +7,6 @@ import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Peripherals;
 import org.firstinspires.ftc.teamcode.Tools.Constants;
 import org.firstinspires.ftc.teamcode.Tools.PID;
-
-
 public class strafe extends Command {
     org.firstinspires.ftc.teamcode.Tools.PID PID = new PID(0.03, 0.0, 0.015);
     org.firstinspires.ftc.teamcode.Tools.PID DrivePID = new PID(0.03, 0.0, 0.0);
@@ -44,6 +41,7 @@ public class strafe extends Command {
         PID.setMaxOutput(1);
         PID.setSetPoint(0);
         Peripherals.resetYaw();
+        DriveTrain.resetEncoders();
     }
     public void execute() {
         backRight = DriveTrain.getRightBackEncoder();
@@ -61,11 +59,12 @@ public class strafe extends Command {
         double RightBackPower = (-speed - correction);
         double LeftBackPower = (-speed + correction);
 
-        DriveTrain.Drive(RightFrontPower, -LeftFrontPower, RightBackPower, LeftBackPower);
-        System.out.println(RightBackPower+"Rightback");
-        System.out.println(LeftFrontPower+"leftfront");
-        System.out.println(RightBackPower+"rightBack");
-        System.out.println(LeftBackPower+"LeftBack");
+        DriveTrain.Drive(RightFrontPower, -LeftFrontPower, -RightBackPower, LeftBackPower);
+        System.out.println(backRight+"RightbackEncoder");
+        System.out.println(frontLeft+"leftfront");
+        System.out.println(frontRight+"rightBack");
+        System.out.println(backLeft+"LeftBack");
+
     }
     public void end() {
         DriveTrain.Drive(0, 0, 0, 0);
