@@ -4,7 +4,7 @@ public class Constants {
     //constants for arm positions
     public static double armPlace = 3900;
     public static double armIntake = 225;
-    public static double lowArm = -4500;
+    public static double armLow = 4020;
     public static double armHigh = 3800;
     //old comp bot
 /*    public static double absoluteArmZero = 3.241;*/
