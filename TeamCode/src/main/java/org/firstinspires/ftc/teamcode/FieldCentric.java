@@ -60,7 +60,7 @@ public class FieldCentric extends LinearOpMode {
             double x = -gamepad1.left_stick_x;
             double rx = gamepad1.right_stick_x;
 
-            double botHeading = -Peripherals.getYaw();
+            double botHeading = Peripherals.getYaw();
             double pi = Math.PI;
             double botHeadingRadian = -botHeading * pi/180;
 
@@ -117,6 +117,8 @@ public class FieldCentric extends LinearOpMode {
             telemetry.addData("ArmPID Power", ArmPID.getResult());
             telemetry.addData("Arm Encoder", Arm.getArmEncoder());
             telemetry.addData("Arm Offset", Arm.getOffset());
+            telemetry.addData("Arm Voltage", Arm.getVoltage());
+            telemetry.addData("Raw Arm Position", Arm.getRawPosition());
             telemetry.update();
         }
     }

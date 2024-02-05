@@ -21,7 +21,7 @@ public class navxcmdtest extends LinearOpMode {
         waitForStart();
 
         scheduler.add(new CommandGroup(scheduler,
-                new Turn(hardwareMap, 90)
+                new strafe(hardwareMap, 1, 0.2)
         ));
         while (opModeIsActive())
         {

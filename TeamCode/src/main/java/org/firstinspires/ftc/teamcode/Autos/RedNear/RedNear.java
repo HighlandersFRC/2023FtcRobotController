@@ -2,6 +2,7 @@
 
 package org.firstinspires.ftc.teamcode.Autos.RedNear;
 
+import android.os.DropBoxManager;
 import android.util.Size;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -12,6 +13,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.teamcode.Commands.Arm;
 import org.firstinspires.ftc.teamcode.Commands.Wait;
+import org.firstinspires.ftc.teamcode.Commands.strafe;
 import org.firstinspires.ftc.teamcode.Tools.Constants;
 import org.firstinspires.ftc.teamcode.Commands.CommandGroup;
 import org.firstinspires.ftc.teamcode.Commands.Drive;
@@ -61,11 +63,16 @@ public class RedNear extends LinearOpMode {
                     new Drive(hardwareMap, -0.2, 0.16),
                     new MainIntake(hardwareMap,1000,-0.15),
                     new MoveWrist(hardwareMap, Constants.wristUp),
-                    new Drive(hardwareMap,-0.4, 0.034),
-                    new Arm(hardwareMap,Constants.armLow),
-                    new Wait(1000),
-                    new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armLow), new MainIntake(hardwareMap,1000,-0.2)),
-                    new Arm(hardwareMap, Constants.armIntake)
+                    new Drive(hardwareMap,-0.4, 0.036),
+                    new Wait(500),
+                    new Drive(hardwareMap, 0.3, 0.02),
+                    new strafe(hardwareMap, -0.5, 0.3),
+                    new Drive(hardwareMap, -0.3, 0.04),
+                    new Arm(hardwareMap,Constants.armHigh),
+                    new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap,1000,-0.2)),
+                    new Arm(hardwareMap, Constants.armIntake),
+                    new Drive(hardwareMap, 0.3, 0.01),
+                    new strafe(hardwareMap, -0.5, 0.3)
             ));
         } else if (autoside.equals("Left")){
             scheduler.add(new CommandGroup(scheduler,
@@ -75,10 +82,14 @@ public class RedNear extends LinearOpMode {
                     new Drive(hardwareMap, -0.2, 0.01),
                     new MainIntake(hardwareMap,500,-.2),
                     new MoveWrist(hardwareMap, Constants.wristUp),
-                    new Drive(hardwareMap,-0.4, 0.204),
+                    new Drive(hardwareMap,-0.4, 0.19),
+                    new Wait(500),
+                    new strafe(hardwareMap, 0.5, 0.05),
                     new Arm(hardwareMap,Constants.armHigh),
+                    new Wait(1000),
                     new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap,1000,-0.20)),
-                    new Arm(hardwareMap, Constants.armIntake)
+                    new Arm(hardwareMap, Constants.armIntake),
+                    new strafe(hardwareMap, 0.5, 0.1)
             ));
         } else if (autoside.equals("Middle")){
             scheduler.add(new CommandGroup(scheduler,
