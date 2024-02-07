@@ -21,8 +21,9 @@ public class Arm extends Command {
 
     public void start(){
         PID.setSetPoint(targetPosition);
-        PID.setMaxOutput(0.55);
-        PID.setMinOutput(-0.55);
+        PID.setMaxOutput(0.5);
+        PID.setMinOutput(-0.5);
+        PID.setContinuous(false);
     }
     public void execute(){
         PID.updatePID(org.firstinspires.ftc.teamcode.Subsystems.Arm.getArmEncoder());
@@ -33,7 +34,7 @@ public class Arm extends Command {
 
     public boolean isFinished() {
         if (!(PID.getError() == 0)) {
-            if ((Math.abs(PID.getError())) <= 75) {
+            if ((Math.abs(PID.getError())) <= 100) {
                 return true;
             }
         }
