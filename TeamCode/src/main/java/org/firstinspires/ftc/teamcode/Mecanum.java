@@ -178,7 +178,7 @@ public class Mecanum extends LinearOpMode {
                     timer.schedule(new TimerTask() {
                         @Override
                         public void run() {
-                            ArmPID.setSetPoint(Constants.lowArm);
+                            ArmPID.setSetPoint(Constants.armLow);
                             wristCurrentlyGoingDown = false;
                         }
                     }, 750);

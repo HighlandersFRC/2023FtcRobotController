@@ -13,6 +13,8 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDir
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+import org.firstinspires.ftc.teamcode.Commands.Arm;
+import org.firstinspires.ftc.teamcode.Commands.strafe;
 import org.firstinspires.ftc.teamcode.Tools.Constants;
 import org.firstinspires.ftc.teamcode.Commands.CommandGroup;
 import org.firstinspires.ftc.teamcode.Commands.OldCommands.DeployIntake;
@@ -69,31 +71,50 @@ public class BlueFar extends LinearOpMode {
         telemetry.addData("autoside", autoside);
         if (autoside.equals("Right")){
             scheduler.add(new CommandGroup(scheduler,
-                    new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.2, 0.65), new CommandGroup(scheduler, new Wait(1000), new DeployIntake(hardwareMap, "Deploy"))),
-                    new MoveWrist(hardwareMap, Constants.wristDown),
-                    new Turn(hardwareMap, 90),
-                    new Drive(hardwareMap, -0.2, 0.28),
-                    new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.3, -0.1), new PixelTray(hardwareMap, 3000, -1, "R"), new CommandGroup(scheduler, new Wait(1000), new MainIntake(hardwareMap, 1000, -0.25)))
+                    new ParallelCommandGroup(scheduler, new Drive(hardwareMap, -0.4, 0.17), new MoveWrist(hardwareMap, Constants.wristDown)),
+                    new Turn(hardwareMap, 92),
+                    new Drive(hardwareMap, -0.4, 0.015),
+                    new MainIntake(hardwareMap,750,-.2),
+                    new MoveWrist(hardwareMap, Constants.wristUp),
+                    new Drive(hardwareMap, -1, 0.5),
+                    new Wait(500),
+                    new strafe(hardwareMap, -0.5, 0.2),
+                    new Arm(hardwareMap, Constants.armHigh),
+                    new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap, 750, -0.3)),
+                    new Arm(hardwareMap, Constants.armIntake)
             ));
         } else if (autoside.equals("Left")){
             scheduler.add(new CommandGroup(scheduler,
-                    new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.2, 0.75), new CommandGroup(scheduler, new Wait(1000), new DeployIntake(hardwareMap, "Deploy"))),
-                    new MoveWrist(hardwareMap, Constants.wristDown),
-                    new Turn(hardwareMap, 90),
-                    new Drive(hardwareMap, 0.3, 0.4),
-                    new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.15, -0.1), new PixelTray(hardwareMap, 3000, -1, "R"), new CommandGroup(scheduler, new Wait(1000),  new MainIntake(hardwareMap, 1000, -0.25)))
+                    new ParallelCommandGroup(scheduler, new Drive(hardwareMap, -0.4, 0.15), new MoveWrist(hardwareMap, Constants.wristDown)),
+                    new Turn(hardwareMap, 89),
+                    new Drive(hardwareMap, -0.2, 0.175),
+                    new MainIntake(hardwareMap,750,-0.17),
+                    new MoveWrist(hardwareMap, Constants.wristUp),
+                    new Drive(hardwareMap, -1, 0.355),
+                    new Wait(500),
+                    new Arm(hardwareMap,Constants.armHigh),
+                    new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap,1000,-0.20)),
+                    new Arm(hardwareMap, Constants.armIntake)
             ));
         } else if (autoside.equals("Middle")){
             scheduler.add(new CommandGroup(scheduler,
-                    new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.2, 0.4), new CommandGroup(scheduler, new Wait(1000), new DeployIntake(hardwareMap, "Deploy"))),
                     new MoveWrist(hardwareMap, Constants.wristDown),
-                    new Turn(hardwareMap, 180),
-                    new Drive(hardwareMap, -0.2, 0.35),
-                    new ParallelCommandGroup(scheduler, new Drive(hardwareMap, 0.15, -0.1), new PixelTray(hardwareMap, 3000, -1, "R"), new CommandGroup(scheduler, new Wait(1000),  new MainIntake(hardwareMap, 1000, -0.25)))
+                    new Drive(hardwareMap, -0.4, 0.134),
+                    new Turn(hardwareMap, -180),
+                    new MainIntake(hardwareMap, 750, -0.2),
+                    new Turn(hardwareMap, -90),
+                    new Drive(hardwareMap, -1, 0.545),
+                    new MoveWrist(hardwareMap, Constants.wristUp),
+                    new strafe(hardwareMap, 0.4, 0.1),
+                    new Arm(hardwareMap, Constants.armHigh),
+                    new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap, 750, -0.3)),
+                    new Arm(hardwareMap, Constants.armIntake)
             ));
         }
         while (opModeIsActive()) {
             telemetry.addData("IMU yaw", imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
+            telemetry.addData("Arm Voltage", org.firstinspires.ftc.teamcode.Subsystems.Arm.getVoltage());
+            telemetry.addData("Arm Position", org.firstinspires.ftc.teamcode.Subsystems.Arm.getRawPosition());
             telemetry.update();
             scheduler.update();
         }
@@ -145,16 +166,16 @@ public class BlueFar extends LinearOpMode {
             System.out.println("test");
             float x = (recognition.getLeft() + recognition.getRight()) / 2;
             float y = (recognition.getTop() + recognition.getBottom()) / 2;
-
-            if (x < 280) {
+            System.out.println("Detected X" + "" + x);
+            if (x < 125 && !(x == 0)) {
                 visionPortal.stopStreaming();
                 return "Left";
             }
-            if (x > 390) {
+            if (x > 175) {
                 visionPortal.stopStreaming();
                 return "Right";
             }
-            if (x > 280 && x < 390) {
+            if (x > 125 && x < 175) {
                 visionPortal.stopStreaming();
                 return  "Middle";
             }

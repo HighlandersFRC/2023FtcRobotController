@@ -18,7 +18,8 @@ import org.firstinspires.ftc.teamcode.Tools.PID;
 public class FieldCentric extends LinearOpMode {
     PID ElevatorPIDL = new PID(0.0007, 0.0, 0.0007);
     PID ElevatorPIDR = new PID(0.0007, 0.0, 0.0007);
-    PID ArmPID = new PID(0.001, 0.0, 0.004);
+    PID ArmPID = new PID(0.001, 0.0, 0.004
+    );
     @Override  
     public void runOpMode() {
 
@@ -59,7 +60,7 @@ public class FieldCentric extends LinearOpMode {
             double x = -gamepad1.left_stick_x;
             double rx = gamepad1.right_stick_x;
 
-            double botHeading = -Peripherals.getYaw();
+            double botHeading = Peripherals.getYaw();
             double pi = Math.PI;
             double botHeadingRadian = -botHeading * pi/180;
 
@@ -100,7 +101,6 @@ public class FieldCentric extends LinearOpMode {
             if (gamepad1.a){
                 ArmPID.setSetPoint(Constants.armIntake);
             }
-
             if (gamepad1.b){
                 ArmPID.setSetPoint(Constants.armPlace);
             }
@@ -117,6 +117,8 @@ public class FieldCentric extends LinearOpMode {
             telemetry.addData("ArmPID Power", ArmPID.getResult());
             telemetry.addData("Arm Encoder", Arm.getArmEncoder());
             telemetry.addData("Arm Offset", Arm.getOffset());
+            telemetry.addData("Arm Voltage", Arm.getVoltage());
+            telemetry.addData("Raw Arm Position", Arm.getRawPosition());
             telemetry.update();
         }
     }

@@ -30,4 +30,10 @@ public class Arm extends Subsystems {
         public static double getOffset(){
             return Constants.armOffset;
         }
+        public static double getVoltage(){
+            return armEncoder.getVoltage();
+        }
+        public static double getRawPosition(){
+            return Arm_Motor.getCurrentPosition();
+        }
     }

@@ -31,7 +31,7 @@ public class Drive extends Command {
     public double frontRight;
 
     public Drive(HardwareMap hardwareMap, double Speed, double Distance){
-        this.speed = -Speed;
+        this.speed = Speed;
         this.distance = Distance;
         PID.setSetPoint(0);
         DriveTrain.initialize(hardwareMap);
@@ -67,10 +67,10 @@ public class Drive extends Command {
 
         double correction = PID.getResult();
 
-        double RightFrontPower = (-speed - correction);
-        double LeftFrontPower = (-speed + correction);
-        double RightBackPower = (-speed - correction);
-        double LeftBackPower = (-speed + correction);
+        double RightFrontPower = (speed + correction);
+        double LeftFrontPower = (speed - correction);
+        double RightBackPower = (speed + correction);
+        double LeftBackPower = (speed - correction);
 
         DriveTrain.Drive(RightFrontPower, LeftFrontPower, RightBackPower, LeftBackPower);
     }
