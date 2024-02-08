@@ -22,7 +22,7 @@ public class Arm extends Subsystems {
             Arm_Motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
         public static void brakeMotors(){
-            /*Arm_Motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);*/
+            Arm_Motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
         public static double getArmEncoder() {
             return (Arm_Motor.getCurrentPosition() - Constants.armOffset);

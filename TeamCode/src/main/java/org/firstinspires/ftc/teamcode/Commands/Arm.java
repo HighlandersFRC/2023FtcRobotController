@@ -35,6 +35,7 @@ public class Arm extends Command {
     public boolean isFinished() {
         if (!(PID.getError() == 0)) {
             if ((Math.abs(PID.getError())) <= 100) {
+                org.firstinspires.ftc.teamcode.Subsystems.Arm.brakeMotors();
                 return true;
             }
         }
