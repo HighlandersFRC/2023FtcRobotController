@@ -37,8 +37,8 @@ public class strafe extends Command {
         DrivePID.setSetPoint(targetPos);
         PID.setMaxInput(180);
         PID.setMinInput(-180);
-        PID.setMinOutput(-1);
-        PID.setMaxOutput(1);
+        PID.setMinOutput(-0.2);
+        PID.setMaxOutput(0.2);
         PID.setSetPoint(0);
         Peripherals.resetYaw();
         DriveTrain.resetEncoders();

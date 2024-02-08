@@ -75,6 +75,8 @@ public class RedFar extends LinearOpMode {
                     new Drive(hardwareMap, -0.4, 0.06)
             ));
         } else if (autoside.equals("Left")){
+            //angle failed
+            //didnt detect
             scheduler.add(new CommandGroup(scheduler,
                     new ParallelCommandGroup(scheduler, new Drive(hardwareMap, -0.4, 0.17), new MoveWrist(hardwareMap, Constants.wristDown)),
                     new Turn(hardwareMap, -92),

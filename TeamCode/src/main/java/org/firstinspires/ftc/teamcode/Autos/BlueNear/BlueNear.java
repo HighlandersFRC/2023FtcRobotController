@@ -8,6 +8,7 @@ import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.IMU;
+import com.sun.tools.javac.Main;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -15,6 +16,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.teamcode.Commands.Arm;
 import org.firstinspires.ftc.teamcode.Commands.strafe;
+import org.firstinspires.ftc.teamcode.Subsystems.Peripherals;
 import org.firstinspires.ftc.teamcode.Tools.Constants;
 import org.firstinspires.ftc.teamcode.Commands.CommandGroup;
 import org.firstinspires.ftc.teamcode.Commands.OldCommands.DeployIntake;
@@ -72,32 +74,32 @@ public class BlueNear extends LinearOpMode {
         telemetry.addData("autoside", autoside);
         if (autoside.equals("Right")){
             scheduler.add(new CommandGroup(scheduler,
-                    new ParallelCommandGroup(scheduler, new Drive(hardwareMap, -0.4, 0.19), new MoveWrist(hardwareMap, Constants.wristDown)),
+                    new ParallelCommandGroup(scheduler, new MoveWrist(hardwareMap, Constants.wristDown), new Drive(hardwareMap, -0.4, 0.17), new MainIntake(hardwareMap, 1000, 0.5)),
                     new Turn(hardwareMap, 90),
-                    new Drive(hardwareMap, 0.2, 0.01),
+                    new Drive(hardwareMap, 0.2, 0.02),
                     new Drive(hardwareMap, -0.2, 0.01),
                     new MainIntake(hardwareMap,500,-.2),
                     new MoveWrist(hardwareMap, Constants.wristUp),
-                    new Drive(hardwareMap,-0.4, 0.19),
+                    new Drive(hardwareMap,-0.4, 0.21),
                     new Wait(500),
-                    new strafe(hardwareMap, -0.5, 0.05),
+                    new strafe(hardwareMap, -0.5, 0.07),
                     new Arm(hardwareMap,Constants.armHigh),
-                    new Wait(1000),
                     new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap,1000,-0.20)),
                     new Arm(hardwareMap, Constants.armIntake),
-                    new strafe(hardwareMap, -0.5, 0.1)
+                    new strafe(hardwareMap, -0.5, 0.45),
+                    new Drive(hardwareMap, -0.3, 0.035)
             ));
         } else if (autoside.equals("Left")){
             scheduler.add(new CommandGroup(scheduler,
                     new ParallelCommandGroup(scheduler, new Drive(hardwareMap, -0.4, 0.18), new MoveWrist(hardwareMap, Constants.wristDown)),
                     new Turn(hardwareMap, 90),
                     new Drive(hardwareMap, -0.2, 0.16),
-                    new MainIntake(hardwareMap,1000,-0.15),
+                    new MainIntake(hardwareMap,1000,-0.22),
                     new MoveWrist(hardwareMap, Constants.wristUp),
                     new Drive(hardwareMap,-0.4, 0.036),
                     new Wait(500),
                     new Drive(hardwareMap, 0.3, 0.02),
-                    new strafe(hardwareMap, 0.5, 0.3),
+                    new strafe(hardwareMap, 0.3, 0.3),
                     new Drive(hardwareMap, -0.3, 0.04),
                     new Arm(hardwareMap,Constants.armHigh),
                     new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap,1000,-0.2)),
@@ -107,20 +109,25 @@ public class BlueNear extends LinearOpMode {
             ));
 } else  if (autoside.equals("Middle")){
             scheduler.add(new CommandGroup(scheduler,
-                    new MoveWrist(hardwareMap, Constants.wristDown),
-                    new Drive(hardwareMap, -0.4, 0.135),
+                    new ParallelCommandGroup(scheduler, new MoveWrist(hardwareMap, Constants.wristDown), new Drive(hardwareMap, -0.4, 0.135), new MainIntake(hardwareMap, 1000, 0.5)),
                     new Turn(hardwareMap, -180),
+                    //need more power here
+                    //no strafe
                     new MainIntake(hardwareMap,750,-.15),
                     new MoveWrist(hardwareMap, Constants.wristUp),
                     new Turn(hardwareMap, -90),
-                    new Drive(hardwareMap,-0.3, 0.205),
+                    new Drive(hardwareMap,-0.3, 0.206),
+                    new strafe(hardwareMap, 0.4, 0.1),
                     new Arm(hardwareMap,Constants.armHigh),
-                    new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap,1000,-0.20)),
-                    new Arm(hardwareMap, Constants.armIntake)
+                    new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap,1000,-0.25)),
+                    new Arm(hardwareMap, Constants.armIntake),
+                    new Drive(hardwareMap, 0.2, 0.01),
+                    new strafe(hardwareMap, 0.5, 0.5)
             ));
         }
             while (opModeIsActive()) {
                 telemetry.addData("IMU yaw", imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
+                telemetry.addData("NavX Yaw", Peripherals.getYaw());
                 telemetry.update();
                 scheduler.update();
             }

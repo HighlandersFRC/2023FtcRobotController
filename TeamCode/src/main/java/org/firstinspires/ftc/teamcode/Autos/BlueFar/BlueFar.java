@@ -86,12 +86,13 @@ public class BlueFar extends LinearOpMode {
         } else if (autoside.equals("Left")){
             scheduler.add(new CommandGroup(scheduler,
                     new ParallelCommandGroup(scheduler, new Drive(hardwareMap, -0.4, 0.15), new MoveWrist(hardwareMap, Constants.wristDown)),
-                    new Turn(hardwareMap, 89),
+                    new Turn(hardwareMap, 88),
                     new Drive(hardwareMap, -0.2, 0.175),
                     new MainIntake(hardwareMap,750,-0.17),
                     new MoveWrist(hardwareMap, Constants.wristUp),
-                    new Drive(hardwareMap, -1, 0.355),
+                    new Drive(hardwareMap, -1, 0.34),
                     new Wait(500),
+                    new strafe(hardwareMap, 0.4, 0.1),
                     new Arm(hardwareMap,Constants.armHigh),
                     new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap,1000,-0.20)),
                     new Arm(hardwareMap, Constants.armIntake)
