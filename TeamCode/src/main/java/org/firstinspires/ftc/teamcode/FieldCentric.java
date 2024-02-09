@@ -52,15 +52,15 @@ public class FieldCentric extends LinearOpMode {
             ElevatorPIDR.setMinOutput(-0.75);
             ElevatorPIDR.updatePID(Elevators.getArmRPosition());
 
-            ArmPID.setMaxOutput(0.75);
-            ArmPID.setMinOutput(-0.75);
+            ArmPID.setMaxOutput(0.6);
+            ArmPID.setMinOutput(-0.6);
             ArmPID.updatePID(Arm.getArmEncoder());
 
             double y = gamepad1.left_stick_y;
             double x = -gamepad1.left_stick_x;
             double rx = gamepad1.right_stick_x;
 
-            double botHeading = -Peripherals.getYaw();
+            double botHeading = Peripherals.getYaw();
             double pi = Math.PI;
             double botHeadingRadian = -botHeading * pi/180;
 
@@ -80,33 +80,39 @@ public class FieldCentric extends LinearOpMode {
             if (gamepad1.right_bumper) {
                 Peripherals.resetYaw();
             }
-            if (gamepad1.left_bumper){
+            if (gamepad2.left_bumper){
+                Elevators.moveElevatorsL(0.75);
+                Elevators.moveElevatorsR(0.75);
+                ElevatorPIDL.setSetPoint(Elevators.getArmLPosition());
+                ElevatorPIDR.setSetPoint(Elevators.getArmRPosition());
+
+            }
+            else if (gamepad2.right_bumper){
                 Elevators.moveElevatorsL(-0.75);
                 Elevators.moveElevatorsR(-0.75);
                 ElevatorPIDL.setSetPoint(Elevators.getArmLPosition());
                 ElevatorPIDR.setSetPoint(Elevators.getArmRPosition());
-
             }else {
                 Elevators.moveElevatorsL(ElevatorPIDL.getResult());
                 Elevators.moveElevatorsR(ElevatorPIDR.getResult());
             }
-            if (gamepad1.x){
-                ElevatorPIDL.setSetPoint(Constants.deployedElevator);
-                ElevatorPIDR.setSetPoint(Constants.deployedElevator);
-            }
-            if (gamepad1.y){
+            if (gamepad2.x){
                 ElevatorPIDL.setSetPoint(Constants.retractedElevator);
                 ElevatorPIDR.setSetPoint(Constants.retractedElevator);
             }
-            if (gamepad1.a){
+            if (gamepad2.y){
+                ElevatorPIDL.setSetPoint(Constants.deployedElevator);
+                ElevatorPIDR.setSetPoint(Constants.deployedElevator);
+            }
+            if (gamepad2.a){
                 ArmPID.setSetPoint(Constants.armIntake);
             }
-            if (gamepad1.b){
+            if (gamepad2.b){
                 ArmPID.setSetPoint(Constants.armPlace);
             }
             if (intakePower == 0) {
                 Wrist.Wrist(Constants.wristUp);
-            }else if (Arm.getArmEncoder() <= 100){
+            }else if (Arm.getArmEncoder() <= 300){
                 Wrist.Wrist(Constants.wristDown);
             }else{
                 Wrist.Wrist(Constants.wristUp);
@@ -117,6 +123,8 @@ public class FieldCentric extends LinearOpMode {
             telemetry.addData("ArmPID Power", ArmPID.getResult());
             telemetry.addData("Arm Encoder", Arm.getArmEncoder());
             telemetry.addData("Arm Offset", Arm.getOffset());
+            telemetry.addData("Arm Voltage", Arm.getVoltage());
+            telemetry.addData("Raw Arm Position", Arm.getRawPosition());
             telemetry.update();
         }
     }

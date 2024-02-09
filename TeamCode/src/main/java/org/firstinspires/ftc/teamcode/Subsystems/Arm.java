@@ -5,29 +5,35 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.teamcode.Tools.Constants;
 
 public class Arm extends Subsystems {
-    public static String name = "Arm";
-    public static DcMotor Arm_Motor;
-    public static AnalogInput armEncoder;
+        public static String name = "Arm";
+        public static DcMotor Arm_Motor;
+        public static AnalogInput armEncoder;
 
-    public static void rotateArm(double power) {
-        Arm_Motor.setPower(-power);
-    }
-    public static void initialize(HardwareMap hardwareMap){
-        Arm_Motor = hardwareMap.dcMotor.get("Arm_Motor");
-        armEncoder = hardwareMap.analogInput.get("absEncoder");
+        public static void rotateArm(double power) {
+            Arm_Motor.setPower(-power);
+        }
+        public static void initialize(HardwareMap hardwareMap){
+            Arm_Motor = hardwareMap.dcMotor.get("Arm_Motor");
+            armEncoder = hardwareMap.analogInput.get("absEncoder");
 
-        Constants.armOffset = -Constants.getOffsetFromVoltage(Constants.absoluteArmZero - armEncoder.getVoltage());
+            Constants.armOffset = -Constants.getOffsetFromVoltage(Constants.absoluteArmZero - armEncoder.getVoltage());
 
-        Arm_Motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        Arm_Motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            Arm_Motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            Arm_Motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        }
+        public static void brakeMotors(){
+            Arm_Motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        }
+        public static double getArmEncoder() {
+            return (Arm_Motor.getCurrentPosition() - Constants.armOffset);
+        }
+        public static double getOffset(){
+            return Constants.armOffset;
+        }
+        public static double getVoltage(){
+            return armEncoder.getVoltage();
+        }
+        public static double getRawPosition(){
+            return Arm_Motor.getCurrentPosition();
+        }
     }
-    public static void brakeMotors(){
-        /*Arm_Motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);*/
-    }
-    public static double getArmEncoder() {
-        return (Arm_Motor.getCurrentPosition() - Constants.armOffset);
-    }
-    public static double getOffset(){
-        return Constants.armOffset;
-    }
-}

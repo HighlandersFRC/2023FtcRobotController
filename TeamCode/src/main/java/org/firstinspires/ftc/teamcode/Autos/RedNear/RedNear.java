@@ -1,7 +1,13 @@
+
+
 package org.firstinspires.ftc.teamcode.Autos.RedNear;
+
+import android.os.DropBoxManager;
 import android.util.Size;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
@@ -19,6 +25,8 @@ import org.firstinspires.ftc.teamcode.Commands.Turn;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 import java.util.List;
+
+
 @Autonomous
 //@Disabled
 public class RedNear extends LinearOpMode {
@@ -38,6 +46,7 @@ public class RedNear extends LinearOpMode {
     private static final String[] LABELS = {
             "bluecube",
             "redcube"
+
     };
     Scheduler scheduler = new Scheduler();
     @Override
@@ -54,13 +63,16 @@ public class RedNear extends LinearOpMode {
                     new Drive(hardwareMap, -0.2, 0.16),
                     new MainIntake(hardwareMap,1000,-0.15),
                     new MoveWrist(hardwareMap, Constants.wristUp),
-                    new Drive(hardwareMap,-0.4, 0.034),
-                    new Arm(hardwareMap,Constants.armLow),
-                    new Wait(1000),
-                    new strafe(hardwareMap,-1,0.1),
-                    new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armLow), new MainIntake(hardwareMap,1000,-0.2)),
-                    new Arm(hardwareMap, Constants.armIntake)
-
+                    new Drive(hardwareMap,-0.4, 0.036),
+                    new Wait(500),
+                    new Drive(hardwareMap, 0.3, 0.02),
+                    new strafe(hardwareMap, -0.5, 0.3),
+                    new Drive(hardwareMap, -0.3, 0.04),
+                    new Arm(hardwareMap,Constants.armHigh),
+                    new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap,1000,-0.2)),
+                    new Arm(hardwareMap, Constants.armIntake),
+                    new Drive(hardwareMap, 0.3, 0.01),
+                    new strafe(hardwareMap, -0.5, 0.3)
             ));
         } else if (autoside.equals("Left")){
             scheduler.add(new CommandGroup(scheduler,
@@ -70,10 +82,14 @@ public class RedNear extends LinearOpMode {
                     new Drive(hardwareMap, -0.2, 0.01),
                     new MainIntake(hardwareMap,500,-.2),
                     new MoveWrist(hardwareMap, Constants.wristUp),
-                    new Drive(hardwareMap,-0.4, 0.204),
+                    new Drive(hardwareMap,-0.4, 0.19),
+                    new Wait(500),
+                    new strafe(hardwareMap, 0.5, 0.05),
                     new Arm(hardwareMap,Constants.armHigh),
+                    new Wait(1000),
                     new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap,1000,-0.20)),
-                    new Arm(hardwareMap, Constants.armIntake)
+                    new Arm(hardwareMap, Constants.armIntake),
+                    new strafe(hardwareMap, 0.5, 0.1)
             ));
         } else if (autoside.equals("Middle")){
             scheduler.add(new CommandGroup(scheduler,
@@ -122,8 +138,13 @@ public class RedNear extends LinearOpMode {
         builder.setStreamFormat(VisionPortal.StreamFormat.YUY2);
         builder.setAutoStopLiveView(false);
         builder.addProcessor(tfod);
+
+
         visionPortal = builder.build();
+
         tfod.setMinResultConfidence(0.50f);
+
+
         visionPortal.setProcessorEnabled(tfod, true);
 
     }
@@ -144,12 +165,6 @@ System.out.println("Detected X" + "" + x);
                 visionPortal.stopStreaming();
                 return "Left";
             }
-            try {
-                if (x > 125 && x < 175) {
-                    visionPortal.stopStreaming();
-                    return  "Middle";
-                }
-            }catch (Exception e){telemetry.addData("details",e.getMessage());}
             if (x > 175) {
                 visionPortal.stopStreaming();
                 return "Right";
@@ -164,7 +179,11 @@ System.out.println("Detected X" + "" + x);
             /*if (Float.isNaN(x)) {
                 CameraConstants.autoSide = "Middle";
             }*/
+
+
             currentRecognitions = tfod.getFreshRecognitions();
+
+
         }   // end for() loop
 
         return "Middle";

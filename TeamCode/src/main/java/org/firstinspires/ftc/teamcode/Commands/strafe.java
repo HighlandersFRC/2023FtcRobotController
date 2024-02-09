@@ -24,7 +24,7 @@ public class strafe extends Command {
         this.distance = Distance * 1.225;
         PID.setSetPoint(0);
         DriveTrain.initialize(hardwareMap);
-       Peripherals.initialize(hardwareMap);
+        Peripherals.initialize(hardwareMap);
         //imu.resetYaw();
     }
 
@@ -37,8 +37,8 @@ public class strafe extends Command {
         DrivePID.setSetPoint(targetPos);
         PID.setMaxInput(180);
         PID.setMinInput(-180);
-        PID.setMinOutput(-1);
-        PID.setMaxOutput(1);
+        PID.setMinOutput(-0.2);
+        PID.setMaxOutput(0.2);
         PID.setSetPoint(0);
         Peripherals.resetYaw();
         DriveTrain.resetEncoders();
@@ -50,7 +50,7 @@ public class strafe extends Command {
         frontRight  = DriveTrain.getRightFrontEncoder();
         avgEncoder = (backRight + frontLeft + frontRight + backLeft) / 4;
         DrivePID.updatePID(avgEncoder);
-        currentPos = Peripherals.getYaw();
+        currentPos = -Peripherals.getYaw();
         PID.updatePID(currentPos);
 
         double correction = PID.getResult();
