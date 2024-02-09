@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 
+import org.firstinspires.ftc.robotcore.external.Const;
 import org.firstinspires.ftc.teamcode.Subsystems.Arm;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Elevators;
@@ -18,8 +19,7 @@ import org.firstinspires.ftc.teamcode.Tools.PID;
 public class FieldCentric extends LinearOpMode {
     PID ElevatorPIDL = new PID(0.0007, 0.0, 0.0007);
     PID ElevatorPIDR = new PID(0.0007, 0.0, 0.0007);
-    PID ArmPID = new PID(0.001, 0.0, 0.004
-    );
+    PID ArmPID = new PID(0.001, 0.0, 0.004);
     @Override  
     public void runOpMode() {
 
@@ -32,11 +32,15 @@ public class FieldCentric extends LinearOpMode {
         Peripherals.initialize(hardwareMap);
         Wrist.initialize(hardwareMap);
 
+        Elevators.resetEncoders();
+
         while (opModeIsActive()) {
 
             double rightTrigger =  gamepad1.right_trigger;
             double leftTrigger =  gamepad1.left_trigger;
             double intakePower = -(leftTrigger - rightTrigger);
+
+            boolean isArmUp = false;
 
             if (intakePower < 0) {
                 intakePower = intakePower / 2;
@@ -75,21 +79,30 @@ public class FieldCentric extends LinearOpMode {
                 double frontRightPower = (rotY - rotX - rx) / denominator;
                 double backRightPower = (rotY + rotX - rx) / denominator;
 
+            if(ArmPID.getSetPoint() == Constants.armPlace){
+                backLeftPower = backLeftPower/2;
+                backRightPower = backRightPower/2;
+                frontLeftPower = frontLeftPower/2;
+                frontRightPower = frontRightPower/2;
+            }
+
                 DriveTrain.Drive(frontRightPower, frontLeftPower, backRightPower, backLeftPower);
 
             if (gamepad1.right_bumper) {
                 Peripherals.resetYaw();
             }
             if (gamepad2.left_bumper){
-                Elevators.moveElevatorsL(0.75);
-                Elevators.moveElevatorsR(0.75);
+                Elevators.moveElevatorsR(-0.75);
+                Elevators.moveElevatorsL(-0.75);
+
                 ElevatorPIDL.setSetPoint(Elevators.getArmLPosition());
                 ElevatorPIDR.setSetPoint(Elevators.getArmRPosition());
 
             }
             else if (gamepad2.right_bumper){
-                Elevators.moveElevatorsL(-0.75);
-                Elevators.moveElevatorsR(-0.75);
+                Elevators.moveElevatorsL(0.75);
+                Elevators.moveElevatorsR(0.75);
+
                 ElevatorPIDL.setSetPoint(Elevators.getArmLPosition());
                 ElevatorPIDR.setSetPoint(Elevators.getArmRPosition());
             }else {
@@ -116,6 +129,20 @@ public class FieldCentric extends LinearOpMode {
                 Wrist.Wrist(Constants.wristDown);
             }else{
                 Wrist.Wrist(Constants.wristUp);
+            }
+            if (ArmPID.getSetPoint() == Constants.armIntake){
+                ElevatorPIDL.setSetPoint(50);
+                ElevatorPIDR.setSetPoint(50);
+            }
+
+            if (gamepad2.left_trigger > 0 && gamepad2.dpad_left && ArmPID.getSetPoint() == Constants.armPlace){
+                Intake.moveMotor(-gamepad2.left_trigger/2);
+            }
+            if(ArmPID.getSetPoint() == Constants.armHigh){
+                isArmUp = true;
+            }
+            else {
+                isArmUp = false;
             }
             telemetry.addData("ArmL", Elevators.getArmLPosition());
             telemetry.addData("ArmR", Elevators.getArmRPosition());

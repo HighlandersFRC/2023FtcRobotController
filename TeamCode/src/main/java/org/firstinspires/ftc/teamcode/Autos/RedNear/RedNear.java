@@ -37,7 +37,6 @@ public class RedNear extends LinearOpMode {
      */
     private TfodProcessor tfod;
 
-
     /**
      * The variable to store our instance of the vision portal.
      */
