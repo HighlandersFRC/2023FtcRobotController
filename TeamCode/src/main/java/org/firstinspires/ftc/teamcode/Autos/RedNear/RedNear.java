@@ -89,20 +89,21 @@ public class RedNear extends LinearOpMode {
                     new Wait(1000),
                     new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap,1000,-0.20)),
                     new Arm(hardwareMap, Constants.armIntake),
-                    new strafe(hardwareMap, 0.5, 0.1)
+                    new strafe(hardwareMap, 0.5, 0.2)
             ));
         } else if (autoside.equals("Middle")){
             scheduler.add(new CommandGroup(scheduler,
                     new MoveWrist(hardwareMap, Constants.wristDown),
                     new Drive(hardwareMap, -0.4, 0.135),
                     new Turn(hardwareMap, 180),
-                    new MainIntake(hardwareMap,750,-.15),
+                    new MainIntake(hardwareMap,760,-.18),
                     new MoveWrist(hardwareMap, Constants.wristUp),
-                    new Turn(hardwareMap, 90),
+                    new Turn(hardwareMap, 92),
                     new Drive(hardwareMap,-0.3, 0.205),
                     new Arm(hardwareMap,Constants.armHigh),
                     new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap,1000,-0.20)),
-                    new Arm(hardwareMap, Constants.armIntake)
+                    new Arm(hardwareMap, Constants.armIntake),
+                new strafe(hardwareMap,-0.5,0.55)
             ));
         } else if (autoside.equals("None")) {
 

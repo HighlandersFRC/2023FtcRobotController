@@ -19,8 +19,8 @@ public class Arm extends Command {
 
     public void start(){
         PID.setSetPoint(targetPosition);
-        PID.setMaxOutput(0.5);
-        PID.setMinOutput(-0.5);
+        PID.setMaxOutput(0.6);
+        PID.setMinOutput(-0.6);
         PID.setContinuous(false);
     }
     public void execute(){
@@ -32,7 +32,7 @@ public class Arm extends Command {
 
     public boolean isFinished() {
         if (!(PID.getError() == 0)) {
-            if ((Math.abs(PID.getError())) <= 100) {
+            if ((Math.abs(PID.getError())) <= 150) {
                 org.firstinspires.ftc.teamcode.Subsystems.Arm.brakeMotors();
                 return true;
             }
