@@ -17,6 +17,13 @@ public class Elevators extends Subsystems{
 
         ArmL.setDirection(DcMotorSimple.Direction.REVERSE);
     }
+    public static void resetEncoders(){
+        ArmL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        ArmR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        ArmL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        ArmR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
     public static double getArmLPosition(){
         return ArmL.getCurrentPosition();
     }
