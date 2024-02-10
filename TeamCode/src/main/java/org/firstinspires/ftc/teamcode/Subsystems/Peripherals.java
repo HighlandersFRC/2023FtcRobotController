@@ -28,13 +28,13 @@ public class Peripherals extends Subsystems{
     }
     public static double getYaw(){
         if ((navX.getYaw() - navXOffset ) > 180){
-        return -(navX.getYaw() - navXOffset - 360);
+        return (navX.getYaw() - navXOffset - 360);
         }else
         if ((navX.getYaw() - navXOffset ) < -180){
-            return -(navX.getYaw() - navXOffset + 360);
+            return (navX.getYaw() - navXOffset + 360);
         }
         else {
-            return -(navX.getYaw() - navXOffset);
+            return (navX.getYaw() - navXOffset);
         }
     }
     public static void resetYaw(){navXOffset = navX.getYaw();}
