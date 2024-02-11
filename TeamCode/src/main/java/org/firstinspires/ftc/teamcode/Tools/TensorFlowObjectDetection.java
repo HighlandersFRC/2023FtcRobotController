@@ -25,7 +25,8 @@
  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
+ *//*
+
 
 package org.firstinspires.ftc.teamcode.Tools;
 
@@ -42,13 +43,15 @@ import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
 import java.util.List;
 
+*/
 /*
  * This OpMode illustrates the basics of TensorFlow Object Detection,
  * including Java Builder structures for specifying Vision parameters.
  *
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
- */
+ *//*
+
 @TeleOp(name = "Concept: TensorFlow Object Detection", group = "Concept")
 
 public class TensorFlowObjectDetection extends LinearOpMode {
@@ -68,14 +71,18 @@ public class TensorFlowObjectDetection extends LinearOpMode {
 
     };
 
-    /**
+    */
+/**
      * The variable to store our instance of the TensorFlow Object Detection processor.
-     */
+     *//*
+
     private TfodProcessor tfod;
 
-    /**
+    */
+/**
      * The variable to store our instance of the vision portal.
-     */
+     *//*
+
     private VisionPortal visionPortal;
 
     @Override
@@ -98,12 +105,14 @@ public class TensorFlowObjectDetection extends LinearOpMode {
                 telemetry.update();
 
                 // Save CPU resources; can resume streaming when needed.
-             /*   if (gamepad1.dpad_down) {
+             */
+/*   if (gamepad1.dpad_down) {
                     visionPortal.stopStreaming();
                 } else if (gamepad1.dpad_up) {
                     visionPortal.resumeStreaming();
                 }
-*/
+*//*
+
                 // Share the CPU.
                 sleep(20);
             }
@@ -114,9 +123,11 @@ public class TensorFlowObjectDetection extends LinearOpMode {
 
     }   // end runOpMode()
 
-    /**
+    */
+/**
      * Initialize the TensorFlow Object Detection processor.
-     */
+     *//*
+
     private void initTfod() {
 
         // Create the TensorFlow processor by using a builder.
@@ -178,9 +189,11 @@ builder.setCameraResolution(new Size(320, 240));
 
     }   // end method initTfod()
 
-    /**
+    */
+/**
      * Add telemetry about TensorFlow Object Detection (TFOD) recognitions.
-     */
+     *//*
+
     private void telemetryTfod() {
 
         List<Recognition> currentRecognitions = tfod.getRecognitions();
@@ -200,3 +213,4 @@ builder.setCameraResolution(new Size(320, 240));
     }   // end method telemetryTfod()
 
 }   // end class
+*/

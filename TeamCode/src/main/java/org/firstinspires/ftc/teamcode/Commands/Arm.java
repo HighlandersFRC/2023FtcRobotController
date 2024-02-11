@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Commands;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.Commands.OldCommands.RotateArm;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Subsystems;
 import org.firstinspires.ftc.teamcode.Tools.PID;
@@ -21,8 +22,8 @@ public class Arm extends Command {
 
     public void start(){
         PID.setSetPoint(targetPosition);
-        PID.setMaxOutput(0.5);
-        PID.setMinOutput(-0.5);
+        PID.setMaxOutput(0.6);
+        PID.setMinOutput(-0.6);
         PID.setContinuous(false);
     }
     public void execute(){
@@ -30,6 +31,7 @@ public class Arm extends Command {
         org.firstinspires.ftc.teamcode.Subsystems.Arm.rotateArm(PID.getResult());
     }
     public void end(){
+        org.firstinspires.ftc.teamcode.Subsystems.Arm.rotateArm(0);
     }
 
     public boolean isFinished() {

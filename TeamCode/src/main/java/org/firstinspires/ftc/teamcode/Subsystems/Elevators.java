@@ -36,4 +36,8 @@ public class Elevators extends Subsystems{
     public static void moveElevatorsR(double power){
         ArmR.setPower(power);
     }
+    public static void brakeMotors(){
+        ArmL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        ArmR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    }
 }

@@ -82,27 +82,28 @@ public class RedNear extends LinearOpMode {
                     new Drive(hardwareMap, -0.2, 0.01),
                     new MainIntake(hardwareMap,500,-.2),
                     new MoveWrist(hardwareMap, Constants.wristUp),
-                    new Drive(hardwareMap,-0.4, 0.19),
+                    new Drive(hardwareMap,-0.4, 0.23),
                     new Wait(500),
                     new strafe(hardwareMap, 0.5, 0.05),
                     new Arm(hardwareMap,Constants.armHigh),
                     new Wait(1000),
                     new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap,1000,-0.20)),
                     new Arm(hardwareMap, Constants.armIntake),
-                    new strafe(hardwareMap, 0.5, 0.1)
+                    new strafe(hardwareMap, 0.5, 0.28)
             ));
         } else if (autoside.equals("Middle")){
             scheduler.add(new CommandGroup(scheduler,
                     new MoveWrist(hardwareMap, Constants.wristDown),
-                    new Drive(hardwareMap, -0.4, 0.135),
+                    new Drive(hardwareMap, -0.4, 0.133),
                     new Turn(hardwareMap, 180),
-                    new MainIntake(hardwareMap,750,-.15),
+                    new MainIntake(hardwareMap,750,-0.15),
                     new MoveWrist(hardwareMap, Constants.wristUp),
-                    new Turn(hardwareMap, 90),
-                    new Drive(hardwareMap,-0.3, 0.205),
+                    new Turn(hardwareMap, 80),
+                    new Drive(hardwareMap,-0.3, 0.233),
                     new Arm(hardwareMap,Constants.armHigh),
                     new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap,1000,-0.20)),
-                    new Arm(hardwareMap, Constants.armIntake)
+                    new Arm(hardwareMap, Constants.armIntake),
+                    new strafe(hardwareMap, 0.3, 0.5)
             ));
         } else if (autoside.equals("None")) {
 
