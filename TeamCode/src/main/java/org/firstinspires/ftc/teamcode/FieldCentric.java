@@ -92,9 +92,9 @@ public class FieldCentric extends LinearOpMode {
                 backRightPower = backRightPower/2;
                 frontLeftPower = frontLeftPower/2;
                 frontRightPower = frontRightPower/2;
-                if (intakePower == 0){
+              /*  if (intakePower == 0){
                     Intake.moveMotor(0.3);
-                }
+                }*/
             }
             if (gamepad1.right_bumper) {
                 Peripherals.resetYaw();
