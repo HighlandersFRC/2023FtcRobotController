@@ -2,6 +2,9 @@ package org.firstinspires.ftc.teamcode.Commands;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.Commands.OldCommands.RotateArm;
+import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
+import org.firstinspires.ftc.teamcode.Subsystems.Subsystems;
 import org.firstinspires.ftc.teamcode.Tools.PID;
 
 public class Arm extends Command {
@@ -28,11 +31,12 @@ public class Arm extends Command {
         org.firstinspires.ftc.teamcode.Subsystems.Arm.rotateArm(PID.getResult());
     }
     public void end(){
+        org.firstinspires.ftc.teamcode.Subsystems.Arm.rotateArm(0);
     }
 
     public boolean isFinished() {
         if (!(PID.getError() == 0)) {
-            if ((Math.abs(PID.getError())) <= 150) {
+            if ((Math.abs(PID.getError())) <= 100) {
                 org.firstinspires.ftc.teamcode.Subsystems.Arm.brakeMotors();
                 return true;
             }
