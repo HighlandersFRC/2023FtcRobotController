@@ -23,7 +23,6 @@ public class FieldCentric extends LinearOpMode {
     @Override
     public void runOpMode() {
         waitForStart();
-
         Elevators.initialize(hardwareMap);
         DriveTrain.initialize(hardwareMap);
         Arm.initialize(hardwareMap);
@@ -71,6 +70,7 @@ public class FieldCentric extends LinearOpMode {
             double rx = gamepad1.right_stick_x;
 
             double botHeading = Peripherals.getYaw();
+            if (Peripherals.navxIsConnect() == false){botHeading=Peripherals.imuYaw();}
             double pi = Math.PI;
             double botHeadingRadian = -botHeading * pi/180;
 
@@ -97,6 +97,7 @@ public class FieldCentric extends LinearOpMode {
             if (gamepad1.right_bumper) {
                 Peripherals.resetYaw();
             }
+            if (gamepad1.right_bumper&Peripherals.navxIsConnect()==false){Peripherals.imuReset();}
             DriveTrain.Drive(frontRightPower, frontLeftPower, backRightPower, backLeftPower);
 
                 if (gamepad2.left_bumper) {
