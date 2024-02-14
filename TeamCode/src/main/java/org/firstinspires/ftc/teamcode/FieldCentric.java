@@ -20,7 +20,7 @@ import org.firstinspires.ftc.teamcode.Tools.PID;
 public class FieldCentric extends LinearOpMode {
     PID ElevatorPIDL = new PID(0.0007, 0.0, 0.0007);
     PID ElevatorPIDR = new PID(0.0007, 0.0, 0.0007);
-    PID ArmPID = new PID(0.001, 0.0, 0.005);
+    PID ArmPID = new PID(0.0015, 0.0, 0.0018);
     @Override
     public void runOpMode() {
 
@@ -32,11 +32,11 @@ public class FieldCentric extends LinearOpMode {
         Intake.initialize(hardwareMap);
         Peripherals.initialize(hardwareMap);
         Wrist.initialize(hardwareMap);
-/*      LEDLights.initialize(hardwareMap);*/
+        /*      LEDLights.initialize(hardwareMap);*/
 
         Elevators.resetEncoders();
 
-/*      LEDLights.setModeFire();*/
+        /*      LEDLights.setModeFire();*/
 
         while (opModeIsActive()) {
 
@@ -87,48 +87,52 @@ public class FieldCentric extends LinearOpMode {
             double frontRightPower = (rotY - rotX - rx) / denominator;
             double backRightPower = (rotY + rotX - rx) / denominator;
 
+            if (y==0 && x==0 &&rx==0){
+                DriveTrain.brakeMotors();
+            }
+
             if(ArmPID.getSetPoint() == Constants.armPlace){
-                backLeftPower = backLeftPower/2;
-                backRightPower = backRightPower/2;
-                frontLeftPower = frontLeftPower/2;
-                frontRightPower = frontRightPower/2;
-                if (intakePower == 0){
+                backLeftPower = backLeftPower * 1 / 2;
+                backRightPower = backRightPower * 1 / 2;
+                frontLeftPower = frontLeftPower * 1 / 2;
+                frontRightPower = frontRightPower * 1 / 2;
+              /*  if (intakePower == 0){
                     Intake.moveMotor(0.3);
-                }
+                }*/
             }
             if (gamepad1.right_bumper) {
                 Peripherals.resetYaw();
             }
             DriveTrain.Drive(frontRightPower, frontLeftPower, backRightPower, backLeftPower);
 
-                if (gamepad2.left_bumper) {
-                   if (Elevators.getArmLPosition() >= Constants.retractedElevator){
-                       if (Elevators.getArmRPosition() >= Constants.retractedElevator){
-                           Elevators.moveElevatorsR(0.75);
-                           Elevators.moveElevatorsL(-0.75);
-                           ElevatorPIDL.setSetPoint(Elevators.getArmLPosition());
-                           ElevatorPIDR.setSetPoint(Elevators.getArmRPosition());
-                       }
-                   }
+            if (gamepad2.left_bumper) {
+                if (Elevators.getArmLPosition() >= Constants.retractedElevator){
+                    if (Elevators.getArmRPosition() >= Constants.retractedElevator){
+                        Elevators.moveElevatorsR(0.75);
+                        Elevators.moveElevatorsL(-0.75);
+                        ElevatorPIDL.setSetPoint(Elevators.getArmLPosition());
+                        ElevatorPIDR.setSetPoint(Elevators.getArmRPosition());
+                    }
+                }
 
-                } else if (gamepad2.right_bumper) {
-                            Elevators.moveElevatorsL(0.75);
-                            Elevators.moveElevatorsR(-0.75);
+            } else if (gamepad2.right_bumper) {
+                Elevators.moveElevatorsL(0.75);
+                Elevators.moveElevatorsR(-0.75);
 
-                            ElevatorPIDL.setSetPoint(Elevators.getArmLPosition());ElevatorPIDR.setSetPoint(Elevators.getArmRPosition());
-                } else {
-                    Elevators.moveElevatorsL(0);
-                    Elevators.moveElevatorsR(0);
-                    Elevators.brakeMotors();
-                }
-                if (gamepad2.x) {
-                    ElevatorPIDL.setSetPoint(Constants.retractedElevator);
-                    ElevatorPIDR.setSetPoint(Constants.retractedElevator);
-                }
-                if (gamepad2.y) {
-                    ElevatorPIDL.setSetPoint(Constants.deployedElevator);
-                    ElevatorPIDR.setSetPoint(Constants.deployedElevator);
-                }
+                ElevatorPIDL.setSetPoint(Elevators.getArmLPosition());ElevatorPIDR.setSetPoint(Elevators.getArmRPosition());
+            } else {
+                Elevators.moveElevatorsL(0);
+                Elevators.moveElevatorsR(0);
+                Elevators.brakeMotors();
+            }
+            if (gamepad2.x) {
+                ElevatorPIDL.setSetPoint(Constants.retractedElevator);
+                ElevatorPIDR.setSetPoint(Constants.retractedElevator);
+            }
+            if (gamepad2.y) {
+                ElevatorPIDL.setSetPoint(Constants.deployedElevator);
+                ElevatorPIDR.setSetPoint(Constants.deployedElevator);
+            }
             if (gamepad2.a){
                 ArmPID.setSetPoint(Constants.armIntake);
             }
@@ -159,6 +163,7 @@ public class FieldCentric extends LinearOpMode {
             telemetry.addData("Arm Offset", Arm.getOffset());
             telemetry.addData("Arm Voltage", Arm.getVoltage());
             telemetry.addData("Raw Arm Position", Arm.getRawPosition());
+            telemetry.addData("Current sensor", Constants.currentNavigationalSensor);
             telemetry.update();
         }
     }

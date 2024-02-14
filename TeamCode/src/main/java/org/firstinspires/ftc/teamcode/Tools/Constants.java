@@ -31,6 +31,7 @@ public class Constants {
     public static double lastSetElevatorPosition = 0;
     public static double retractedElevator = 100;
     public static double deployedElevator = 2600;
+    public static String currentNavigationalSensor = "IMU";
 /*    public static double wristDown = 0.3; //practice bot
     public static double wristUp = 0.7; //practice bot*/
 }

@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.Tools.PID;
 public class Arm extends Command {
     double targetPosition;
     public static String Subsystem = "Arm";
-    PID PID = new PID(0.001, 0.0, 0.005);
+    PID PID = new PID(0.003, 0.0, 0.002);
     public Arm(HardwareMap hardwareMap, double targetPosition){
         org.firstinspires.ftc.teamcode.Subsystems.Arm.initialize(hardwareMap);
         this.targetPosition = targetPosition;
@@ -22,8 +22,8 @@ public class Arm extends Command {
 
     public void start(){
         PID.setSetPoint(targetPosition);
-        PID.setMaxOutput(0.6);
-        PID.setMinOutput(-0.6);
+        PID.setMaxOutput(0.8);
+        PID.setMinOutput(-0.8);
         PID.setContinuous(false);
     }
     public void execute(){
@@ -31,7 +31,7 @@ public class Arm extends Command {
         org.firstinspires.ftc.teamcode.Subsystems.Arm.rotateArm(PID.getResult());
     }
     public void end(){
-        org.firstinspires.ftc.teamcode.Subsystems.Arm.rotateArm(0);
+        org.firstinspires.ftc.teamcode.Subsystems.Arm.brakeMotors();
     }
 
     public boolean isFinished() {
