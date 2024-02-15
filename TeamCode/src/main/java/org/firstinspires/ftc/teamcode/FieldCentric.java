@@ -158,7 +158,6 @@ public class FieldCentric extends LinearOpMode {
             telemetry.addData("ArmL", Elevators.getArmLPosition());
             telemetry.addData("ArmR", Elevators.getArmRPosition());
             telemetry.addData("Yaw", Peripherals.getYaw());
-            telemetry.addData("NavX Yaw", Peripherals.getNavXYaw());
             telemetry.addData("IMU Yaw", Peripherals.imuYaw());
             telemetry.addData("ArmPID Power", ArmPID.getResult());
             telemetry.addData("Arm Encoder", Arm.getArmEncoder());

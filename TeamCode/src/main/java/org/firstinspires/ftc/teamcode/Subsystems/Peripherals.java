@@ -30,42 +30,29 @@ public class Peripherals extends Subsystems{
         imu = hardwareMap.get(IMU.class, "imu");
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.DOWN,
-                RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD));
+                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
         imu.initialize(parameters);
         navX = com.kauailabs.navx.ftc.AHRS.getInstance(hardwareMap.get(NavxMicroNavigationSensor.class, "navX"), AHRS.DeviceDataType.kProcessedData);
     }
     @SuppressLint("SuspiciousIndentation")
     public static double getYaw() {
-        if (imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES) == 0) {
-            if ((navX.getYaw() - navXOffset) > 180) {
-                Constants.currentNavigationalSensor = "NavX";
-                return -(navX.getYaw() - navXOffset - 360);
-            } else if ((navX.getYaw() - navXOffset) < -180) {
-                Constants.currentNavigationalSensor = "NavX";
-                return -(navX.getYaw() - navXOffset + 360);
-            } else {
-                Constants.currentNavigationalSensor = "NavX";
-                return -(navX.getYaw() - navXOffset);
-            }
-        } else {
-            Constants.currentNavigationalSensor = "IMU";
-            return -imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
-        }
-    }
-    public static double getNavXYaw(){
+        /*        if (imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES) == 0) {*/
         if ((navX.getYaw() - navXOffset) > 180) {
             Constants.currentNavigationalSensor = "NavX";
-            return -(navX.getYaw() - navXOffset - 360);
+            return (navX.getYaw() - navXOffset - 360);
         } else if ((navX.getYaw() - navXOffset) < -180) {
             Constants.currentNavigationalSensor = "NavX";
-            return -(navX.getYaw() - navXOffset + 360);
+            return (navX.getYaw() - navXOffset + 360);
         } else {
             Constants.currentNavigationalSensor = "NavX";
-            return -(navX.getYaw() - navXOffset);
+            return (navX.getYaw() - navXOffset);
         }
     }
-    public static void resetYaw(){
-        navXOffset = navX.getYaw();
+    /*        else
+            Constants.currentNavigationalSensor = "IMU";
+            return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
+        }*/
+    public static void resetYaw(){navXOffset = navX.getYaw();
         imu.resetYaw();
     }
     public static double getRoll(){
