@@ -87,9 +87,9 @@ public class FieldCentric extends LinearOpMode {
             double frontRightPower = (rotY - rotX - rx) / denominator;
             double backRightPower = (rotY + rotX - rx) / denominator;
 
-            if (y==0 && x==0 &&rx==0){
+/*            if (y==0 && x==0 &&rx==0){
                 DriveTrain.brakeMotors();
-            }
+            }*/
 
             if(ArmPID.getSetPoint() == Constants.armPlace){
                 backLeftPower = backLeftPower * 1 / 2;
@@ -157,7 +157,9 @@ public class FieldCentric extends LinearOpMode {
             }
             telemetry.addData("ArmL", Elevators.getArmLPosition());
             telemetry.addData("ArmR", Elevators.getArmRPosition());
-            telemetry.addData("NavX Yaw", Peripherals.getYaw());
+            telemetry.addData("Yaw", Peripherals.getYaw());
+            telemetry.addData("NavX Yaw", Peripherals.getNavXYaw());
+            telemetry.addData("IMU Yaw", Peripherals.imuYaw());
             telemetry.addData("ArmPID Power", ArmPID.getResult());
             telemetry.addData("Arm Encoder", Arm.getArmEncoder());
             telemetry.addData("Arm Offset", Arm.getOffset());
