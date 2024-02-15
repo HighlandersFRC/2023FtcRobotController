@@ -98,7 +98,7 @@ public class RedNear extends LinearOpMode {
                     new Turn(hardwareMap, 180),
                     new MainIntake(hardwareMap,750,-0.15),
                     new MoveWrist(hardwareMap, Constants.wristUp),
-                    new Turn(hardwareMap, 80),
+                    new Turn(hardwareMap, 90),
                     new Drive(hardwareMap,-0.3, 0.233),
                     new Arm(hardwareMap,Constants.armHigh),
                     new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap,1000,-0.20)),
