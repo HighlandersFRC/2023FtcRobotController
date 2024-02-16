@@ -77,10 +77,10 @@ public class BlueNear extends LinearOpMode {
                     new ParallelCommandGroup(scheduler, new MoveWrist(hardwareMap, Constants.wristDown), new Drive(hardwareMap, -0.4, 0.17), new MainIntake(hardwareMap, 1000, 0.5)),
                     new Turn(hardwareMap, 90),
                     new Drive(hardwareMap, 0.2, 0.02),
-                    new Drive(hardwareMap, -0.2, 0.01),
+                    new Drive(hardwareMap, -0.2, 0.0085),
                     new MainIntake(hardwareMap,500,-.2),
                     new MoveWrist(hardwareMap, Constants.wristUp),
-                    new Drive(hardwareMap,-0.4, 0.21),
+                    new Drive(hardwareMap,-0.4, 0.237),
                     new Wait(500),
                     new strafe(hardwareMap, -0.5, 0.07),
                     new Arm(hardwareMap,Constants.armHigh),
@@ -93,36 +93,36 @@ public class BlueNear extends LinearOpMode {
             scheduler.add(new CommandGroup(scheduler,
                     new ParallelCommandGroup(scheduler, new Drive(hardwareMap, -0.4, 0.18), new MoveWrist(hardwareMap, Constants.wristDown)),
                     new Turn(hardwareMap, 90),
-                    new Drive(hardwareMap, -0.2, 0.18),
+                    new Drive(hardwareMap, -0.2, 0.15),
                     new MainIntake(hardwareMap,1000,-0.22),
                     new MoveWrist(hardwareMap, Constants.wristUp),
                     new Drive(hardwareMap,-0.4, 0.04),
                     new Wait(500),
                     new Drive(hardwareMap, 0.3, 0.02),
                     new strafe(hardwareMap, 0.3, 0.3),
-                    new Drive(hardwareMap, -0.3, 0.04),
+                    new Drive(hardwareMap, -0.3, 0.065),
                     new Arm(hardwareMap,Constants.armHigh),
                     new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap,1000,-0.2)),
                     new Arm(hardwareMap, Constants.armIntake),
-                    new Drive(hardwareMap, 0.3, 0.01),
-                    new strafe(hardwareMap, 0.5, 0.3)
+                    new Drive(hardwareMap, 0.3, 0.05),
+                    new strafe(hardwareMap, 0.5, 0.33)
             ));
 } else  if (autoside.equals("Middle")){
             scheduler.add(new CommandGroup(scheduler,
-                    new ParallelCommandGroup(scheduler, new MoveWrist(hardwareMap, Constants.wristDown), new Drive(hardwareMap, -0.4, 0.11), new MainIntake(hardwareMap, 1000, 0.5)),
+                    new ParallelCommandGroup(scheduler, new MoveWrist(hardwareMap, Constants.wristDown), new Drive(hardwareMap, -0.4, 0.125), new MainIntake(hardwareMap, 1000, 0.5)),
                     new Turn(hardwareMap, -178),
                     //need more power here
                     //no strafe
-                    new MainIntake(hardwareMap,750,-.15),
+                    new MainIntake(hardwareMap,775,-.15),
                     new MoveWrist(hardwareMap, Constants.wristUp),
                     new Turn(hardwareMap, -90),
-                    new Drive(hardwareMap,-0.3, 0.19),
-                    new strafe(hardwareMap, 0.4, 0.08),
+                    new Drive(hardwareMap,-0.3, 0.215),
+                  /*  new strafe(hardwareMap, 0.4, 0.05),*/
                     new Arm(hardwareMap,Constants.armHigh),
                     new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap,1000,-0.25)),
                     new Arm(hardwareMap, Constants.armIntake),
                     new Drive(hardwareMap, 0.2, 0.03),
-                    new strafe(hardwareMap, 0.5, 0.65)
+                    new strafe(hardwareMap, 0.5, 0.45)
             ));
         }
             while (opModeIsActive()) {
@@ -211,3 +211,5 @@ builder.setCameraResolution(new Size(320, 240));
     }
 
 }
+
+//s
