@@ -10,7 +10,15 @@ import org.firstinspires.ftc.teamcode.Tools.PID;
 public class Arm extends Command {
     double targetPosition;
     public static String Subsystem = "Arm";
-    PID PID = new PID(0.003, 0.0, 0.002);
+/*    PID PID = new PID(0.003, 0.0, 0.002);*/ //old pid
+
+    PID PID = new PID (0.0015, 0.0, 0.0018); //reference to new pid(check gear ratio) may need d value
+
+
+
+
+
+
     public Arm(HardwareMap hardwareMap, double targetPosition){
         org.firstinspires.ftc.teamcode.Subsystems.Arm.initialize(hardwareMap);
         this.targetPosition = targetPosition;
