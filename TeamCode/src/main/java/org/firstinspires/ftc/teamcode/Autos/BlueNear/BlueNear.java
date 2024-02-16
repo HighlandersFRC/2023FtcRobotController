@@ -109,20 +109,20 @@ public class BlueNear extends LinearOpMode {
             ));
 } else  if (autoside.equals("Middle")){
             scheduler.add(new CommandGroup(scheduler,
-                    new ParallelCommandGroup(scheduler, new MoveWrist(hardwareMap, Constants.wristDown), new Drive(hardwareMap, -0.4, 0.135), new MainIntake(hardwareMap, 1000, 0.5)),
-                    new Turn(hardwareMap, -180),
+                    new ParallelCommandGroup(scheduler, new MoveWrist(hardwareMap, Constants.wristDown), new Drive(hardwareMap, -0.4, 0.11), new MainIntake(hardwareMap, 1000, 0.5)),
+                    new Turn(hardwareMap, -178),
                     //need more power here
                     //no strafe
                     new MainIntake(hardwareMap,750,-.15),
                     new MoveWrist(hardwareMap, Constants.wristUp),
                     new Turn(hardwareMap, -90),
-                    new Drive(hardwareMap,-0.3, 0.206),
-                    new strafe(hardwareMap, 0.4, 0.1),
+                    new Drive(hardwareMap,-0.3, 0.19),
+                    new strafe(hardwareMap, 0.4, 0.08),
                     new Arm(hardwareMap,Constants.armHigh),
                     new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap,1000,-0.25)),
                     new Arm(hardwareMap, Constants.armIntake),
-                    new Drive(hardwareMap, 0.2, 0.01),
-                    new strafe(hardwareMap, 0.5, 0.5)
+                    new Drive(hardwareMap, 0.2, 0.03),
+                    new strafe(hardwareMap, 0.5, 0.65)
             ));
         }
             while (opModeIsActive()) {
