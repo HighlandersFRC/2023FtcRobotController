@@ -60,15 +60,16 @@ public class RedNear extends LinearOpMode {
             scheduler.add(new CommandGroup(scheduler,
                     new ParallelCommandGroup(scheduler, new Drive(hardwareMap, -0.4, 0.18), new MoveWrist(hardwareMap, Constants.wristDown)),
                     new Turn(hardwareMap, -90),
-                    new Drive(hardwareMap, -0.2, 0.15),
+                    new Drive(hardwareMap, -0.2, 0.14),
                     new MainIntake(hardwareMap,1000,-0.15),
                     new MoveWrist(hardwareMap, Constants.wristUp),
-                    new Drive(hardwareMap,-0.4, 0.036),
+                    new Drive(hardwareMap,-0.4, 0.043),
                     new Wait(500),
                     new Drive(hardwareMap, 0.3, 0.02),
                     new strafe(hardwareMap, -0.5, 0.3),
-                    new Drive(hardwareMap, -0.3, 0.0545),
+                    new Drive(hardwareMap, -0.3, 0.054),
                     new Arm(hardwareMap,Constants.armHigh),
+                    new Wait(1000),
                     new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap,1500,-0.2)),
                     new Arm(hardwareMap, Constants.armIntake),
                     new Drive(hardwareMap, 0.3, 0.01),
@@ -94,16 +95,18 @@ public class RedNear extends LinearOpMode {
         } else if (autoside.equals("Middle")){
             scheduler.add(new CommandGroup(scheduler,
                     new MoveWrist(hardwareMap, Constants.wristDown),
-                    new Drive(hardwareMap, -0.4, 0.133),
-                    new Turn(hardwareMap, 180),
+                    new Drive(hardwareMap, -0.4, 0.123),
+                    new Turn(hardwareMap, 178),
                     new MainIntake(hardwareMap,750,-0.15),
                     new MoveWrist(hardwareMap, Constants.wristUp),
                     new Turn(hardwareMap, 90),
-                    new Drive(hardwareMap,-0.3, 0.233),
+                    new Drive(hardwareMap,-0.3, 0.23),
                     new Arm(hardwareMap,Constants.armHigh),
+                    new Wait(1000),
                     new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap,1000,-0.20)),
                     new Arm(hardwareMap, Constants.armIntake),
-                    new strafe(hardwareMap, 0.3, 0.5)
+                    new Drive(hardwareMap, 0.3, 0.03),
+                    new strafe(hardwareMap, 0.3, 0.7)
             ));
         } else if (autoside.equals("None")) {
 
