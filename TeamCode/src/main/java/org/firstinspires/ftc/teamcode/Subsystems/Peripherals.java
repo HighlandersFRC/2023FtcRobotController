@@ -27,6 +27,7 @@ public class Peripherals extends Subsystems{
         navX = com.kauailabs.navx.ftc.AHRS.getInstance(hardwareMap.get(NavxMicroNavigationSensor.class, "navX"), AHRS.DeviceDataType.kProcessedData);
     }
     public static double getYaw(){
+        System.out.println("Hello world");
         if ((navX.getYaw() - navXOffset ) > 180){
             return -(navX.getYaw() - navXOffset - 360);
         }else

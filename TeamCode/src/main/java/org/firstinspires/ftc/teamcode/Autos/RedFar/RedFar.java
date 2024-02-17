@@ -2,16 +2,17 @@
 
 package org.firstinspires.ftc.teamcode.Autos.RedFar;
 
+import android.os.DropBoxManager;
 import android.util.Size;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.sun.tools.javac.Main;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.teamcode.Commands.Arm;
+import org.firstinspires.ftc.teamcode.Commands.Elevator;
 import org.firstinspires.ftc.teamcode.Commands.Wait;
 import org.firstinspires.ftc.teamcode.Commands.strafe;
 import org.firstinspires.ftc.teamcode.Tools.Constants;
@@ -25,7 +26,6 @@ import org.firstinspires.ftc.teamcode.Commands.Turn;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 import java.util.List;
-import java.util.TreeMap;
 
 
 @Autonomous
@@ -37,7 +37,6 @@ public class RedFar extends LinearOpMode {
      * The variable to store our instance of the TensorFlow Object Detection processor.
      */
     private TfodProcessor tfod;
-
 
     /**
      * The variable to store our instance of the vision portal.
@@ -59,54 +58,60 @@ public class RedFar extends LinearOpMode {
         telemetry.addData("autoside", autoside);
         if (autoside.equals("Right")){
             scheduler.add(new CommandGroup(scheduler,
-                    new ParallelCommandGroup(scheduler, new Drive(hardwareMap, -0.4, 0.15), new MoveWrist(hardwareMap, Constants.wristDown)),
+                    new ParallelCommandGroup(scheduler, new Drive(hardwareMap, -0.4, 0.167), new MoveWrist(hardwareMap, Constants.wristDown)),
                     new Turn(hardwareMap, -90),
-                    new Drive(hardwareMap, -0.2, 0.19),
-                    new MainIntake(hardwareMap,750,-0.35),
+                    new Drive(hardwareMap, -0.2, 0.2),
+                    new MainIntake(hardwareMap,1000,-0.15),
                     new MoveWrist(hardwareMap, Constants.wristUp),
-                    new Drive(hardwareMap, -1, 0.33),
+                    new Drive(hardwareMap,-0.4, 0.4),
                     new Wait(500),
-                    new strafe(hardwareMap, -0.5, 0.2),
-                    new Arm(hardwareMap,Constants.armHigh),
-                    new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap,1000,-0.20)),
-                    new Arm(hardwareMap, Constants.armIntake),
                     new Drive(hardwareMap, 0.3, 0.02),
-                    new strafe(hardwareMap,-0.5, 0.4),
-                    new Drive(hardwareMap, -0.4, 0.06)
+                    new strafe(hardwareMap, -0.5, 0.25),
+                    new Drive(hardwareMap, -0.3, 0.0545),
+              /*      new Arm(hardwareMap,Constants.armHigh),*/
+                    new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap,1500,-0.2)),
+                    new Arm(hardwareMap, Constants.armIntake),
+                    new Drive(hardwareMap, 0.3, 0.01),
+                    new strafe(hardwareMap, -0.5, 0.4)
             ));
         } else if (autoside.equals("Left")){
-            //angle failed
-            //didnt detect
             scheduler.add(new CommandGroup(scheduler,
                     new ParallelCommandGroup(scheduler, new Drive(hardwareMap, -0.4, 0.17), new MoveWrist(hardwareMap, Constants.wristDown)),
-                    new Turn(hardwareMap, -92),
-                    new Drive(hardwareMap, -0.4, 0.015),
-                    new MainIntake(hardwareMap,750,-.2),
+                    new Turn(hardwareMap, -90),
+             /*       new Drive(hardwareMap, 0.2, 0.006),*/
+                    new Drive(hardwareMap, -0.2, 0.04),
+                    new MainIntake(hardwareMap,500,-.2),
                     new MoveWrist(hardwareMap, Constants.wristUp),
-                    new Drive(hardwareMap, -1, 0.5),
+                    new Drive(hardwareMap,-0.4, 0.555),
                     new Wait(500),
-                    new strafe(hardwareMap, 0.5, 0.15),
-                    new Arm(hardwareMap, Constants.armHigh),
-                    new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap, 750, -0.3)),
-                    new Arm(hardwareMap, Constants.armIntake)
+                    new strafe(hardwareMap, 0.5, 0.078),
+                    new Arm(hardwareMap,Constants.armHigh),
+                    new Wait(1000),
+                    new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap,1000,-0.20)),
+                    new Arm(hardwareMap, Constants.armIntake),
+                    new Drive(hardwareMap,0.3, 0.02),
+                    new strafe(hardwareMap, 0.5, 0.31)
             ));
         } else if (autoside.equals("Middle")){
             scheduler.add(new CommandGroup(scheduler,
                     new MoveWrist(hardwareMap, Constants.wristDown),
-                    new Drive(hardwareMap, -0.4, 0.137),
+                    new Drive(hardwareMap, -0.4, 0.127),
                     new Turn(hardwareMap, 180),
-                    new MainIntake(hardwareMap, 750, -0.2),
-                    new Turn(hardwareMap, 90),
-                    new Drive(hardwareMap, -1, 0.545),
+                    new MainIntake(hardwareMap,850,-0.15),
                     new MoveWrist(hardwareMap, Constants.wristUp),
-                    new Arm(hardwareMap, Constants.armHigh),
-                    new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap, 750, -0.3)),
-                    new Arm(hardwareMap, Constants.armIntake)
+                    new Turn(hardwareMap, 85),
+                    new Drive(hardwareMap,-0.3, 0.62),
+                    new Arm(hardwareMap,Constants.armHigh),
+                    new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap,1500,-0.20)),
+                    new Arm(hardwareMap, Constants.armIntake),
+                    new Drive(hardwareMap,0.3,0.02),
+                    new strafe(hardwareMap, 0.3, 0.55)
             ));
         } else if (autoside.equals("None")) {
 
         }
         while (opModeIsActive()) {
+            telemetry.addData("ArmPos", org.firstinspires.ftc.teamcode.Subsystems.Arm.getArmEncoder());
             telemetry.update();
             scheduler.update();
         }
@@ -172,7 +177,7 @@ public class RedFar extends LinearOpMode {
                 return  "Middle";
             }
             if (frames > 100){
-                return "Middle";
+                return "Undetected";
             }
             /*if (Float.isNaN(x)) {
                 CameraConstants.autoSide = "Middle";
@@ -184,7 +189,7 @@ public class RedFar extends LinearOpMode {
 
         }   // end for() loop
 
-        return "Left";
+        return "Middle";
 
     }
 
