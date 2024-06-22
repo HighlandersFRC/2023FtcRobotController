@@ -1,6 +1,6 @@
 
 
-package org.firstinspires.ftc.teamcode.Autos.RedNear;
+package org.firstinspires.ftc.teamcode.Autos.RedFar;
 
 import android.os.DropBoxManager;
 import android.util.Size;
@@ -8,7 +8,6 @@ import android.util.Size;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
@@ -31,7 +30,7 @@ import java.util.List;
 
 @Autonomous
 //@Disabled
-public class RedNear extends LinearOpMode {
+public class RedFarShort extends LinearOpMode {
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
     /**
@@ -59,60 +58,26 @@ public class RedNear extends LinearOpMode {
         telemetry.addData("autoside", autoside);
         if (autoside.equals("Right")){
             scheduler.add(new CommandGroup(scheduler,
-                    new ParallelCommandGroup(scheduler, new Drive(hardwareMap, -0.4, 0.18), new MoveWrist(hardwareMap, Constants.wristDown)),
+                    new ParallelCommandGroup(scheduler, new Drive(hardwareMap, -0.4, 0.167), new MoveWrist(hardwareMap, Constants.wristDown)),
                     new Turn(hardwareMap, -90),
-                    new Drive(hardwareMap, -0.2, 0.14),
+                    new Drive(hardwareMap, -0.2, 0.2),
                     new MainIntake(hardwareMap,1000,-0.15),
-                    new MoveWrist(hardwareMap, Constants.wristUp),
-                    new Drive(hardwareMap,-0.4, 0.043),
-                    new Wait(500),
-                    new Drive(hardwareMap, 0.3, 0.02),
-                    new strafe(hardwareMap, -0.5, 0.3),
-                    new Drive(hardwareMap, -0.3, 0.054),
-                    new Arm(hardwareMap,Constants.armHigh),
-                    new Wait(24000),
-                    new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap,1500,-0.2)),
-                    new Arm(hardwareMap, Constants.armIntake),
-                    new Drive(hardwareMap, 0.3, 0.01),
-                    new strafe(hardwareMap, -0.5, 0.6)
+                    new MoveWrist(hardwareMap, Constants.wristUp)
             ));
         } else if (autoside.equals("Left")){
             scheduler.add(new CommandGroup(scheduler,
-                    new ParallelCommandGroup(scheduler, new Drive(hardwareMap, -0.4, 0.19), new MoveWrist(hardwareMap, Constants.wristDown)),
+                    new ParallelCommandGroup(scheduler, new Drive(hardwareMap, -0.4, 0.17), new MoveWrist(hardwareMap, Constants.wristDown)),
                     new Turn(hardwareMap, -90),
-                    new Drive(hardwareMap, 0.2, 0.01),
-                    new Drive(hardwareMap, -0.2, 0.01),
+                    /*       new Drive(hardwareMap, 0.2, 0.006),*/
+                    new Drive(hardwareMap, -0.2, 0.04),
                     new MainIntake(hardwareMap,500,-.2),
-                    new MoveWrist(hardwareMap, Constants.wristUp),
-                    new Drive(hardwareMap,-0.4, 0.228),
-                    new Wait(500),
-                    new strafe(hardwareMap, 0.5, 0.01),
-                    new Arm(hardwareMap,Constants.armHigh),
-                    new Wait(1000),
-                    new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap,1500,-0.20)),
-                    new Arm(hardwareMap, Constants.armIntake),
-                    new strafe(hardwareMap, 0.5, 0.35)
-            ));
+                    new MoveWrist(hardwareMap, Constants.wristUp)));
         } else if (autoside.equals("Middle")){
-            scheduler.add(new CommandGroup(scheduler,
-                    new MoveWrist(hardwareMap, Constants.wristDown),
-                    new Drive(hardwareMap, -0.4, 0.123),
-                    new Turn(hardwareMap, 178),
-                    new MainIntake(hardwareMap,750,-0.15),
-                    new MoveWrist(hardwareMap, Constants.wristUp),
-                    new Turn(hardwareMap, 90),
-                    new Drive(hardwareMap,-0.3, 0.23),
-                    new Arm(hardwareMap,Constants.armHigh),
-                    new Wait(2000),
-                    new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap,1000,-0.20)),
-                    new Arm(hardwareMap, Constants.armIntake),
-                    new Drive(hardwareMap, 0.3, 0.03),
-                    new strafe(hardwareMap, 0.3, 0.7)
-            ));
         } else if (autoside.equals("None")) {
 
         }
         while (opModeIsActive()) {
+            telemetry.update();
             scheduler.update();
         }
         visionPortal.close();
@@ -163,8 +128,8 @@ public class RedNear extends LinearOpMode {
             System.out.println("test");
             float x = (recognition.getLeft() + recognition.getRight()) / 2;
             float y = (recognition.getTop() + recognition.getBottom()) / 2;
-System.out.println("Detected X" + "" + x);
-            if (x < 105) {
+            System.out.println("Detected X" + "" + x);
+            if (x < 170) {
                 visionPortal.stopStreaming();
                 return "Left";
             }
@@ -172,14 +137,20 @@ System.out.println("Detected X" + "" + x);
                 visionPortal.stopStreaming();
                 return "Right";
             }
-            else if (x > 105 && x < 250) {
+            else if (x > 170 && x < 320) {
                 visionPortal.stopStreaming();
                 return  "Middle";
             }
             if (frames > 100){
                 return "Middle";
             }
-currentRecognitions = tfod.getFreshRecognitions();
+            /*if (Float.isNaN(x)) {
+                CameraConstants.autoSide = "Middle";
+            }*/
+
+
+            currentRecognitions = tfod.getFreshRecognitions();
+
 
         }   // end for() loop
 

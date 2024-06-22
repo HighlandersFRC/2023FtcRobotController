@@ -1,6 +1,6 @@
 
 
-package org.firstinspires.ftc.teamcode.Autos.BlueNear;
+package org.firstinspires.ftc.teamcode.Autos.BlueFar;
 
 import android.util.Size;
 
@@ -10,7 +10,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.sun.tools.javac.Main;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -37,7 +36,7 @@ import java.util.List;
 
 @Autonomous
 //@Disabled
-public class BlueNear extends LinearOpMode {
+public class BlueFarShort extends LinearOpMode {
     private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
     /**
@@ -79,16 +78,7 @@ public class BlueNear extends LinearOpMode {
                     new Turn(hardwareMap, 90),
                     new Drive(hardwareMap, 0.2, 0.02),
                     new Drive(hardwareMap, -0.2, 0.0085),
-                    new MainIntake(hardwareMap,500,-.2),
-                    new MoveWrist(hardwareMap, Constants.wristUp),
-                    new Drive(hardwareMap,-0.4, 0.237),
-                    new Wait(500),
-                    new strafe(hardwareMap, -0.5, 0.07),
-                    new Arm(hardwareMap,Constants.armHigh),
-                    new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap,1000,-0.20)),
-                    new Arm(hardwareMap, Constants.armIntake),
-                    new strafe(hardwareMap, 0.5, 0.45),
-                    new Drive(hardwareMap, -0.3, 0.035)
+                    new MainIntake(hardwareMap,500,-.2)
             ));
         } else if (autoside.equals("Left")){
             scheduler.add(new CommandGroup(scheduler,
@@ -96,41 +86,13 @@ public class BlueNear extends LinearOpMode {
                     new Turn(hardwareMap, 90),
                     new Drive(hardwareMap, -0.2, 0.15),
                     new MainIntake(hardwareMap,1000,-0.22),
-                    new MoveWrist(hardwareMap, Constants.wristUp),
-                    new Drive(hardwareMap,-0.4, 0.04),
-                    new Wait(500),
-                    new Drive(hardwareMap, 0.3, 0.02),
-                    new strafe(hardwareMap, 0.3, 0.3),
-                    new Drive(hardwareMap, -0.3, 0.065),
-                    new Arm(hardwareMap,Constants.armHigh),
-                    new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap,1000,-0.2)),
-                    new Arm(hardwareMap, Constants.armIntake),
-                    new Drive(hardwareMap, 0.3, 0.05),
-                    new strafe(hardwareMap, 0.5, 0.33)
-            ));
-} else  if (autoside.equals("Middle")){
-            scheduler.add(new CommandGroup(scheduler,
-                    new ParallelCommandGroup(scheduler, new MoveWrist(hardwareMap, Constants.wristDown), new Drive(hardwareMap, -0.4, 0.124), new MainIntake(hardwareMap, 1000, 0.5)),
-                    new Turn(hardwareMap, -180),
-                    //need more power here
-                    //no strafe
-                    new MainIntake(hardwareMap,775,-.15),
-                    new MoveWrist(hardwareMap, Constants.wristUp),
-                    new Turn(hardwareMap, -90),
-                    new Drive(hardwareMap,-0.3, 0.215),
-                    new strafe(hardwareMap, -0.4, 0.055),
-                    new Arm(hardwareMap,Constants.armHigh),
-                    new Wait(1000),
-                    new ParallelCommandGroup(scheduler, new Arm(hardwareMap, Constants.armHigh), new MainIntake(hardwareMap,1000,-0.25)),
-                    new Arm(hardwareMap, Constants.armIntake),
-                    new Drive(hardwareMap, 0.2, 0.03),
-                    new strafe(hardwareMap, 0.5, 0.5)
-            ));
+                    new MoveWrist(hardwareMap, Constants.wristUp)));
+        } else  if (autoside.equals("Middle")){
         }
-            while (opModeIsActive()) {
-                telemetry.addData("Detection", getLeftRightCenter());
-                scheduler.update();
-            }
+        while (opModeIsActive()) {
+            telemetry.update();
+            scheduler.update();
+        }
         visionPortal.close();
     }
     private void initTfod() {
@@ -147,7 +109,7 @@ public class BlueNear extends LinearOpMode {
 
 
         VisionPortal.Builder builder = new VisionPortal.Builder();
-builder.setCameraResolution(new Size(320, 240));
+        builder.setCameraResolution(new Size(320, 240));
         if (USE_WEBCAM) {
             builder.setCamera(hardwareMap.get(WebcamName.class, "webcam1"));
         } else {
@@ -181,7 +143,7 @@ builder.setCameraResolution(new Size(320, 240));
             float y = (recognition.getTop() + recognition.getBottom()) / 2;
             System.out.println("X Value" + "" + x);
 
-            if (x < 105) {
+            if (x < 170) {
                 visionPortal.stopStreaming();
                 return "Left";
             }
@@ -189,7 +151,7 @@ builder.setCameraResolution(new Size(320, 240));
                 visionPortal.stopStreaming();
                 return "Right";
             }
-            else if (x > 105 && x < 250) {
+            else if (x > 170 && x < 320) {
                 visionPortal.stopStreaming();
                 return  "Middle";
             }

@@ -183,7 +183,7 @@ public class BlueFar extends LinearOpMode {
             float y = (recognition.getTop() + recognition.getBottom()) / 2;
             System.out.println("X Value" + "" + x);
 
-            if (x < 130) {
+            if (x < 170) {
                 visionPortal.stopStreaming();
                 return "Left";
             }
@@ -191,7 +191,7 @@ public class BlueFar extends LinearOpMode {
                 visionPortal.stopStreaming();
                 return "Right";
             }
-            else if (x > 130 && x < 320) {
+            else if (x > 170 && x < 320) {
                 visionPortal.stopStreaming();
                 return  "Middle";
             }

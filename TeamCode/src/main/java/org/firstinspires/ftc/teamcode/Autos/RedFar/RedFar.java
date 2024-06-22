@@ -164,20 +164,20 @@ public class RedFar extends LinearOpMode {
             float x = (recognition.getLeft() + recognition.getRight()) / 2;
             float y = (recognition.getTop() + recognition.getBottom()) / 2;
             System.out.println("Detected X" + "" + x);
-            if (x < 125 && !(x == 0)) {
+            if (x < 170) {
                 visionPortal.stopStreaming();
                 return "Left";
             }
-            if (x > 175) {
+            else if (x > 250) {
                 visionPortal.stopStreaming();
                 return "Right";
             }
-            if (x > 125 && x < 175) {
+            else if (x > 170 && x < 320) {
                 visionPortal.stopStreaming();
                 return  "Middle";
             }
             if (frames > 100){
-                return "Undetected";
+                return "Middle";
             }
             /*if (Float.isNaN(x)) {
                 CameraConstants.autoSide = "Middle";
