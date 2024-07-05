@@ -61,8 +61,8 @@ public class NewAprilTagDetection extends LinearOpMode {
                 if (detection.rawPose != null) {
 
                     double x = detection.rawPose.x;
-                    double y = detection.rawPose.z; // z and y axes are swapped
-                    double z = -detection.rawPose.y; // z axis is inverted
+                    double y = detection.rawPose.z;
+                    double z = -detection.rawPose.y;
 
                     Orientation rot = Orientation.getOrientation(detection.rawPose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
                     double yaw = -rot.firstAngle;
@@ -97,4 +97,4 @@ public class NewAprilTagDetection extends LinearOpMode {
 }
 
 
-//100!
+//100! :)
