@@ -92,91 +92,91 @@
 //
 ////using tag.ftcPose.range
 //
-////package org.firstinspires.ftc.teamcode;
-////
-////import android.util.Size;
-////import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-////import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-////import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-////import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
-////import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl;
-////import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-////import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-////import org.firstinspires.ftc.vision.VisionPortal;
-////import org.firstinspires.ftc.vision.apriltag.AprilTagGameDatabase;
-////import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
-////import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc;
-////import java.util.concurrent.TimeUnit;
-////
-////@TeleOp
-////public class AprilTagDetection extends LinearOpMode {
-////
-////
-////    public void runOpMode() throws InterruptedException {
-////
-////        // AprilTag processor configuration
-////        AprilTagProcessor tagProcessor = new AprilTagProcessor.Builder()
-////                .setDrawAxes(true)
-////                .setDrawCubeProjection(true)
-////                .setDrawTagID(true)
-////                .setDrawTagOutline(true)
-////                .setLensIntrinsics(626.731, 626.731, 642.398, 380.131)
-////                .setTagFamily(AprilTagProcessor.TagFamily.TAG_36h11)
-////                .setTagLibrary(AprilTagGameDatabase.getCenterStageTagLibrary())
-////                .setOutputUnits(DistanceUnit.METER, AngleUnit.RADIANS)
-////                .build();
-////
-////        // Vision portal configuration
-////        VisionPortal visionPortal = new VisionPortal.Builder()
-////                .addProcessor(tagProcessor)
-////                .setCamera(hardwareMap.get(WebcamName.class, "Webcam1"))
-////                .setCameraResolution(new Size(1280, 720))
-////                .enableLiveView(true)
-////                .setStreamFormat(VisionPortal.StreamFormat.YUY2)
-////                .build();
-////
-////        // Wait for the camera to start streaming
-////        while (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING) {}
-////
-////        // Camera exposure and gain settings
-////        ExposureControl exposure = visionPortal.getCameraControl(ExposureControl.class);
-////        exposure.setMode(ExposureControl.Mode.Manual);
-////        exposure.setExposure(30, TimeUnit.MILLISECONDS);
-////
-////        GainControl gain = visionPortal.getCameraControl(GainControl.class);
-////        gain.setGain(200);
-////
-////        // Wait for the start signal
-////        waitForStart();
-////
-////        // Main loop
-////        while (!isStopRequested() && opModeIsActive()) {
-////            tagProcessor.setPoseSolver(AprilTagProcessor.PoseSolver.APRILTAG_BUILTIN);
-////            visionPortal.getCameraState();
-////
-////            if (tagProcessor.getDetections().size() > 0) {
-////                org.firstinspires.ftc.vision.apriltag.AprilTagDetection tag = tagProcessor.getDetections().get(0);
-////
-////                double distanceMeters = tag.ftcPose.range;
-////
-////                // Display the telemetry data
-////                telemetry.addData("x", tag.ftcPose.x);
-////                telemetry.addData("z", tag.ftcPose.z);
-////                telemetry.addData("roll", tag.ftcPose.roll);
-////                telemetry.addData("pitch", tag.ftcPose.pitch);
-////                telemetry.addData("yaw", tag.ftcPose.yaw);
-////                telemetry.addData("total distance (meters)", distanceMeters);
-////                telemetry.addData("exposure", exposure.isExposureSupported());
-////                telemetry.addData("distance y", tag.ftcPose.y);
-////                telemetry.addData("tagid", tag.id);
-////            }
-////            telemetry.update();
-////        }
-////    }
-////}
-////
-////
-////
+package org.firstinspires.ftc.teamcode;
+
+import android.util.Size;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagGameDatabase;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc;
+import java.util.concurrent.TimeUnit;
+
+@TeleOp
+public class AprilTagDetection extends LinearOpMode {
+
+
+    public void runOpMode() throws InterruptedException {
+
+        // AprilTag processor configuration
+        AprilTagProcessor tagProcessor = new AprilTagProcessor.Builder()
+                .setDrawAxes(true)
+                .setDrawCubeProjection(true)
+                .setDrawTagID(true)
+                .setDrawTagOutline(true)
+                .setLensIntrinsics(626.731, 626.731, 642.398, 380.131)
+                .setTagFamily(AprilTagProcessor.TagFamily.TAG_36h11)
+                .setTagLibrary(AprilTagGameDatabase.getCenterStageTagLibrary())
+                .setOutputUnits(DistanceUnit.METER, AngleUnit.RADIANS)
+                .build();
+
+        // Vision portal configuration
+        VisionPortal visionPortal = new VisionPortal.Builder()
+                .addProcessor(tagProcessor)
+                .setCamera(hardwareMap.get(WebcamName.class, "Webcam1"))
+                .setCameraResolution(new Size(1280, 720))
+                .enableLiveView(true)
+                .setStreamFormat(VisionPortal.StreamFormat.YUY2)
+                .build();
+
+        // Wait for the camera to start streaming
+        while (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING) {}
+
+        // Camera exposure and gain settings
+        ExposureControl exposure = visionPortal.getCameraControl(ExposureControl.class);
+        exposure.setMode(ExposureControl.Mode.Manual);
+        exposure.setExposure(30, TimeUnit.MILLISECONDS);
+
+        GainControl gain = visionPortal.getCameraControl(GainControl.class);
+        gain.setGain(200);
+
+        // Wait for the start signal
+        waitForStart();
+
+        // Main loop
+        while (!isStopRequested() && opModeIsActive()) {
+            tagProcessor.setPoseSolver(AprilTagProcessor.PoseSolver.APRILTAG_BUILTIN);
+            visionPortal.getCameraState();
+
+            if (tagProcessor.getDetections().size() > 0) {
+                org.firstinspires.ftc.vision.apriltag.AprilTagDetection tag = tagProcessor.getDetections().get(0);
+
+                double distanceMeters = tag.ftcPose.range;
+
+                // Display the telemetry data
+                telemetry.addData("x", tag.ftcPose.x);
+                telemetry.addData("z", tag.ftcPose.z);
+                telemetry.addData("roll", tag.ftcPose.roll);
+                telemetry.addData("pitch", tag.ftcPose.pitch);
+                telemetry.addData("yaw", tag.ftcPose.yaw);
+                telemetry.addData("total distance (meters)", distanceMeters);
+                telemetry.addData("exposure", exposure.isExposureSupported());
+                telemetry.addData("distance y", tag.ftcPose.y);
+                telemetry.addData("tagid", tag.id);
+            }
+            telemetry.update();
+        }
+    }
+}
+
+
+
 //////// other code using documentation not correct setup to use
 //////
 //

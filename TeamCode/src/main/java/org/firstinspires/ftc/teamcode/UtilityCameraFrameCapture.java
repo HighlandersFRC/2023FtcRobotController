@@ -34,11 +34,8 @@
 package org.firstinspires.ftc.teamcode;
 
 import android.util.Size;
-
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -60,15 +57,17 @@ import java.util.Locale;
  */
 
 @TeleOp(name = "Utility: Camera Frame Capture", group = "Utility")
+
 public class UtilityCameraFrameCapture extends LinearOpMode
 {
     /*
      * EDIT THESE PARAMETERS AS NEEDED
      */
-    final boolean USING_WEBCAM = false;
-    final BuiltinCameraDirection INTERNAL_CAM_DIR = BuiltinCameraDirection.BACK;
-    final int RESOLUTION_WIDTH = 320;
-    final int RESOLUTION_HEIGHT = 240;
+
+    final boolean USING_WEBCAM = true;
+   // final BuiltinCameraDirection INTERNAL_CAM_DIR = BuiltinCameraDirection.BACK;
+    final int RESOLUTION_WIDTH = 640;
+    final int RESOLUTION_HEIGHT = 360;
 
     // Internal state
     boolean lastX;
@@ -87,13 +86,13 @@ public class UtilityCameraFrameCapture extends LinearOpMode
                     .setCameraResolution(new Size(RESOLUTION_WIDTH, RESOLUTION_HEIGHT))
                     .build();
         }
-        else
-        {
-            portal = new VisionPortal.Builder()
-                    .setCamera(INTERNAL_CAM_DIR)
-                    .setCameraResolution(new Size(RESOLUTION_WIDTH, RESOLUTION_HEIGHT))
-                    .build();
-        }
+//        else
+//        {
+//            portal = new VisionPortal.Builder()
+//                    .setCamera(INTERNAL_CAM_DIR)
+//                    .setCameraResolution(new Size(RESOLUTION_WIDTH, RESOLUTION_HEIGHT))
+//                    .build();
+//        }
 
         while (!isStopRequested())
         {
@@ -117,7 +116,6 @@ public class UtilityCameraFrameCapture extends LinearOpMode
                 telemetry.addLine("\nCaptured Frame!");
             }
 
-
             if (capReqTime != 0 && System.currentTimeMillis() - capReqTime > 1000)
             {
                 capReqTime = 0;
@@ -127,3 +125,14 @@ public class UtilityCameraFrameCapture extends LinearOpMode
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
