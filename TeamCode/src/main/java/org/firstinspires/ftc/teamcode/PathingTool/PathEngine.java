@@ -140,6 +140,7 @@ public class PathEngine {
 
         double deltaX = currentX - lastX;
         double deltaY = currentY - lastY;
+
         return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     }
 }
