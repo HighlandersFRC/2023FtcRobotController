@@ -14,25 +14,25 @@ public class AprilTagCustomLibrary {
                 .addTag(
                         7,
                         "tag 7",
-                        0.127,
+                        0.09525,
                         DistanceUnit.METER
                 )
                 .addTag(
                         10,
                         "tag 10",
-                        0.127,
+                        0.09525,
                         DistanceUnit.METER
                 )
                 .addTag(
                         8,
                         "tag 8",
-                        0.0508,
+                        0.03571875,
                         DistanceUnit.METER
                 )
                 .addTag(
                         9,
                         "tag 9",
-                        0.0508,
+                        0.03571875,
                         DistanceUnit.METER
                 )
                 .build();

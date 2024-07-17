@@ -18,8 +18,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import java.util.concurrent.TimeUnit;
 
-
-
 @TeleOp
 public class AprilTagCustomDetection extends LinearOpMode {
 
@@ -30,8 +28,8 @@ public class AprilTagCustomDetection extends LinearOpMode {
                 .setDrawCubeProjection(true)
                 .setDrawTagID(true)
                 .setDrawTagOutline(true)
-                //for 720p.setLensIntrinsics(626.731, 626.731, 642.398, 380.131)
-               .setLensIntrinsics(428.945, 428.945, 316.573,254.194 )
+                .setLensIntrinsics(626.731, 626.731, 642.398, 380.131)
+                //640 p .setLensIntrinsics(428.945, 428.945, 316.573,254.194 )
                 .setTagFamily(AprilTagProcessor.TagFamily.TAG_36h11)
                 .setTagLibrary(AprilTagCustomLibrary.getSmallLibrary())
                 .setOutputUnits(DistanceUnit.METER, AngleUnit.RADIANS)
@@ -40,13 +38,14 @@ public class AprilTagCustomDetection extends LinearOpMode {
         VisionPortal visionPortal = new VisionPortal.Builder()
                 .addProcessor(tagProcessor)
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam1"))
-                .setCameraResolution(new Size(640, 480))
+                .setCameraResolution(new Size(1280, 720))
                 .enableLiveView(true)
-                .setStreamFormat(VisionPortal.StreamFormat.MJPEG)
+                .setStreamFormat(VisionPortal.StreamFormat.YUY2)
                 .build();
 
         // Ensure the camera is streaming
-        while (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING) {}
+        while (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING) {
+        }
 
         // Set camera exposure and gain
         ExposureControl exposure = visionPortal.getCameraControl(ExposureControl.class);
@@ -54,9 +53,10 @@ public class AprilTagCustomDetection extends LinearOpMode {
         exposure.setExposure(20, TimeUnit.MILLISECONDS);
 
         GainControl gain = visionPortal.getCameraControl(GainControl.class);
-        gain.setGain(50);
-
+        gain.setGain(200);
         waitForStart();
+
+
 
         while (!isStopRequested() && opModeIsActive()) {
             tagProcessor.setPoseSolver(AprilTagProcessor.PoseSolver.APRILTAG_BUILTIN);
@@ -78,26 +78,30 @@ public class AprilTagCustomDetection extends LinearOpMode {
 
                     AprilTagPoseFtc pose = new AprilTagPoseFtc(x, y, z, yaw, roll, pitch, range, bearing, elevation);
 
-                    double distanceInMeters = pose.range;
+                    double Correctedrange = Constants.fiveCorrected(pose.range);
 
-                    telemetry.addData("Distance (meters)", distanceInMeters);
+
+
+                    telemetry.addData("not corrected distance",pose.range);
+                    telemetry.addData("Tag ID", detection.id);
+                    telemetry.addData("tagsize", detection.metadata.tagsize);
                     telemetry.addData("x", pose.x);
                     telemetry.addData("y", pose.y);
                     telemetry.addData("z", pose.z);
                     telemetry.addData("roll", pose.roll);
                     telemetry.addData("pitch", pose.pitch);
                     telemetry.addData("yaw", pose.yaw);
-                    telemetry.addData("range (3D distance)", pose.range);
+                    telemetry.addData("range corrected", Correctedrange);
                     telemetry.addData("bearing (horizontal angle)", pose.bearing);
                     telemetry.addData("elevation (vertical angle)", pose.elevation);
                     telemetry.addData("Raw Pose x", detection.rawPose.x);
                     telemetry.addData("Raw Pose y", detection.rawPose.y);
                     telemetry.addData("Raw Pose z", detection.rawPose.z);
                     telemetry.addData("exposure", exposure.isExposureSupported());
-                    telemetry.addData("tagid", detection.id);
                     telemetry.update();
                 }
             }
         }
     }
 }
+
