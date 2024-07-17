@@ -30,7 +30,7 @@
  * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
+//external sample used to callibrate camera you can callibrate on 3df zephyr
 package org.firstinspires.ftc.teamcode;
 
 import android.util.Size;
