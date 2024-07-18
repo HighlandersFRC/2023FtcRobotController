@@ -1,12 +1,20 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
+import static org.firstinspires.ftc.teamcode.Tools.constants.dtheta;
+import static org.firstinspires.ftc.teamcode.Tools.constants.posH;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import org.firstinspires.ftc.teamcode.Tools.constants;
 
 public class Odometry extends Subsystem {
     public static DcMotor leftMotor;
     public static DcMotor rightMotor;
     static final int TicksPerRotation = 2000;
-    static  final double rotationsPerMeter = 20.8333333333;
+    static final double rotationsPerMeter = 20.8333333333;
+    static final double L = 0; //distance between left and right odo pod
+    static final double MidPoint = 0; //distance between the mid point of all the encoders
+    static final double wheelRadius = 24;
+    static final double cm_per_tick = 0.024;
     public Odometry(String name) {
         super(name);
     }
@@ -62,21 +70,19 @@ public class Odometry extends Subsystem {
 //        int dn3 = currentAuxPosition - oldAuxPosition;
 //
 //        // the robot has moved and turned a tiny bit between two measurements:
-//        double dtheta = cm_per_tick * ((dn2-dn1) / (LENGTH));
-//        double dx = cm_per_tick * ((dn1+dn2) / 2.0);
+        dtheta = cm_per_tick * ((dn2-dn1) / (L)); // code is ready
+        double dx = cm_per_tick * ((dn1+dn2) / 2.0);    // code is ready
 //        double dy = cm_per_tick * (dn3 + ((dn2-dn1) / 2.0));
-//
-//        telemetrydx = dx;
-//        telemetrydy = dy;
-//        telemetrydh = dtheta;
+
+            constants.telemetrydx = dx; // code is ready
+//        telemetrydy = dy; +
+            constants.telemetrydh = dtheta; // code is ready
 //
 //        // small movement of the robot gets added to the field coordinate system:
-//        pos.h += dtheta / 2;
+          posH += dtheta / 2; // code is ready // code is ready
 //        pos.x += dx * Math.cos(pos.h) - dy * Math.sin(pos.h);
 //        pos.y += dx * Math.sin(pos.h) + dy * Math.cos(pos.h);
-//        pos.h += dtheta / 2;
-//        pos.h = normDiff(pos.h);
+          posH += dtheta;// code is ready
   }
-
 
 }
