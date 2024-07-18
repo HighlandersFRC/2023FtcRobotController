@@ -1,20 +1,29 @@
 package org.firstinspires.ftc.teamcode.Subsystems;
-import static org.firstinspires.ftc.teamcode.Tools.constants.dtheta;
-import static org.firstinspires.ftc.teamcode.Tools.constants.posH;
+
+import android.util.Pair;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.Tools.XyhVector;
 import org.firstinspires.ftc.teamcode.Tools.constants;
+import org.javatuples.Triplet;
 
 public class Odometry extends Subsystem {
     public static DcMotor leftMotor;
     public static DcMotor rightMotor;
-    static final int TicksPerRotation = 2000;
-    static final double rotationsPerMeter = 20.8333333333;
-    static final double L = 0; //distance between left and right odo pod
-    static final double MidPoint = 0; //distance between the mid point of all the encoders
-    static final double wheelRadius = 24;
-    static final double cm_per_tick = 0.024;
+    public static final int TicksPerRotation = 2000;
+    public static final double rotationsPerMeter = 20.8333333333;
+    public static final double L = 2; //distance between left and right odo pod in cm
+    public static final double MidPoint = 0; //distance between the mid point of all the encoders
+    public static final double wheelRadius = 24;
+    public static final double cm_per_tick = 0.024;
+    public static double posH = 0;
+    public static double telemetrydx = 0;
+    public static double telemetrydh = 0;
+    public static double x = 0;
+    public static double y = 0;
+    public static double h = 0;
     public Odometry(String name) {
         super(name);
     }
@@ -55,34 +64,33 @@ public class Odometry extends Subsystem {
         return getRotationL()/rotationsPerMeter;
     }
 
-
    public void odometry() {
-        double oldRightPosition = getPosR();
-        double oldLeftPosition = getPosL();
+          double oldRightPosition = getPosR();
+          double oldLeftPosition = getPosL();
 //        double oldAuxPosition = currentAuxPosition;
 //
-        double currentRightPosition = getPosR();
-        double currentLeftPosition = getPosL();
+          double currentRightPosition = getPosR();
+          double currentLeftPosition = getPosL();
 //        currentAuxPosition = encoderAux.getCurrentPosition();
 //
-        double dn1 = currentLeftPosition  - oldLeftPosition;
-        double dn2 = currentRightPosition - oldRightPosition;
+          double dn1 = currentLeftPosition  - oldLeftPosition;
+          double dn2 = currentRightPosition - oldRightPosition;
 //        int dn3 = currentAuxPosition - oldAuxPosition;
 //
 //        // the robot has moved and turned a tiny bit between two measurements:
-        dtheta = cm_per_tick * ((dn2-dn1) / (L)); // code is ready
-        double dx = cm_per_tick * ((dn1+dn2) / 2.0);    // code is ready
+          double dtheta = cm_per_tick * ((dn2-dn1) / (L)); // code is ready
+          double dx = cm_per_tick * ((dn1+dn2) / 2.0);    // code is ready
 //        double dy = cm_per_tick * (dn3 + ((dn2-dn1) / 2.0));
 
-            constants.telemetrydx = dx; // code is ready
-//        telemetrydy = dy; +
-            constants.telemetrydh = dtheta; // code is ready
+          telemetrydx = dx; // code is ready
+//        telemetrydy = dy;
+          telemetrydh = dtheta; // code is ready
 //
 //        // small movement of the robot gets added to the field coordinate system:
-          posH += dtheta / 2; // code is ready // code is ready
-//        pos.x += dx * Math.cos(pos.h) - dy * Math.sin(pos.h);
-//        pos.y += dx * Math.sin(pos.h) + dy * Math.cos(pos.h);
-          posH += dtheta;// code is ready
+           posH += dtheta / 2; // code is ready // code is ready
+//         pos.x += dx * Math.cos(pos.h) - dy * Math.sin(pos.h);
+//         pos.y += dx * Math.sin(pos.h) + dy * Math.cos(pos.h);
+           posH += dtheta;// code is ready
   }
 
 }

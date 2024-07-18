@@ -27,4 +27,6 @@ dependencies {
     implementation project(':FtcRobotController')
     implementation files("C:\\Drive\\FTC Robotics\\NAVX-MXP\\navxmxp-master.zip")
     annotationProcessor files('lib/OpModeAnnotationProcessor.jar')
+    implementation 'org.javatuples:javatuples:1.2'
 }
+
