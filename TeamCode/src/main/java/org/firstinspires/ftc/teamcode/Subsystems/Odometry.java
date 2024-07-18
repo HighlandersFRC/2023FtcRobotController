@@ -46,6 +46,7 @@ public class Odometry extends Subsystem {
 
     public static  double  getRotationL (){
         return leftMotor.getCurrentPosition()/TicksPerRotation;
+
     }
 
     public static  double  getPosR (){
