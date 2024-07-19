@@ -11,6 +11,9 @@ public class XyhVector {
         this.h = z;
     }
 
+    public XyhVector(XyhVector startingPos) {
+    }
+
     @Override
     public String toString() {
         return "Tuple{" + "x=" + x + ", y=" + y + ", z=" + h + '}';

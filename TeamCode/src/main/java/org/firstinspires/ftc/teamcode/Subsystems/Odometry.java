@@ -21,9 +21,6 @@ public class Odometry extends Subsystem {
     public static double posH = 0;
     public static double telemetrydx = 0;
     public static double telemetrydh = 0;
-    public static double x = 0;
-    public static double y = 0;
-    public static double h = 0;
     public Odometry(String name) {
         super(name);
     }
@@ -65,6 +62,9 @@ public class Odometry extends Subsystem {
         return getRotationL()/rotationsPerMeter;
     }
 
+    XyhVector StartingPos = new XyhVector(0,0,Math.toRadians(0));
+    public XyhVector pos = new XyhVector(StartingPos);
+
    public void odometry() {
           double oldRightPosition = getPosR();
           double oldLeftPosition = getPosL();
@@ -88,10 +88,10 @@ public class Odometry extends Subsystem {
           telemetrydh = dtheta; // code is ready
 //
 //        // small movement of the robot gets added to the field coordinate system:
-           posH += dtheta / 2; // code is ready // code is ready
+           pos.h += dtheta / 2; // code is ready // code is ready
 //         pos.x += dx * Math.cos(pos.h) - dy * Math.sin(pos.h);
 //         pos.y += dx * Math.sin(pos.h) + dy * Math.cos(pos.h);
-           posH += dtheta;// code is ready
+           pos.h += dtheta;// code is ready
   }
 
 }
