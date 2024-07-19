@@ -13,10 +13,16 @@ public class Test extends LinearOpMode {
         waitForStart();
         while (opModeIsActive()){
         Odometry.getPos();
+        Odometry.odometry();
         System.out.println("R_R"+Odometry.getRotationR());
         System.out.println("R_L"+Odometry.getRotationL());
         System.out.println("meterR"+Odometry.getMeterR());
         System.out.println("meterL"+Odometry.getMeterL());
+        System.out.println("theta"+Odometry.telemetrydh);
+        System.out.println("x"+Odometry.telemetrydx);
+        System.out.println("dn1"+Odometry.dn1);
+        System.out.println("dn2"+Odometry.dn2);
+
         }
     }
 }
