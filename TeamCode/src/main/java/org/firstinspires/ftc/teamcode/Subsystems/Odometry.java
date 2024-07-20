@@ -8,7 +8,7 @@ public class Odometry extends Subsystem {
     public static DcMotor rightMotor;
     public static final int TicksPerRotation = 2000;
     public static final double rotationsPerMeter = 20.8333333333;
-    public static final double L = 2; //distance between left and right odo pod in cm
+    public static final double L = 15.219; //distance between left and right odo pod in cm
     public static final double MidPoint = 0; //distance between the mid point of all the encoders
     public static final double wheelRadius = 24;
     public static final double cm_per_tick = 0.024;
@@ -34,11 +34,11 @@ public class Odometry extends Subsystem {
     }
 
     public static  double  getRotationR (){
-       return rightMotor.getCurrentPosition()/TicksPerRotation;
+       return (double) rightMotor.getCurrentPosition() /TicksPerRotation;
     }
 
     public static  double  getRotationL (){
-        return leftMotor.getCurrentPosition()/TicksPerRotation;
+        return (double) leftMotor.getCurrentPosition() /TicksPerRotation;
 
     }
 
@@ -61,7 +61,7 @@ public class Odometry extends Subsystem {
     static XyhVector StartingPos = new XyhVector(0,0,Math.toRadians(0));
     public static XyhVector pos = new XyhVector(StartingPos);
 
-   public static void odometry() {
+   public static void update() {
           double oldRightPosition = getPosR();
           double oldLeftPosition = getPosL();
 //        oldAuxPosition = currentAuxPosition;
@@ -77,7 +77,7 @@ public class Odometry extends Subsystem {
 //        // the robot has moved and turned a tiny bit between two measurements:
           double dtheta = cm_per_tick * ((dn2-dn1) / (L)); // code is ready
           double dx = cm_per_tick * ((dn1+dn2) / 2.0);    // code is ready
-//        double dy = cm_per_tick * (dn3 + ((dn2-dn1) / 2.0));
+//        double dy = cm_per_tick * (dn3 + ((dn2-dn1)* midpoint / l));
 
           telemetrydx = dx; // code is ready
 //        telemetrydy = dy;

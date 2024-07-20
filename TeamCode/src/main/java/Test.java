@@ -13,7 +13,7 @@ public class Test extends LinearOpMode {
         waitForStart();
         while (opModeIsActive()){
         Odometry.getPos();
-        Odometry.odometry();
+        Odometry.update();
         System.out.println("R_R"+Odometry.getRotationR());
         System.out.println("R_L"+Odometry.getRotationL());
         System.out.println("meterR"+Odometry.getMeterR());
