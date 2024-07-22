@@ -11,18 +11,12 @@ public class AprilTagCustomLibrary {
     public static AprilTagLibrary getSmallLibrary() {
         return new AprilTagLibrary.Builder()
                 .setAllowOverwrite(true)
-                .addTag(
-                        7,
+                .addTag(7,
                         "tag 7",
-                        0.09525,
-                        DistanceUnit.METER
-                )
-                .addTag(
-                        10,
-                        "tag 10",
-                        0.09525,
-                        DistanceUnit.METER
-                )
+                        0.127,
+                        new VectorF(0,0),
+                        DistanceUnit.METER,
+                        Quaternion.identityQuaternion())
                 .addTag(
                         8,
                         "tag 8",

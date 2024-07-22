@@ -78,6 +78,7 @@ public class NewAprilTagDetection extends LinearOpMode {
 
                     double distanceInMeters = pose.range;
 
+
                     telemetry.addData("Distance (meters)", distanceInMeters);
                     telemetry.addData("x", pose.x);
                     telemetry.addData("y", pose.y);
@@ -91,6 +92,7 @@ public class NewAprilTagDetection extends LinearOpMode {
                     telemetry.addData("exposure", exposure.isExposureSupported());
                     telemetry.addData("tagid", detection.id);
                     telemetry.update();
+
                 }
             }
         }

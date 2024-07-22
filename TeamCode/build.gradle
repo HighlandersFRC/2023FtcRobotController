@@ -31,3 +31,9 @@ dependencies {
 dependencies {
     implementation 'org.openftc:easyopencv:1.5.0'
 }
+
+dependencies {
+    implementation 'org.firstinspires.ftc:RobotCore:7.0.0'
+    implementation 'org.firstinspires.ftc:Hardware:7.0.0'
+    // Add other dependencies as needed
+}
