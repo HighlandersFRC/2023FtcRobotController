@@ -221,7 +221,7 @@ public class AprilTagCustomDetection extends LinearOpMode {
 //exposure changing code...need to change according to environment conditions
         ExposureControl exposure = visionPortal.getCameraControl(ExposureControl.class);
         exposure.setMode(ExposureControl.Mode.Manual);
-        exposure.setExposure(20, TimeUnit.MILLISECONDS);
+        exposure.setExposure(10, TimeUnit.MILLISECONDS);
 
         GainControl gain = visionPortal.getCameraControl(GainControl.class);
         gain.setGain(200);
@@ -262,28 +262,40 @@ public class AprilTagCustomDetection extends LinearOpMode {
 
                     AprilTagPoseFtc pose = new AprilTagPoseFtc(x, y, z, yaw, roll, pitch, range, bearing, elevation);
 //Correct X and Y using the linear regression offset values
+
                     double CorrectX = Constants.yCorrected(pose.y);
                     double CorrectY = -Constants.xCorrected(pose.x);
 //polar coordinates r is the accurate distance (circle radius) and then theta is the bearing
                     double r = Math.sqrt((CorrectX * CorrectX) + (CorrectY * CorrectY));
-                    double theta = Math.toRadians(Math.atan2(CorrectY, CorrectX));
+                    double theta = (Math.atan2(CorrectY, CorrectX));
 
                     // robotyaw using the IMU
-                    double robotYaw = imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+                    double robotYaw = (imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS));
                     //angle offset
                     double angleoffset = (theta + robotYaw);
 //this converts it to field coordinates
                     double xt = r * (Math.cos(angleoffset + Math.PI));
                     double yt = r * (Math.sin(angleoffset + Math.PI));
                     //offset so that you measure from robot center
-                    double Xcenteroffset = 0.120645;
-                    double Ycenteroffset = 0.168275;
+                   /* double Xcenteroffset = 0.120645;
+                    double Ycenteroffset = 0.168275;*/
                     //field coordinates with the offset and added to the vector position of the april tag.
-                    double FieldX = (xt + 0)-Xcenteroffset;
-                    double FieldY = (yt + 0)-Ycenteroffset;
 
 
+                    double FieldX = (xt + 0);
+                    double FieldY = (yt + 0);
 
+
+                    double tagyaw = 0;
+                    if (detection.id == 7) {
+                        tagyaw = Math.toDegrees(1.5708);
+
+                        double robotyawcalculated = (tagyaw + 180) - pose.yaw;
+                        System.out.println(robotyawcalculated);
+                    }
+                    double robotyawcalculated = (tagyaw + 180) - pose.yaw;
+
+                    telemetry.addData("robotyawcalculated", robotyawcalculated);
                     telemetry.addData("pose", String.format("(%.2f, %.2f)", FieldX, FieldY));
                     telemetry.addData("CorrectX", CorrectX);
                     telemetry.addData("CorrectY", CorrectY);
@@ -297,9 +309,10 @@ public class AprilTagCustomDetection extends LinearOpMode {
                     telemetry.addData("y", CorrectY);
                     telemetry.addData("z", 5);
                     telemetry.addData("robotyaw", imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
+                    telemetry.addData("pose.yaw", pose.yaw);
                     telemetry.addData("roll", pose.roll);
                     telemetry.addData("pitch", pose.pitch);
-                    telemetry.addData("yaw", pose.yaw);
+                    telemetry.addData("yaw", Math.toDegrees(Math.PI) - (pose.yaw));
                     telemetry.addData("bearing (horizontal angle)", pose.bearing);
                     telemetry.addData("elevation (vertical angle)", pose.elevation);
                     telemetry.addData("Raw Pose x", detection.rawPose.x);
