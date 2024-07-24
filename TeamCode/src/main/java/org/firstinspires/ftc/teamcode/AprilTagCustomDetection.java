@@ -241,6 +241,7 @@ public class AprilTagCustomDetection extends LinearOpMode {
         while (!isStopRequested() && opModeIsActive()) {
             if (gamepad1.x) {
                 imu.resetYaw();
+
             }
 
             tagProcessor.setPoseSolver(AprilTagProcessor.PoseSolver.APRILTAG_BUILTIN);
@@ -274,7 +275,7 @@ public class AprilTagCustomDetection extends LinearOpMode {
                     //angle offset
                     double angleoffset = (theta + robotYaw);
 //this converts it to field coordinates
-                    double xt = r * (Math.cos(angleoffset + Math.PI));
+                    double xt = r * (Math.cos(angleoffset + Math.PI)); //or 180
                     double yt = r * (Math.sin(angleoffset + Math.PI));
                     //offset so that you measure from robot center
                    /* double Xcenteroffset = 0.120645;

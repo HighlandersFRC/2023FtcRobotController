@@ -55,7 +55,7 @@ public class NewAprilTagDetection extends LinearOpMode {
         waitForStart();
 
         while (!isStopRequested() && opModeIsActive()) {
-            tagProcessor.setPoseSolver(AprilTagProcessor.PoseSolver.APRILTAG_BUILTIN);
+            tagProcessor.setPoseSolver(AprilTagProcessor.PoseSolver.OPENCV_SOLVEPNP_EPNP);
             visionPortal.getCameraState();
 
             for (AprilTagDetection detection : tagProcessor.getDetections()) {
