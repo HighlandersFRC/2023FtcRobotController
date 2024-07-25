@@ -226,7 +226,6 @@ public class AprilTagCustomDetection extends LinearOpMode {
         GainControl gain = visionPortal.getCameraControl(GainControl.class);
         gain.setGain(200);
 
-
         // IMU setup
         IMU imu = hardwareMap.get(IMU.class, "imu");
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
@@ -289,7 +288,7 @@ public class AprilTagCustomDetection extends LinearOpMode {
 
                     double tagyaw = 0;
                     if (detection.id == 7) {
-                        tagyaw = Math.toDegrees(1.5708);
+                        tagyaw = Math.toDegrees(Math.PI);
 
                         double robotyawcalculated = (tagyaw + 180) - pose.yaw;
                         System.out.println(robotyawcalculated);
