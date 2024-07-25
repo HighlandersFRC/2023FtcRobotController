@@ -6,7 +6,7 @@ public abstract class Subsystem {
 
     private String name;
 
-    public Subsystem(String name) {
+    public Subsystem() {
         this.name = name;
     }
 

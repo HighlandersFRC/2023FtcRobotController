@@ -31,7 +31,7 @@ public class Drive implements Command {
         this.rotationPID = new PID(0.03, 0.0, 0.0); // Adjust PID constants as needed
     }
 
-    @Override
+
     public String getSubsystem() {
         return "Drive";
     }
@@ -100,17 +100,18 @@ public class Drive implements Command {
 
     @Override
     public void end() {
-        // Stop motors
+
         leftFront.setPower(0);
         rightFront.setPower(0);
         leftBack.setPower(0);
         rightBack.setPower(0);
 
-        // Brake motors
         leftFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightFront.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         leftBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        Peripherals.resetYaw();
     }
 
     @Override

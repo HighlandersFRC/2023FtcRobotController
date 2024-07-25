@@ -1,32 +1,49 @@
 package org.firstinspires.ftc.teamcode.Commands;
 
-
-import org.firstinspires.ftc.teamcode.Commands.Command;
+import com.qualcomm.robotcore.util.RobotLog;
 
 public class Wait implements Command {
-    public String getSubsystem() {
-        return "Misc";
-    }
-    long time;
-    long endTime;
-    public Wait(long time){
-        this.time = time;
-    }
-    public void start(){
-        endTime = System.currentTimeMillis() + time;
-    }
-    public void execute(){
+    private long waitTime;
+    private long startTime;
+    private long elapsedTime;
+    private boolean isStarted;
 
-    }
-    public void end(){
+    public Wait(long waitTime) {
+        this.waitTime = waitTime;
+        this.elapsedTime = 0;
+        this.isStarted = false;
     }
 
+    @Override
+    public void start() {
+        RobotLog.d("Wait Command Started: " + waitTime + "ms");
+        startTime = System.currentTimeMillis();
+        isStarted = true;
+    }
+
+    @Override
+    public void execute() {
+        if (isStarted) {
+            elapsedTime += System.currentTimeMillis() - startTime;
+            startTime = System.currentTimeMillis();
+            RobotLog.d("Wait Command Executing: " + waitTime + "ms, Elapsed: " + elapsedTime + "ms");
+        }
+    }
+
+    @Override
+    public void end() {
+        isStarted = false;
+        RobotLog.d("Wait Command Ended: " + waitTime + "ms, Total Elapsed: " + elapsedTime + "ms");
+    }
+
+    @Override
     public boolean isFinished() {
-        if (System.currentTimeMillis() >= endTime){
-            return true;
-        }
-        else {
-            return false;
-        }
+        return elapsedTime >= waitTime;
+    }
+
+
+    public void reset() {
+        elapsedTime = 0;
+        isStarted = false;
     }
 }

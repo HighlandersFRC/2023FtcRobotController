@@ -1,66 +1,59 @@
 package org.firstinspires.ftc.teamcode.Commands;
 
-import java.util.ArrayList;
+import com.qualcomm.robotcore.util.RobotLog;
+
 import java.util.Collections;
-import java.util.List;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class SequentialCommandGroup implements Command {
-    private List<Command> commands;
-    private int currentCommandIndex;
-    private boolean isFinished;
+    private Queue<Command> commands = new LinkedList<>();
+    private Command currentCommand;
 
     public SequentialCommandGroup(Command... commands) {
-        this.commands = new ArrayList<>();
         Collections.addAll(this.commands, commands);
-        currentCommandIndex = 0;
-        isFinished = false;
     }
 
     @Override
     public void start() {
         if (!commands.isEmpty()) {
-            commands.get(currentCommandIndex).start();
+            currentCommand = commands.poll();
+            currentCommand.start();
+            RobotLog.d("Sequential Command Group Started with " + currentCommand.getClass().getSimpleName());
         }
     }
 
     @Override
     public void execute() throws InterruptedException {
-        if (!commands.isEmpty() && currentCommandIndex < commands.size()) {
-            Command currentCommand = commands.get(currentCommandIndex);
-            if (!currentCommand.isFinished()) {
-                currentCommand.execute();
-            }
+        if (currentCommand != null) {
             if (currentCommand.isFinished()) {
                 currentCommand.end();
-                currentCommandIndex++;
-                if (currentCommandIndex < commands.size()) {
-                    commands.get(currentCommandIndex).start();
+                if (!commands.isEmpty()) {
+                    currentCommand = commands.poll();
+                    currentCommand.start();
+                    RobotLog.d("Sequential Command Group Next Command Started: " + currentCommand.getClass().getSimpleName());
                 } else {
-                    isFinished = true;
+                    currentCommand = null;
                 }
+            } else {
+                currentCommand.execute();
             }
-        } else {
-            isFinished = true;
         }
     }
 
     @Override
     public void end() {
-        if (!commands.isEmpty() && currentCommandIndex < commands.size()) {
-            commands.get(currentCommandIndex).end();
+        if (currentCommand != null) {
+            currentCommand.end();
+            RobotLog.d("Sequential Command Group Ended with " + currentCommand.getClass().getSimpleName());
+        }
+        for (Command command : commands) {
+            command.end();
         }
     }
 
     @Override
     public boolean isFinished() {
-        return isFinished;
-    }
-
-    @Override
-    public String getSubsystem() {
-        if (!commands.isEmpty() && currentCommandIndex < commands.size()) {
-            return commands.get(currentCommandIndex).getSubsystem();
-        }
-        return "";
+        return currentCommand == null;
     }
 }

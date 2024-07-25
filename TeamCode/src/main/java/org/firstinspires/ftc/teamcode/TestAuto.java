@@ -1,32 +1,56 @@
-//package org.firstinspires.ftc.teamcode;
-//
-//import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-//import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-//
-//import org.firstinspires.ftc.teamcode.Commands.CommandScheduler;
-//import org.firstinspires.ftc.teamcode.Commands.ParallelCommandGroup;
-//import org.firstinspires.ftc.teamcode.Commands.SequentialCommandGroup;
-//import org.firstinspires.ftc.teamcode.Commands.TestCommand;
-//import org.firstinspires.ftc.teamcode.Commands.Wait;
-//import org.firstinspires.ftc.teamcode.Tools.Parameters;
-//
-//@Autonomous(name="TestAuto", group="Linear Opmode")
-//public class TestAuto extends LinearOpMode {
-//
-//    @Override
-//    public void runOpMode() throws InterruptedException {
-//        CommandScheduler scheduler = CommandScheduler.getInstance();
-//        scheduler.schedule(
-//                new SequentialCommandGroup(
-//                        new ParallelCommandGroup(Parameters.ANY, new Wait(100000000), new Wait(10000)),
-//                        new TestCommand()
-//                )
-//        );
-//
-//        waitForStart();
-//
-//        while (opModeIsActive()) {
-//            scheduler.run();
-//        }
-//    }
-//}
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+import org.firstinspires.ftc.teamcode.PathingTool.PathEngine;
+import org.firstinspires.ftc.teamcode.Commands.CommandScheduler;
+import org.firstinspires.ftc.teamcode.Subsystems.DriveSubsystem;
+import org.firstinspires.ftc.teamcode.Subsystems.Peripherals;
+import org.firstinspires.ftc.teamcode.Tools.Odometry;
+import org.firstinspires.ftc.teamcode.Tools.Robot;
+import org.json.JSONException;
+
+@Autonomous(name = "Path Following Autonomous", group = "Autonomous")
+public class TestAuto extends LinearOpMode {
+
+    private PathEngine pathEngine;
+    private CommandScheduler scheduler;
+    private ElapsedTime runtime;
+
+    @Override
+    public void runOpMode() {
+        Robot.initialize(hardwareMap);
+
+        scheduler = CommandScheduler.getInstance();
+
+        Odometry odometry = new Odometry();
+
+
+        pathEngine = new PathEngine(this, "OneMeter.polarpath", odometry, new DriveSubsystem(hardwareMap));
+
+        waitForStart();
+
+        runtime = new ElapsedTime();
+
+        pathEngine.startPath(runtime.time());
+
+        while (opModeIsActive()) {
+            try {
+                telemetry.addData("IMU", Peripherals.getYawDegrees());
+
+                pathEngine.update(runtime.time());
+
+                scheduler.run();
+            } catch (InterruptedException e) {
+
+                e.printStackTrace();
+            }
+
+            telemetry.update();
+        }
+
+        scheduler.cancelAll();
+    }
+}

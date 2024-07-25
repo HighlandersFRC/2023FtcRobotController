@@ -50,10 +50,9 @@ public class ConditionalCommand implements Command {
         return commandToRun != null && commandToRun.isFinished();
     }
 
-    @Override
     public String getSubsystem() {
         if (commandToRun != null) {
-            return commandToRun.getSubsystem();
+            return "hi";
         }
         return "";
     }

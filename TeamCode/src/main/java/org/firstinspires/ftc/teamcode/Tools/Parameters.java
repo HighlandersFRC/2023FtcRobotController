@@ -3,6 +3,6 @@ package org.firstinspires.ftc.teamcode.Tools;
 public enum Parameters {
     ALL,
     ANY,
-    LAST,
-    FIRST
+    SPECIFIC,
+    NEVER
 }
