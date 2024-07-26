@@ -8,7 +8,8 @@ public class Odometry extends Subsystem {
     public static DcMotor rightMotor;
     public static final int TicksPerRotation = 2000;
     public static final double rotationsPerMeter = 20.8333333333;
-    public static final double L = 15.219; //distance between left and right odo pod in cm
+    public static final double L = 30.48; //distance between left and right odo pod in cm
+    public static final double HalfL = L/2;
     public static final double MidPoint = 0; //distance between the mid point of all the encoders
     public static final double wheelRadius = 24;
     public static final double cm_per_tick = 0.024;
@@ -87,7 +88,7 @@ public class Odometry extends Subsystem {
 //        // small movement of the robot gets added to the field coordinate system:
            pos.h += dtheta / 2; // code is ready // code is ready
 //         pos.x += dx * Math.cos(pos.h) - dy * Math.sin(pos.h);
-//         pos.y += dx * Math.sin(pos.h) + dy * Math.cos(pos.h);
+           pos.y += 2*(dx/dtheta + HalfL) * (Math.sin(dtheta/2));
            pos.h += dtheta;// code is ready
 
   }

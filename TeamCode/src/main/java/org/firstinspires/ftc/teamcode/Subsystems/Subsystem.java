@@ -10,6 +10,9 @@ public abstract class Subsystem {
         this.name = name;
     }
 
+    public Subsystem(String name) {
+    }
+
     public String getName() {
         return name;
     }
