@@ -372,7 +372,6 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainCon
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.vision.VisionPortal;
-import org.firstinspires.ftc.vision.apriltag.AprilTagLibrary;
 import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
@@ -382,7 +381,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import java.util.concurrent.TimeUnit;
-import java.util.Map;
 
 @TeleOp
 public class AprilTagCustomDetection extends LinearOpMode {
@@ -455,8 +453,8 @@ public class AprilTagCustomDetection extends LinearOpMode {
 
                     AprilTagPoseFtc pose = new AprilTagPoseFtc(x, y, z, yaw, roll, pitch, range, bearing, elevation);
 
-                    double CorrectX = Constants.yCorrected(pose.y);
-                    double CorrectY = -Constants.xCorrected(pose.x);
+                    double CorrectX = ConstantsVision.yCorrected(pose.y);
+                    double CorrectY = -ConstantsVision.xCorrected(pose.x);
                     double r = Math.sqrt((CorrectX * CorrectX) + (CorrectY * CorrectY));
                     double theta = (Math.atan2(CorrectY, CorrectX));
 
@@ -467,7 +465,7 @@ public class AprilTagCustomDetection extends LinearOpMode {
                     double yt = r * (Math.sin(angleoffset + Math.PI));
 
                     // Retrieve AprilTagData from hashmap
-                    Constants.AprilTagData tagData = Constants.aprilTagMap.get(detection.id);
+                    ConstantsVision.AprilTagData tagData = ConstantsVision.aprilTagMap.get(detection.id);
                     double FieldX = xt + (tagData != null ? tagData.positionX : 0);
                     double FieldY = yt + (tagData != null ? tagData.positionY : 0);
 

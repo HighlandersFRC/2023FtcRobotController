@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Constants {
+public class ConstantsVision {
     public static double yCorrected(double AY) {
         return AY - ((0.172 * AY) + 0.00307);
     }
