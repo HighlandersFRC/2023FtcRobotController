@@ -7,11 +7,11 @@ public class Odometry {
     public static DcMotor leftEncoderMotor, rightEncoderMotor, centerEncoderMotor;
 
     public static final double TICKS_PER_REV = 2000;
-    public static final double WHEEL_DIAMETER = 48 / 1000.0; // in meters
+    public static final double WHEEL_DIAMETER = 48 / 1000.0;
     public static final double WHEEL_CIRCUMFERENCE = Math.PI * WHEEL_DIAMETER;
 
-    public static final double TRACK_WIDTH = 12 * 25.4 / 1000.0; // 12 inches to meters
-    public static final double CENTER_WHEEL_OFFSET = 0;
+    public static final double TRACK_WIDTH = 12.5 * 25.4 / 1000.0;
+    public static final double CORRECTION_FACTOR = 0.97;
 
     public static double x = 0.0;
     public static double y = 0.0;
@@ -22,9 +22,10 @@ public class Odometry {
     public static int lastCenterPos = 0;
 
     public static void initialize(HardwareMap hardwareMap) {
-        leftEncoderMotor = hardwareMap.get(DcMotor.class, "right_front");//0
-        rightEncoderMotor = hardwareMap.get(DcMotor.class, "left_front");//1
-        centerEncoderMotor = hardwareMap.get(DcMotor.class, "right_back");//2
+        leftEncoderMotor = hardwareMap.get(DcMotor.class, "left_back");
+        rightEncoderMotor = hardwareMap.get(DcMotor.class, "right_back");
+        centerEncoderMotor = hardwareMap.get(DcMotor.class, "left_front");
+
 
         resetEncoders();
         x = 0.0;
@@ -36,6 +37,12 @@ public class Odometry {
         lastLeftPos = leftEncoderMotor.getCurrentPosition();
         lastRightPos = rightEncoderMotor.getCurrentPosition();
         lastCenterPos = centerEncoderMotor.getCurrentPosition();
+    }
+
+    public static void setCurrentPosition(double x, double y, double theta) {
+        Odometry.x = x;
+        Odometry.y = y;
+        Odometry.theta = theta;
     }
 
     public static void update() {
@@ -51,14 +58,14 @@ public class Odometry {
         lastRightPos = currentRightPos;
         lastCenterPos = currentCenterPos;
 
-        double distanceLeft = (deltaLeft / (double) TICKS_PER_REV) * WHEEL_CIRCUMFERENCE;
-        double distanceRight = (deltaRight / (double) TICKS_PER_REV) * WHEEL_CIRCUMFERENCE;
-        double distanceCenter = (deltaCenter / (double) TICKS_PER_REV) * WHEEL_CIRCUMFERENCE;
+        double distanceLeft = (deltaLeft / (double) TICKS_PER_REV) * WHEEL_CIRCUMFERENCE * CORRECTION_FACTOR;
+        double distanceRight = (deltaRight / (double) TICKS_PER_REV) * WHEEL_CIRCUMFERENCE * CORRECTION_FACTOR;
+        double distanceCenter = (deltaCenter / (double) TICKS_PER_REV) * WHEEL_CIRCUMFERENCE * CORRECTION_FACTOR;
 
         double deltaTheta = (distanceRight - distanceLeft) / TRACK_WIDTH;
 
-        double deltaX = distanceCenter * Math.cos(Math.toRadians(theta)) - (distanceRight + distanceLeft) / 2 * Math.sin(Math.toRadians(theta));
-        double deltaY = distanceCenter * Math.sin(Math.toRadians(theta)) + (distanceRight + distanceLeft) / 2 * Math.cos(Math.toRadians(theta));
+        double deltaX = distanceCenter * Math.sin(Math.toRadians(theta)) - (distanceRight + distanceLeft) / 2 * Math.cos(Math.toRadians(theta));
+        double deltaY = distanceCenter * Math.cos(Math.toRadians(theta)) + (distanceRight + distanceLeft) / 2 * Math.sin(Math.toRadians(theta));
 
         theta += Math.toDegrees(deltaTheta);
         theta = (theta + 180) % 360;
@@ -67,17 +74,16 @@ public class Odometry {
         }
         theta -= 180;
 
-
         x += deltaX;
         y += deltaY;
     }
 
     public static double getX() {
-        return x;
+        return y;
     }
 
     public static double getY() {
-        return y;
+        return x;
     }
 
     public static double getTheta() {
