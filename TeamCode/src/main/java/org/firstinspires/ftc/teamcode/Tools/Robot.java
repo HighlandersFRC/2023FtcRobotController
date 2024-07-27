@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.teamcode.Subsystems.ArmSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.ElevatorSubsystem;
+import org.firstinspires.ftc.teamcode.Subsystems.IntakeSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.Peripherals;
 
 public class Robot {
@@ -12,6 +13,7 @@ public class Robot {
         Peripherals.initialize(hardwareMap);
         DriveSubsystem.initialize(hardwareMap);
 /*        ElevatorSubsystem.initialize(hardwareMap);
-        ArmSubsystem.initialize(hardwareMap);*/
+        ArmSubsystem.initialize(hardwareMap);
+        IntakeSubsystem.initialize(hardwareMap);*/
     }
 }

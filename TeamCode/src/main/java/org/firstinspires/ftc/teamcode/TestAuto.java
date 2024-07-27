@@ -2,55 +2,46 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.util.ElapsedTime;
-
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.PathingTool.PathEngine;
-import org.firstinspires.ftc.teamcode.Commands.CommandScheduler;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystems.Peripherals;
 import org.firstinspires.ftc.teamcode.Tools.Odometry;
-import org.firstinspires.ftc.teamcode.Tools.Robot;
-import org.json.JSONException;
-
-@Autonomous(name = "Path Following Autonomous", group = "Autonomous")
+@Autonomous
 public class TestAuto extends LinearOpMode {
 
+    private Odometry odometry;
+    private DriveSubsystem driveSubsystem;
     private PathEngine pathEngine;
-    private CommandScheduler scheduler;
-    private ElapsedTime runtime;
 
     @Override
-    public void runOpMode() {
-        Robot.initialize(hardwareMap);
+    public void runOpMode() throws InterruptedException {
+        // Initialize hardware
+        odometry = new Odometry();
+        driveSubsystem = new DriveSubsystem(hardwareMap);
+        Peripherals.initialize(hardwareMap);
+        pathEngine = new PathEngine(this, "OneMeter.polarpath", odometry, driveSubsystem);
 
-        scheduler = CommandScheduler.getInstance();
+        // Initialize Odometry
+        odometry.initialize(hardwareMap);
 
-        Odometry odometry = new Odometry();
-
-
-        pathEngine = new PathEngine(this, "OneMeter.polarpath", odometry, new DriveSubsystem(hardwareMap));
-
+        // Wait for the start button to be pressed
         waitForStart();
 
-        runtime = new ElapsedTime();
+        // Start the path following
+        pathEngine.startPath(getRuntime());
 
-        pathEngine.startPath(runtime.time());
-
+        // Main loop
         while (opModeIsActive()) {
-            try {
-                telemetry.addData("IMU", Peripherals.getYawDegrees());
+            double currentTime = getRuntime();
+            pathEngine.update(currentTime);
 
-                pathEngine.update(runtime.time());
-
-                scheduler.run();
-            } catch (InterruptedException e) {
-
-                e.printStackTrace();
-            }
-
+            // Telemetry for debugging
+            telemetry.addData("X", Odometry.getX());
+            telemetry.addData("Y", Odometry.getY());
+            telemetry.addData("Theta", Odometry.getTheta());
             telemetry.update();
         }
-
-        scheduler.cancelAll();
     }
 }

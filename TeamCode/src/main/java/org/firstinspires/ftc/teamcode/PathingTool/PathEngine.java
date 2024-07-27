@@ -17,18 +17,20 @@ import java.util.List;
 public class PathEngine {
 
     private JSONObject jsonPathData;
-    private List<SampledPoint> sampledPoints;
+    private JSONArray pathPoints;
     private int currentPointIndex = 0;
     private double startTime;
     private Odometry odometry;
     private DriveSubsystem driveSubsystem;
-    private static final double COORDINATE_UNIT = 1.0;
+    private Telemetry telemetry;
+    private PurePursuitController purePursuitController;
 
     public PathEngine(OpMode opMode, String pathFileName, Odometry odometry, DriveSubsystem driveSubsystem) {
+        this.telemetry = opMode.telemetry;
         loadJSONFromAsset(opMode, pathFileName);
-        parseSampledPoints();
         this.odometry = odometry;
         this.driveSubsystem = driveSubsystem;
+        this.purePursuitController = new PurePursuitController(driveSubsystem, odometry);
     }
 
     private void loadJSONFromAsset(OpMode opMode, String pathFileName) {
@@ -43,32 +45,8 @@ public class PathEngine {
             }
             reader.close();
             jsonPathData = new JSONObject(sb.toString());
+            pathPoints = jsonPathData.getJSONArray("sampled_points");
         } catch (IOException | JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void parseSampledPoints() {
-        sampledPoints = new ArrayList<>();
-        try {
-            JSONArray pointsArray = jsonPathData.getJSONArray("sampled_points");
-            for (int i = 0; i < pointsArray.length(); i++) {
-                JSONObject point = pointsArray.getJSONObject(i);
-                SampledPoint sampledPoint = new SampledPoint(
-                        point.getDouble("time"),
-                        point.getDouble("x"),
-                        point.getDouble("y"),
-                        point.getDouble("angle"),
-                        point.getDouble("x_velocity"),
-                        point.getDouble("y_velocity"),
-                        point.getDouble("angular_velocity"),
-                        point.getDouble("x_acceleration"),
-                        point.getDouble("y_acceleration"),
-                        point.getDouble("angular_acceleration")
-                );
-                sampledPoints.add(sampledPoint);
-            }
-        } catch (JSONException e) {
             e.printStackTrace();
         }
     }
@@ -77,48 +55,46 @@ public class PathEngine {
         this.startTime = startTime;
         currentPointIndex = 0;
 
-        // Initialize odometry at the starting point
-        if (!sampledPoints.isEmpty()) {
-            SampledPoint startPoint = sampledPoints.get(0);
+        if (pathPoints.length() > 0) {
+            try {
+                JSONObject startPoint = pathPoints.getJSONObject(0);
+                odometry.setCurrentPosition(startPoint.getDouble("x"), startPoint.getDouble("y"), startPoint.getDouble("angle"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public void update(double currentTime) {
-        if (currentPointIndex >= sampledPoints.size()) {
+        if (currentPointIndex >= pathPoints.length()) {
             driveSubsystem.stop();
             return;
         }
 
-        SampledPoint currentPoint = sampledPoints.get(currentPointIndex);
+        try {
+            Number[] velocityArray = purePursuitController.purePursuitController(
+                    odometry.getX(),
+                    odometry.getY(),
+                    odometry.getTheta(),
+                    currentPointIndex,
+                    pathPoints
+            );
 
-        // Determine the target point based on time
-        while (currentPointIndex < sampledPoints.size() - 1 &&
-                sampledPoints.get(currentPointIndex + 1).time <= currentTime - startTime) {
-            currentPointIndex++;
-            currentPoint = sampledPoints.get(currentPointIndex);
+            driveSubsystem.driveByVectors(
+                    velocityArray[0].doubleValue(),
+                    velocityArray[1].doubleValue(),
+                    velocityArray[2].doubleValue()
+            );
+
+            currentPointIndex = velocityArray[3].intValue();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
-        // Move to the target point
-/*
-        driveSubsystem.moveToPosition(currentPoint.angle, currentPoint.x, currentPoint.y);
-*/
-    }
-
-    private static class SampledPoint {
-        double time, x, y, angle, x_velocity, y_velocity, angular_velocity, x_acceleration, y_acceleration, angular_acceleration;
-
-        public SampledPoint(double time, double x, double y, double angle, double x_velocity, double y_velocity,
-                            double angular_velocity, double x_acceleration, double y_acceleration, double angular_acceleration) {
-            this.time = time;
-            this.x = x;
-            this.y = y;
-            this.angle = angle;
-            this.x_velocity = x_velocity;
-            this.y_velocity = y_velocity;
-            this.angular_velocity = angular_velocity;
-            this.x_acceleration = x_acceleration;
-            this.y_acceleration = y_acceleration;
-            this.angular_acceleration = angular_acceleration;
-        }
+        telemetry.addData("Current Time", currentTime);
+        telemetry.addData("Current Position X", Odometry.getX());
+        telemetry.addData("Current Position Y", Odometry.getY());
+        telemetry.addData("Current Angle", Odometry.getTheta());
+        telemetry.update();
     }
 }

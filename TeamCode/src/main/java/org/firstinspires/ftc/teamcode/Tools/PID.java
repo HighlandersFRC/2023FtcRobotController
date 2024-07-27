@@ -54,6 +54,9 @@ public class PID {
     public void setSetPoint(double target) {
         setPoint = target;
     }
+    public double getSetPoint(){
+        return setPoint;
+    }
 
     public double getResult() {
         return result;

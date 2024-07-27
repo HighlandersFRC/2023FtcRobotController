@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.Commands;
 
 import com.qualcomm.robotcore.util.RobotLog;
 
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +24,7 @@ public class CommandScheduler {
         RobotLog.d("Command Scheduled: " + command.getClass().getSimpleName());
     }
 
-    public void run() throws InterruptedException {
+    public void run() throws InterruptedException, JSONException {
         List<Command> finishedCommands = new ArrayList<>();
         for (Command command : scheduledCommands) {
             if (command.isFinished()) {

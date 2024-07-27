@@ -1,6 +1,15 @@
 package org.firstinspires.ftc.teamcode.Tools;
 
 public class Constants {
+    public static final double PID_X_P = 0.1;
+    public static final double PID_X_I = 1;
+    public static final double PID_X_D = 1;
+    public static final double PID_Y_P = 0.1;
+    public static final double PID_Y_I = 1;
+    public static final double PID_Y_D = 1;
+    public static final double PID_THETA_P = 0.1;
+    public static final double PID_THETA_I = 1;
+    public static final double PID_THETA_D = 1;
     public static double absoluteArmZero =0.306;
     public static double armOffset;
     public static double ArmUpPosition = 4000;

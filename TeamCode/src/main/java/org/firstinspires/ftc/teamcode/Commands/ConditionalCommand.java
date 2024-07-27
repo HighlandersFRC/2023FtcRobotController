@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.Commands;
 
+import org.json.JSONException;
+
 public class ConditionalCommand implements Command {
 
     private Command onTrue;
@@ -32,7 +34,7 @@ public class ConditionalCommand implements Command {
     }
 
     @Override
-    public void execute() throws InterruptedException {
+    public void execute() throws InterruptedException, JSONException {
         if (commandToRun != null) {
             commandToRun.execute();
         }

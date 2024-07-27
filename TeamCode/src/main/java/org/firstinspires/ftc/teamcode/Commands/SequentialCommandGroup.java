@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.Commands;
 
 import com.qualcomm.robotcore.util.RobotLog;
 
+import org.json.JSONException;
+
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -24,7 +26,7 @@ public class SequentialCommandGroup implements Command {
     }
 
     @Override
-    public void execute() throws InterruptedException {
+    public void execute() throws InterruptedException, JSONException {
         if (currentCommand != null) {
             if (currentCommand.isFinished()) {
                 currentCommand.end();
