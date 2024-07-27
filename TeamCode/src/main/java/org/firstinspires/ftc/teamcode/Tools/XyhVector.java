@@ -11,7 +11,7 @@ public class XyhVector {
         this.h = z;
     }
 
-    public XyhVector(XyhVector startingPos) {
+    public XyhVector() {
     }
 
     @Override

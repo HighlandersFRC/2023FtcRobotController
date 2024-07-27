@@ -386,8 +386,12 @@ import java.util.Map;
 
 @TeleOp
 public class AprilTagCustomDetection extends LinearOpMode {
+    public static double robotyawcalculated;
+    public static double CorrectX;
+    public static double CorrectY;
 
     public void runOpMode() throws InterruptedException {
+
         // AprilTagProcessor setup
         AprilTagProcessor tagProcessor = new AprilTagProcessor.Builder()
                 .setDrawAxes(true)
@@ -455,8 +459,8 @@ public class AprilTagCustomDetection extends LinearOpMode {
 
                     AprilTagPoseFtc pose = new AprilTagPoseFtc(x, y, z, yaw, roll, pitch, range, bearing, elevation);
 
-                    double CorrectX = Constants.yCorrected(pose.y);
-                    double CorrectY = -Constants.xCorrected(pose.x);
+                    CorrectX = Constants.yCorrected(pose.y);
+                    CorrectY = -Constants.xCorrected(pose.x);
                     double r = Math.sqrt((CorrectX * CorrectX) + (CorrectY * CorrectY));
                     double theta = (Math.atan2(CorrectY, CorrectX));
 
@@ -473,7 +477,9 @@ public class AprilTagCustomDetection extends LinearOpMode {
 
                     // Retrieve tagAngle from hashmap
                     double tagyaw = tagData != null ? tagData.tagangle : 0;
-                    double robotyawcalculated = (tagyaw + 180) - pose.yaw;
+
+                    robotyawcalculated = (tagyaw + 180) - pose.yaw;
+
 
                     telemetry.addData("robotyawcalculated", robotyawcalculated);
                     telemetry.addData("pose", String.format("(%.2f, %.2f)", FieldX, FieldY));
@@ -499,9 +505,23 @@ public class AprilTagCustomDetection extends LinearOpMode {
                     telemetry.addData("Raw Pose y", detection.rawPose.y);
                     telemetry.addData("Raw Pose z", detection.rawPose.z);
                     telemetry.addData("exposure", exposure.isExposureSupported());
+
                     telemetry.update();
+
+
+                    }
                 }
             }
         }
+    public static double getCorrectX(){
+        return CorrectX;
+    }
+    public static double getCorrectY(){
+        return CorrectY;
+    }
+    public  static double getRobotyawcalculated(){
+        return robotyawcalculated;
     }
 }
+
+
