@@ -362,7 +362,7 @@ public class AprilTagCustomDetection extends LinearOpMode {
     }
 }*/
 package org.firstinspires.ftc.teamcode;
-// imports
+
 import android.util.Size;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -380,13 +380,13 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+
 import java.util.concurrent.TimeUnit;
 
 @TeleOp
 public class AprilTagCustomDetection extends LinearOpMode {
 
     public void runOpMode() throws InterruptedException {
-        // AprilTagProcessor setup
         AprilTagProcessor tagProcessor = new AprilTagProcessor.Builder()
                 .setDrawAxes(true)
                 .setDrawCubeProjection(true)
@@ -398,7 +398,6 @@ public class AprilTagCustomDetection extends LinearOpMode {
                 .setOutputUnits(DistanceUnit.METER, AngleUnit.RADIANS)
                 .build();
 
-        // VisionPortal setup
         VisionPortal visionPortal = new VisionPortal.Builder()
                 .addProcessor(tagProcessor)
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam1"))
@@ -410,7 +409,6 @@ public class AprilTagCustomDetection extends LinearOpMode {
         while (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING) {
         }
 
-        // Exposure and gain control
         ExposureControl exposure = visionPortal.getCameraControl(ExposureControl.class);
         exposure.setMode(ExposureControl.Mode.Manual);
         exposure.setExposure(10, TimeUnit.MILLISECONDS);
@@ -418,15 +416,15 @@ public class AprilTagCustomDetection extends LinearOpMode {
         GainControl gain = visionPortal.getCameraControl(GainControl.class);
         gain.setGain(200);
 
-        // IMU setup
         IMU imu = hardwareMap.get(IMU.class, "imu");
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.UP,
                 RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
         imu.initialize(parameters);
 
-        // IMU yaw reset with controller and initialization
         imu.resetYaw();
+
+        PoseMerging poseMerging = new PoseMerging(hardwareMap);
 
         waitForStart();
 
@@ -456,24 +454,24 @@ public class AprilTagCustomDetection extends LinearOpMode {
                     double CorrectX = ConstantsVision.yCorrected(pose.y);
                     double CorrectY = -ConstantsVision.xCorrected(pose.x);
                     double r = Math.sqrt((CorrectX * CorrectX) + (CorrectY * CorrectY));
-                    double theta = (Math.atan2(CorrectY, CorrectX));
+                    double polartheta = (Math.atan2(CorrectY, CorrectX));
 
                     double robotYaw = (imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS));
-                    double angleoffset = (theta + robotYaw);
+                    double angleoffset = (polartheta + robotYaw);
 
                     double xt = r * (Math.cos(angleoffset + Math.PI));
                     double yt = r * (Math.sin(angleoffset + Math.PI));
 
-                    // Retrieve AprilTagData from hashmap
                     ConstantsVision.AprilTagData tagData = ConstantsVision.aprilTagMap.get(detection.id);
                     double FieldX = xt + (tagData != null ? tagData.positionX : 0);
                     double FieldY = yt + (tagData != null ? tagData.positionY : 0);
 
-                    // Retrieve tagAngle from hashmap
                     double tagyaw = tagData != null ? tagData.tagangle : 0;
-                    double robotyawcalculated = (tagyaw + 180) - pose.yaw;
+                    double theta = (tagyaw + 180) - pose.yaw;
 
-                    telemetry.addData("robotyawcalculated", robotyawcalculated);
+                    poseMerging.updateCameraPose(FieldX, FieldY, theta);
+
+                    telemetry.addData("robotyawcalculated", theta);
                     telemetry.addData("pose", String.format("(%.2f, %.2f)", FieldX, FieldY));
                     telemetry.addData("CorrectX", CorrectX);
                     telemetry.addData("CorrectY", CorrectY);
@@ -500,6 +498,8 @@ public class AprilTagCustomDetection extends LinearOpMode {
                     telemetry.update();
                 }
             }
+
+            poseMerging.updatePose();
         }
     }
 }
