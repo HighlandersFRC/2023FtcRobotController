@@ -37,7 +37,7 @@ public class FieldCentric extends LinearOpMode {
                 DriveSubsystem.drive(1,1,1,1);
             }
             double y = -gamepad1.left_stick_y; // Remember, Y stick value is reversed
-            double x = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
+            double x = gamepad1.left_stick_x ; // Counteract imperfect strafing
             double rx = gamepad1.right_stick_x;
 
             // Denominator is the largest motor power (absolute value) or 1
@@ -48,8 +48,7 @@ public class FieldCentric extends LinearOpMode {
             double backLeftPower = (y - x + rx) / denominator;
             double frontRightPower = (y - x - rx) / denominator;
             double backRightPower = (y + x - rx) / denominator;
-
-            DriveSubsystem.drive(frontLeftPower, frontRightPower, backLeftPower, backRightPower);
+            DriveSubsystem.drive(-frontLeftPower, frontRightPower, backLeftPower, -backRightPower);
 
             telemetry.addData("X", Odometry.getX());
             telemetry.addData("Y", Odometry.getY());
@@ -57,6 +56,12 @@ public class FieldCentric extends LinearOpMode {
             telemetry.addData("IMU Yaw", Peripherals.getYawDegrees());
             telemetry.addData("y", y);
             telemetry.addData("rx", rx);
+            telemetry.addData("x",x);
+            telemetry.addData("frontLeftPower",frontLeftPower);
+            telemetry.addData("backLeftPower",-backLeftPower);
+            telemetry.addData("frontRightPower",-frontRightPower);
+            telemetry.addData("backRightPower",backRightPower);
+
             telemetry.update();
             Odometry.update();
         }
