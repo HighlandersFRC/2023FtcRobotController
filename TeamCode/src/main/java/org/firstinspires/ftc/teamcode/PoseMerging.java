@@ -29,9 +29,6 @@ public class PoseMerging extends LinearOpMode {
     private Odometry odometry;
     private boolean tagVisible = false; // Flag to track if the AprilTag is visible
 
-    public static void updateAprilTagPose(double lastFieldX, double lastFieldY, double lastTheta) {
-    }
-
     @Override
     public void runOpMode() throws InterruptedException {
         // AprilTagProcessor setup
