@@ -122,8 +122,8 @@ public class PoseMerging extends LinearOpMode {
                     double theta = (tagyaw + 180) - pose.yaw;
 
                     // Reset encoders to the detected position
-                    odometry.resetEncoders();
-                    odometry.setCurrentPosition(FieldX, FieldY, theta);
+                     odometry.setCurrentPositionAndResetEncoders(FieldX, FieldY, theta);
+
 
                     telemetry.addData("FieldX", FieldX);
                     telemetry.addData("FieldY", FieldY);

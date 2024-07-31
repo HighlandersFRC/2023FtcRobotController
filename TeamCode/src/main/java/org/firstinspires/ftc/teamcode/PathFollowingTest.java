@@ -29,9 +29,9 @@ public class PathFollowingTest extends LinearOpMode {
 
             }
             Odometry.update();
-                telemetry.addData("X", Odometry.getX());
-                telemetry.addData("Y", Odometry.getY());
-                telemetry.addData("Theta", Odometry.getTheta());
+                telemetry.addData("X", Odometry.getOdometryX());
+                telemetry.addData("Y", Odometry.getOdometryY());
+                telemetry.addData("Theta", Odometry.getOdometryTheta());
                 telemetry.update();
 
         }

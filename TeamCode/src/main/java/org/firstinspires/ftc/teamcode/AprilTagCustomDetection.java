@@ -387,7 +387,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.Map;
 
 @TeleOp
-public class AprilTagCustomDetection extends LinearOpMode  {
+public class AprilTagCustomDetection  {
 
     public void runOpMode() throws InterruptedException {
         // AprilTagProcessor setup
