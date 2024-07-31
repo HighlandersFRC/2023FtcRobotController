@@ -81,9 +81,17 @@ public class AprilTagCustomDetection extends LinearOpMode {
                     AprilTagPoseFtc pose = new AprilTagPoseFtc(x, y, z, yaw, roll, pitch, range, bearing, elevation);
 //corrected range uses a quartic regression to calculate an offset found in Constants
                   *//*
+*/
+/*
+
+*//*
 
 */
 /*  double distance = Constants.fiveCorrected(pose.range);*//*
+*/
+/*
+*//*
+
 */
 /*
 
@@ -93,10 +101,18 @@ public class AprilTagCustomDetection extends LinearOpMode {
                     double measuredz = 5;
 
                *//*
+*/
+/*
+
+*//*
 
 */
 /*     double YC = Math.cos(pose.bearing) * distance;
                     double XC = Math.sin(pose.bearing) * distance;*//*
+*/
+/*
+*//*
+
 */
 /*
 
@@ -117,6 +133,10 @@ public class AprilTagCustomDetection extends LinearOpMode {
                     double FieldY= yt+0;//y value of library of vector f look at tag to see coordinates
 
                   *//*
+*/
+/*
+
+*//*
 
 */
 /*double YC = Math.cos(Cbearing)*accuratedistance;
@@ -124,6 +144,14 @@ public class AprilTagCustomDetection extends LinearOpMode {
 
                   double xf = 0;
                   double yf = 0;*//*
+*/
+/*
+*//*
+
+*/
+/*
+
+*//*
 */
 /*
 
@@ -138,20 +166,40 @@ public class AprilTagCustomDetection extends LinearOpMode {
                   double Yf =Math.sqrt(CorrectX*CorrectX+CorrectY*CorrectY)*(Math.sin(90-(Math.atan2(CorrectX,CorrectY)+pose.yaw)));*//*
 */
 /*
+*//*
+
+*/
+/*
 
 
                 *//*
+*/
+/*
+
+*//*
 
 */
 /*    telemetry.addData("accuratedistance", accuratedistance);
                     telemetry.addData("bearing", Cbearing);*//*
 */
 /*
+*//*
+
+*/
+/*
 
                  *//*
+*/
+/*
+
+*//*
 
 */
 /*   telemetry.addData("not corrected distance",pose.range);*//*
+*/
+/*
+*//*
+
 */
 /*
 
@@ -173,10 +221,18 @@ public class AprilTagCustomDetection extends LinearOpMode {
                     telemetry.addData("bearing (horizontal angle)", pose.bearing);
                     telemetry.addData("elevation (vertical angle)", pose.elevation);
            *//*
+*/
+/*
+
+*//*
 
 */
 /*         telemetry.addData("Coordinates (XC, YC)", String.format("(%.2f, %.2f)", XC, YC));
                     telemetry.addData("DPC",String.format("(%.2f, %.2f)", (xf+xc)-0.127,(yf+yc)-0.1778));*//*
+*/
+/*
+*//*
+
 */
 /*
 
@@ -185,9 +241,17 @@ public class AprilTagCustomDetection extends LinearOpMode {
                     telemetry.addData("Raw Pose z", detection.rawPose.z);
                     telemetry.addData("exposure", exposure.isExposureSupported());
               *//*
+*/
+/*
+
+*//*
 
 */
 /*      telemetry.addData("(Xf,Yf)", Xf + ", " + Yf);*//*
+*/
+/*
+*//*
+
 */
 /*
 
@@ -199,6 +263,8 @@ public class AprilTagCustomDetection extends LinearOpMode {
 }
 
 *//*
+*/
+/*
 
 
 //commented code above is without the imu yaw.
@@ -310,9 +376,13 @@ public class AprilTagCustomDetection extends LinearOpMode {
                     double xt = r * (Math.cos(angleoffset + Math.PI)); //or 180
                     double yt = r * (Math.sin(angleoffset + Math.PI));
                     //offset so that you measure from robot center
-                   */
+                   *//*
+
+*/
 /* double Xcenteroffset = 0.120645;
                     double Ycenteroffset = 0.168275;*//*
+*/
+/*
 
                     //field coordinates with the offset and added to the vector position of the april tag.
 
@@ -360,8 +430,11 @@ public class AprilTagCustomDetection extends LinearOpMode {
             }
         }
     }
-}*/
+}*//*
+
 package org.firstinspires.ftc.teamcode;
+// imports
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
 
 import android.util.Size;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -372,6 +445,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainCon
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagLibrary;
 import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
@@ -380,13 +454,14 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
-
 import java.util.concurrent.TimeUnit;
+import java.util.Map;
 
 @TeleOp
-public class AprilTagCustomDetection extends LinearOpMode {
+public class AprilTagCustomDetection extends LinearOpMode  {
 
     public void runOpMode() throws InterruptedException {
+        // AprilTagProcessor setup
         AprilTagProcessor tagProcessor = new AprilTagProcessor.Builder()
                 .setDrawAxes(true)
                 .setDrawCubeProjection(true)
@@ -398,6 +473,7 @@ public class AprilTagCustomDetection extends LinearOpMode {
                 .setOutputUnits(DistanceUnit.METER, AngleUnit.RADIANS)
                 .build();
 
+        // VisionPortal setup
         VisionPortal visionPortal = new VisionPortal.Builder()
                 .addProcessor(tagProcessor)
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam1"))
@@ -409,6 +485,7 @@ public class AprilTagCustomDetection extends LinearOpMode {
         while (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING) {
         }
 
+        // Exposure and gain control
         ExposureControl exposure = visionPortal.getCameraControl(ExposureControl.class);
         exposure.setMode(ExposureControl.Mode.Manual);
         exposure.setExposure(10, TimeUnit.MILLISECONDS);
@@ -416,24 +493,175 @@ public class AprilTagCustomDetection extends LinearOpMode {
         GainControl gain = visionPortal.getCameraControl(GainControl.class);
         gain.setGain(200);
 
+        // IMU setup
         IMU imu = hardwareMap.get(IMU.class, "imu");
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.UP,
                 RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
         imu.initialize(parameters);
 
+        // IMU yaw reset with controller and initialization
         imu.resetYaw();
 
-        PoseMerging poseMerging = new PoseMerging(hardwareMap);
+
+
+
+            tagProcessor.setPoseSolver(AprilTagProcessor.PoseSolver.APRILTAG_BUILTIN);
+
+            for (AprilTagDetection detection : tagProcessor.getDetections()) {
+                if (detection.rawPose != null) {
+
+                    double x = detection.rawPose.x;
+                    double y = detection.rawPose.z;
+                    double z = -detection.rawPose.y;
+
+                    Orientation rot = Orientation.getOrientation(detection.rawPose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
+                    double yaw = -rot.firstAngle;
+                    double roll = rot.thirdAngle;
+                    double pitch = rot.secondAngle;
+                    double range = Math.sqrt(5 * 5 + y * y);
+                    double bearing = Math.toDegrees(Math.atan2(x, y));
+                    double elevation = Math.toDegrees(Math.atan2(z, Math.sqrt(x * x + y * y)));
+
+                    AprilTagPoseFtc pose = new AprilTagPoseFtc(x, y, z, yaw, roll, pitch, range, bearing, elevation);
+
+                    double CorrectX = ConstantsVision.yCorrected(pose.y);
+                    double CorrectY = -ConstantsVision.xCorrected(pose.x);
+                    double r = Math.sqrt((CorrectX * CorrectX) + (CorrectY * CorrectY));
+                    double thetapolar = (Math.atan2(CorrectY, CorrectX));
+
+                    double robotYaw = (imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS));
+                    double angleoffset = (thetapolar + robotYaw);
+
+                    double xt = r * (Math.cos(angleoffset + Math.PI));
+                    double yt = r * (Math.sin(angleoffset + Math.PI));
+
+                    // Retrieve AprilTagData from hashmap
+                    ConstantsVision.AprilTagData tagData = ConstantsVision.aprilTagMap.get(detection.id);
+                    double FieldX = xt + (tagData != null ? tagData.positionX : 0);
+                    double FieldY = yt + (tagData != null ? tagData.positionY : 0);
+
+                    // Retrieve tagAngle from hashmap
+                    double tagyaw = tagData != null ? tagData.tagangle : 0;
+                    double theta = (tagyaw + 180) - pose.yaw;
+
+                   */
+/* telemetry.addData("robotyawcalculated", robotyawcalculated);
+                    telemetry.addData("pose", String.format("(%.2f, %.2f)", FieldX, FieldY));
+                    telemetry.addData("CorrectX", CorrectX);
+                    telemetry.addData("CorrectY", CorrectY);
+                    telemetry.addData("radius", r);
+
+                    telemetry.addData("angleoffset", angleoffset);
+                    telemetry.addData("xt", xt);
+                    telemetry.addData("yt", yt);
+                    telemetry.addData("Tag ID", detection.id);
+                    telemetry.addData("tagsize", detection.metadata.tagsize);
+                    telemetry.addData("x", CorrectX);
+                    telemetry.addData("y", CorrectY);
+                    telemetry.addData("z", 5);
+                    telemetry.addData("robotyaw", imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
+                    telemetry.addData("pose.yaw", pose.yaw);
+                    telemetry.addData("roll", pose.roll);
+                    telemetry.addData("pitch", pose.pitch);
+                    telemetry.addData("yaw", Math.toDegrees(Math.PI) - (pose.yaw));
+                    telemetry.addData("bearing (horizontal angle)", pose.bearing);
+                    telemetry.addData("elevation (vertical angle)", pose.elevation);
+                    telemetry.addData("Raw Pose x", detection.rawPose.x);
+                    telemetry.addData("Raw Pose y", detection.rawPose.y);
+                    telemetry.addData("Raw Pose z", detection.rawPose.z);
+                    telemetry.addData("exposure", exposure.isExposureSupported());
+                    telemetry.update();*//*
+
+                }
+            }
+        }
+    }
+*/
+
+package org.firstinspires.ftc.teamcode;
+// imports
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+
+import android.util.Size;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagLibrary;
+import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
+import java.util.concurrent.TimeUnit;
+import java.util.Map;
+
+@TeleOp
+public class AprilTagCustomDetection extends LinearOpMode  {
+
+    private double lastFieldX = 0;
+    private double lastFieldY = 0;
+    private double lastTheta = 0;
+    private boolean isAprilTagDetected = false;
+
+    @Override
+    public void runOpMode() throws InterruptedException {
+        // AprilTagProcessor setup
+        AprilTagProcessor tagProcessor = new AprilTagProcessor.Builder()
+                .setDrawAxes(true)
+                .setDrawCubeProjection(true)
+                .setDrawTagID(true)
+                .setDrawTagOutline(true)
+                .setLensIntrinsics(626.731, 626.731, 642.398, 380.131)
+                .setTagFamily(AprilTagProcessor.TagFamily.TAG_36h11)
+                .setTagLibrary(AprilTagCustomLibrary.getSmallLibrary())
+                .setOutputUnits(DistanceUnit.METER, AngleUnit.RADIANS)
+                .build();
+
+        // VisionPortal setup
+        VisionPortal visionPortal = new VisionPortal.Builder()
+                .addProcessor(tagProcessor)
+                .setCamera(hardwareMap.get(WebcamName.class, "Webcam1"))
+                .setCameraResolution(new Size(1280, 720))
+                .enableLiveView(true)
+                .setStreamFormat(VisionPortal.StreamFormat.YUY2)
+                .build();
+
+        while (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING) {
+        }
+
+        // Exposure and gain control
+        ExposureControl exposure = visionPortal.getCameraControl(ExposureControl.class);
+        exposure.setMode(ExposureControl.Mode.Manual);
+        exposure.setExposure(10, TimeUnit.MILLISECONDS);
+
+        GainControl gain = visionPortal.getCameraControl(GainControl.class);
+        gain.setGain(200);
+
+        // IMU setup
+        IMU imu = hardwareMap.get(IMU.class, "imu");
+        IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
+                RevHubOrientationOnRobot.LogoFacingDirection.UP,
+                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
+        imu.initialize(parameters);
+
+        // IMU yaw reset with controller and initialization
+        imu.resetYaw();
 
         waitForStart();
 
         while (!isStopRequested() && opModeIsActive()) {
-            if (gamepad1.x) {
-                imu.resetYaw();
-            }
-
             tagProcessor.setPoseSolver(AprilTagProcessor.PoseSolver.APRILTAG_BUILTIN);
+
+            isAprilTagDetected = false;
 
             for (AprilTagDetection detection : tagProcessor.getDetections()) {
                 if (detection.rawPose != null) {
@@ -454,52 +682,37 @@ public class AprilTagCustomDetection extends LinearOpMode {
                     double CorrectX = ConstantsVision.yCorrected(pose.y);
                     double CorrectY = -ConstantsVision.xCorrected(pose.x);
                     double r = Math.sqrt((CorrectX * CorrectX) + (CorrectY * CorrectY));
-                    double polartheta = (Math.atan2(CorrectY, CorrectX));
+                    double thetapolar = (Math.atan2(CorrectY, CorrectX));
 
                     double robotYaw = (imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS));
-                    double angleoffset = (polartheta + robotYaw);
+                    double angleoffset = (thetapolar + robotYaw);
 
                     double xt = r * (Math.cos(angleoffset + Math.PI));
                     double yt = r * (Math.sin(angleoffset + Math.PI));
 
+                    // Retrieve AprilTagData from hashmap
                     ConstantsVision.AprilTagData tagData = ConstantsVision.aprilTagMap.get(detection.id);
-                    double FieldX = xt + (tagData != null ? tagData.positionX : 0);
-                    double FieldY = yt + (tagData != null ? tagData.positionY : 0);
+                    lastFieldX = xt + (tagData != null ? tagData.positionX : 0);
+                    lastFieldY = yt + (tagData != null ? tagData.positionY : 0);
 
                     double tagyaw = tagData != null ? tagData.tagangle : 0;
-                    double theta = (tagyaw + 180) - pose.yaw;
+                    lastTheta = (tagyaw + 180) - pose.yaw;
 
-                    poseMerging.updateCameraPose(FieldX, FieldY, theta);
+                    isAprilTagDetected = true;
 
-                    telemetry.addData("robotyawcalculated", theta);
-                    telemetry.addData("pose", String.format("(%.2f, %.2f)", FieldX, FieldY));
-                    telemetry.addData("CorrectX", CorrectX);
-                    telemetry.addData("CorrectY", CorrectY);
-                    telemetry.addData("radius", r);
-                    telemetry.addData("angleoffset", angleoffset);
-                    telemetry.addData("xt", xt);
-                    telemetry.addData("yt", yt);
-                    telemetry.addData("Tag ID", detection.id);
-                    telemetry.addData("tagsize", detection.metadata.tagsize);
-                    telemetry.addData("x", CorrectX);
-                    telemetry.addData("y", CorrectY);
-                    telemetry.addData("z", 5);
-                    telemetry.addData("robotyaw", imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
-                    telemetry.addData("pose.yaw", pose.yaw);
-                    telemetry.addData("roll", pose.roll);
-                    telemetry.addData("pitch", pose.pitch);
-                    telemetry.addData("yaw", Math.toDegrees(Math.PI) - (pose.yaw));
-                    telemetry.addData("bearing (horizontal angle)", pose.bearing);
-                    telemetry.addData("elevation (vertical angle)", pose.elevation);
-                    telemetry.addData("Raw Pose x", detection.rawPose.x);
-                    telemetry.addData("Raw Pose y", detection.rawPose.y);
-                    telemetry.addData("Raw Pose z", detection.rawPose.z);
-                    telemetry.addData("exposure", exposure.isExposureSupported());
+                    // Update PoseMerging class with the latest AprilTag values
+                    PoseMerging.updateAprilTagPose(lastFieldX, lastFieldY, lastTheta);
+
+                    telemetry.addData("pose", String.format("(%.2f, %.2f)", lastFieldX, lastFieldY));
+                    telemetry.addData("FieldX", lastFieldX);
+                    telemetry.addData("FieldY", lastFieldY);
+                    telemetry.addData("Theta", lastTheta);
                     telemetry.update();
                 }
             }
 
-            poseMerging.updatePose();
+            // Pass AprilTag status to PoseMerging
+            PoseMerging.setAprilTagDetected(isAprilTagDetected);
         }
     }
 }

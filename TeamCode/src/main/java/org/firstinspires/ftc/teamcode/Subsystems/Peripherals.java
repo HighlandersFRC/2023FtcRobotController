@@ -10,40 +10,52 @@ public class Peripherals extends Subsystem {
 
     private static DcMotor leftMotor;
     private static DcMotor rightMotor;
-    private double xPosition = 0, yPosition = 0, theta = 0;
-    private int lastLeftPosition = 0, lastRightPosition = 0;
-    private double wheelDiameter = 0.1; // Wheel diameter in meters
-    private double wheelBase = 0.3; // Distance between the two wheels in meters
     private static IMU imu;
 
     public Peripherals(String name) {
         super();
     }
 
-
     public static void initialize(HardwareMap hardwareMap) {
-
-        imu = hardwareMap.get(IMU.class, "imu");
+        imu = hardwareMap.get(IMU.class, "imu"); // Ensure this matches your configuration
     }
 
-
-    public static double getYawDegrees(){
-        return  imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
+    public static double getYawDegrees() {
+        if (imu != null) {
+            return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES);
+        } else {
+            // Handle the case where imu is not initialized
+            return Double.NaN; // or an appropriate default/error value
+        }
     }
 
     public static double getYaw() {
-        return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        if (imu != null) {
+            return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        } else {
+            return Double.NaN;
+        }
     }
 
     public static double getRoll() {
-        return imu.getRobotYawPitchRollAngles().getRoll(AngleUnit.DEGREES);
+        if (imu != null) {
+            return imu.getRobotYawPitchRollAngles().getRoll(AngleUnit.DEGREES);
+        } else {
+            return Double.NaN;
+        }
     }
 
     public static double getPitch() {
-        return imu.getRobotYawPitchRollAngles().getPitch(AngleUnit.DEGREES);
+        if (imu != null) {
+            return imu.getRobotYawPitchRollAngles().getPitch(AngleUnit.DEGREES);
+        } else {
+            return Double.NaN;
+        }
     }
 
     public static void resetYaw() {
-        imu.resetYaw();
+        if (imu != null) {
+            imu.resetYaw();
+        }
     }
 }

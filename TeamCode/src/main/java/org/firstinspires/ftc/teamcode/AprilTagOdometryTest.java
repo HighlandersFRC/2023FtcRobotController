@@ -1,5 +1,25 @@
+/*
+//package org.firstinspires.ftc.teamcode;
+//
+//import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+//
+//public class AprilTagLibrary {
+//
+//    public static org.firstinspires.ftc.vision.apriltag.AprilTagLibrary getSmallLibrary() {
+//return new org.firstinspires.ftc.vision.apriltag.AprilTagLibrary.Builder()
+//        .addTag(
+//                7,
+//                "tag 7",
+//                0.127,
+//                DistanceUnit.METER
+//        )
+//        .build();
+//
+//    }
+//}
 package org.firstinspires.ftc.teamcode;
 
+// imports
 import android.util.Size;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -8,7 +28,6 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.Exposur
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.GainControl;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.teamcode.Tools.Odometry;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagPoseFtc;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
@@ -19,23 +38,15 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import java.util.concurrent.TimeUnit;
+import org.firstinspires.ftc.teamcode.Tools.pm;
+import org.firstinspires.ftc.teamcode.Tools.Odometry;
 
 @TeleOp
-public class PoseMerging extends LinearOpMode {
+public class AprilTagOdometryTest extends LinearOpMode {
 
-    private AprilTagProcessor tagProcessor;
-    private VisionPortal visionPortal;
-    private IMU imu;
-    private Odometry odometry;
-    private boolean tagVisible = false; // Flag to track if the AprilTag is visible
-
-    public static void updateAprilTagPose(double lastFieldX, double lastFieldY, double lastTheta) {
-    }
-
-    @Override
     public void runOpMode() throws InterruptedException {
         // AprilTagProcessor setup
-        tagProcessor = new AprilTagProcessor.Builder()
+        AprilTagProcessor tagProcessor = new AprilTagProcessor.Builder()
                 .setDrawAxes(true)
                 .setDrawCubeProjection(true)
                 .setDrawTagID(true)
@@ -47,7 +58,7 @@ public class PoseMerging extends LinearOpMode {
                 .build();
 
         // VisionPortal setup
-        visionPortal = new VisionPortal.Builder()
+        VisionPortal visionPortal = new VisionPortal.Builder()
                 .addProcessor(tagProcessor)
                 .setCamera(hardwareMap.get(WebcamName.class, "Webcam1"))
                 .setCameraResolution(new Size(1280, 720))
@@ -56,7 +67,6 @@ public class PoseMerging extends LinearOpMode {
                 .build();
 
         while (visionPortal.getCameraState() != VisionPortal.CameraState.STREAMING) {
-            // Wait for the camera to start streaming
         }
 
         // Exposure and gain control
@@ -68,28 +78,29 @@ public class PoseMerging extends LinearOpMode {
         gain.setGain(200);
 
         // IMU setup
-        imu = hardwareMap.get(IMU.class, "imu");
+        IMU imu = hardwareMap.get(IMU.class, "imu");
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                 RevHubOrientationOnRobot.LogoFacingDirection.UP,
                 RevHubOrientationOnRobot.UsbFacingDirection.FORWARD));
         imu.initialize(parameters);
-        imu.resetYaw();
 
-        // Initialize odometry with hardware map
-        odometry = new Odometry(hardwareMap);
-        odometry.initialize(hardwareMap); // Initialize hardware
+        // Initialize Odometry
+        Odometry.initialize(hardwareMap);
+
+        // IMU yaw reset with controller and initialization
+        imu.resetYaw();
 
         waitForStart();
 
         while (!isStopRequested() && opModeIsActive()) {
-            tagProcessor.setPoseSolver(AprilTagProcessor.PoseSolver.APRILTAG_BUILTIN);
+            if (gamepad1.x) {
+                imu.resetYaw();
+            }
 
-            boolean tagDetected = false;
+            tagProcessor.setPoseSolver(AprilTagProcessor.PoseSolver.APRILTAG_BUILTIN);
 
             for (AprilTagDetection detection : tagProcessor.getDetections()) {
                 if (detection.rawPose != null) {
-                    tagDetected = true;
-                    tagVisible = true;
                     double x = detection.rawPose.x;
                     double y = detection.rawPose.z;
                     double z = -detection.rawPose.y;
@@ -124,32 +135,46 @@ public class PoseMerging extends LinearOpMode {
                     double tagyaw = tagData != null ? tagData.tagangle : 0;
                     double theta = (tagyaw + 180) - pose.yaw;
 
-                    // Reset encoders to the detected position
-                    odometry.resetEncoders();
-                    odometry.setCurrentPosition(FieldX, FieldY, theta);
+                    // Merge pose with odometry
+                    pm.mergePose(FieldX, FieldY, theta);
 
-                    telemetry.addData("FieldX", FieldX);
-                    telemetry.addData("FieldY", FieldY);
-                    telemetry.addData("Theta", theta);
+                    // Get updated odometry position
+                    double odometryX = Odometry.getX();
+                    double odometryY = Odometry.getY();
+                    double odometryTheta = Odometry.getTheta();
+
+                    telemetry.addData("Odometry X", odometryX);
+                    telemetry.addData("Odometry Y", odometryY);
+                    telemetry.addData("Odometry Theta", odometryTheta);
+
+                    telemetry.addData("robotyawcalculated", theta);
+                    telemetry.addData("pose", String.format("(%.2f, %.2f)", FieldX, FieldY));
+                    telemetry.addData("CorrectX", CorrectX);
+                    telemetry.addData("CorrectY", CorrectY);
+                    telemetry.addData("radius", r);
+                    telemetry.addData("angleoffset", angleoffset);
+                    telemetry.addData("xt", xt);
+                    telemetry.addData("yt", yt);
+                    telemetry.addData("Tag ID", detection.id);
+                    telemetry.addData("tagsize", detection.metadata.tagsize);
+                    telemetry.addData("x", CorrectX);
+                    telemetry.addData("y", CorrectY);
+                    telemetry.addData("z", 5);
+                    telemetry.addData("robotyaw", imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.DEGREES));
+                    telemetry.addData("pose.yaw", pose.yaw);
+                    telemetry.addData("roll", pose.roll);
+                    telemetry.addData("pitch", pose.pitch);
+                    telemetry.addData("yaw", Math.toDegrees(Math.PI) - (pose.yaw));
+                    telemetry.addData("bearing (horizontal angle)", pose.bearing);
+                    telemetry.addData("elevation (vertical angle)", pose.elevation);
+                    telemetry.addData("Raw Pose x", detection.rawPose.x);
+                    telemetry.addData("Raw Pose y", detection.rawPose.y);
+                    telemetry.addData("Raw Pose z", detection.rawPose.z);
+                    telemetry.addData("exposure", exposure.isExposureSupported());
                     telemetry.update();
                 }
-            }
-
-            if (!tagDetected) {
-                tagVisible = false;
-                // Update odometry if the tag is not visible
-                odometry.update();
-
-                // Retrieve the odometry values
-                double x = Odometry.getOdometryX();
-                double y = Odometry.getOdometryY();
-                double theta = Odometry.getOdometryTheta();
-
-                telemetry.addData("Odometry X", x);
-                telemetry.addData("Odometry Y", y);
-                telemetry.addData("Odometry Theta", theta);
-                telemetry.update();
             }
         }
     }
 }
+*/

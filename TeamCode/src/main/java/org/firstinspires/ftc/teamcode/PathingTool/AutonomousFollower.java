@@ -59,9 +59,9 @@ public class AutonomousFollower implements Command {
     @Override
     public void execute() throws JSONException {
         Odometry.update();
-        odometryFusedX = Odometry.getX();
-        odometryFusedY = Odometry.getY();
-        odometryFusedTheta = Odometry.getTheta();
+        odometryFusedX = Odometry.getOdometryX();
+        odometryFusedY = Odometry.getOdometryY();
+        odometryFusedTheta = Odometry.getOdometryTheta();
 
         currentTime = (System.currentTimeMillis() - initTime) / 1000.0 + pathStartTime;
 
@@ -85,9 +85,9 @@ public class AutonomousFollower implements Command {
         double desiredThetaChange = 0.0;
         drive.autoDrive(velocityVector, desiredThetaChange);
 
-        odometryFusedX = Odometry.getX();
-        odometryFusedY = Odometry.getY();
-        odometryFusedTheta = Odometry.getTheta();
+        odometryFusedX = Odometry.getOdometryX();
+        odometryFusedY = Odometry.getOdometryY();
+        odometryFusedTheta = Odometry.getOdometryTheta();
         currentTime = System.currentTimeMillis() - initTime;
     }
 

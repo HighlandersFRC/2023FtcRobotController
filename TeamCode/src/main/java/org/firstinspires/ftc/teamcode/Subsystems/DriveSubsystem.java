@@ -5,14 +5,13 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.teamcode.Tools.Odometry;
 import org.firstinspires.ftc.teamcode.Tools.PID;
-import org.firstinspires.ftc.teamcode.Subsystems.Peripherals;
 import org.firstinspires.ftc.teamcode.Tools.Vector;
 import org.json.JSONArray;
 import org.json.JSONException;
 
 public class DriveSubsystem {
 
-    public static DcMotor leftBack, leftFront, rightBack, rightFront;
+    public static DcMotor rightFront, leftFront, rightBack, leftBack;
     private PID turnPID = new PID(1, 0, 0);
     private PID drivePIDL = new PID(1, 0, 0);
     private PID drivePIDR = new PID(1, 0, 0);
@@ -28,31 +27,35 @@ public class DriveSubsystem {
     }
 
     public static void initialize(HardwareMap hardwareMap) {
-        leftBack = hardwareMap.get(DcMotor.class, "left_back");
+        rightFront = hardwareMap.get(DcMotor.class, "right_front");
         rightBack = hardwareMap.get(DcMotor.class, "right_back");
         leftFront = hardwareMap.get(DcMotor.class, "left_front");
-        rightFront = hardwareMap.get(DcMotor.class, "right_front");
+        leftBack = hardwareMap.get(DcMotor.class, "left_back");
 
-        leftBack.setDirection(DcMotor.Direction.FORWARD);
+        rightFront.setDirection(DcMotor.Direction.REVERSE);
         rightBack.setDirection(DcMotor.Direction.REVERSE);
         leftFront.setDirection(DcMotor.Direction.FORWARD);
-        rightFront.setDirection(DcMotor.Direction.REVERSE);
+        leftBack.setDirection(DcMotor.Direction.FORWARD);
 
         resetEncoders();
     }
 
     public static void MecanumDrive(double x, double y, double rotation) {
-        double heading = Peripherals.getYawDegrees();
+        double heading = Peripherals.getYawDegrees(); // Assuming Peripherals.getYawDegrees() gives the robot's heading
         double cosA = Math.cos(Math.toRadians(heading));
         double sinA = Math.sin(Math.toRadians(heading));
+
+        // Adjust x and y for field-centric driving
         double xAdjusted = x * cosA - y * sinA;
         double yAdjusted = x * sinA + y * cosA;
 
+        // Calculate power for each motor
         double frontLeftPower = yAdjusted + xAdjusted + rotation;
         double frontRightPower = yAdjusted - xAdjusted - rotation;
         double backLeftPower = yAdjusted - xAdjusted + rotation;
         double backRightPower = yAdjusted + xAdjusted - rotation;
 
+        // Normalize motor power
         double maxPower = Math.max(Math.abs(frontLeftPower), Math.max(Math.abs(frontRightPower),
                 Math.max(Math.abs(backLeftPower), Math.abs(backRightPower))));
         if (maxPower > 1.0) {
@@ -82,36 +85,13 @@ public class DriveSubsystem {
     }
 
     public static void driveByVectors(double x, double y, double rotation) {
-        double heading = Peripherals.getYawDegrees();
-        double cosA = Math.cos(Math.toRadians(heading));
-        double sinA = Math.sin(Math.toRadians(heading));
-        double xAdjusted = x * cosA - y * sinA;
-        double yAdjusted = x * sinA + y * cosA;
-
-        double frontLeftPower = yAdjusted + xAdjusted + rotation;
-        double frontRightPower = yAdjusted - xAdjusted - rotation;
-        double backLeftPower = yAdjusted - xAdjusted + rotation;
-        double backRightPower = yAdjusted + xAdjusted - rotation;
-
-        double maxPower = Math.max(Math.abs(frontLeftPower), Math.max(Math.abs(frontRightPower),
-                Math.max(Math.abs(backLeftPower), Math.abs(backRightPower))));
-        if (maxPower > 1.0) {
-            frontLeftPower /= maxPower;
-            frontRightPower /= maxPower;
-            backLeftPower /= maxPower;
-            backRightPower /= maxPower;
-        }
-
-        drive(frontLeftPower, frontRightPower, backLeftPower, backRightPower);
-
-        System.out.println("driveByVectors Powers: FL=" + frontLeftPower + ", FR=" + frontRightPower +
-                ", BL=" + backLeftPower + ", BR=" + backRightPower);
+        MecanumDrive(x, y, rotation);
     }
 
     public void moveToPosition(double targetX, double targetY, double targetAngle) {
-        double currentX = Odometry.getX();
-        double currentY = Odometry.getY();
-        double currentAngle = Odometry.getTheta();
+        double currentX = Odometry.getOdometryX();
+        double currentY = Odometry.getOdometryY();
+        double currentAngle = Odometry.getOdometryTheta();
 
         double errorX = targetX - currentX;
         double errorY = targetY - currentY;
@@ -149,13 +129,14 @@ public class DriveSubsystem {
         leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
+
     public static double[] pidController(double currentX, double currentY, double currentTheta, double time, JSONArray pathPoints) throws JSONException {
-        if(time < pathPoints.getJSONArray(pathPoints.length() - 1).getDouble(0)) {
+        if (time < pathPoints.getJSONArray(pathPoints.length() - 1).getDouble(0)) {
             JSONArray currentPoint = pathPoints.getJSONArray(0);
             JSONArray targetPoint = pathPoints.getJSONArray(0);
-            for(int i = 0; i < pathPoints.length(); i ++) {
+            for (int i = 0; i < pathPoints.length(); i++) {
                 int lookAheadDistance = 3;
-                if(i == pathPoints.length() - lookAheadDistance) {
+                if (i == pathPoints.length() - lookAheadDistance) {
                     currentPoint = pathPoints.getJSONArray(i + 1);
                     targetPoint = pathPoints.getJSONArray((i + (lookAheadDistance - 1)));
                     break;
@@ -167,7 +148,7 @@ public class DriveSubsystem {
                 double currentPointTime = currentPoint.getDouble(0);
                 double previousPointTime = previousPoint.getDouble(0);
 
-                if(time >= previousPointTime && time < currentPointTime){
+                if (time >= previousPointTime && time < currentPointTime) {
                     targetPoint = pathPoints.getJSONArray(i + (lookAheadDistance - 1));
                     break;
                 }
@@ -178,9 +159,9 @@ public class DriveSubsystem {
             double targetY = targetPoint.getDouble(2);
             double targetTheta = targetPoint.getDouble(3);
 
-            if (targetTheta - currentTheta > Math.PI){
+            if (targetTheta - currentTheta > Math.PI) {
                 targetTheta -= 2 * Math.PI;
-            } else if (targetTheta - currentTheta < -Math.PI){
+            } else if (targetTheta - currentTheta < -Math.PI) {
                 targetTheta += 2 * Math.PI;
             }
 
@@ -189,10 +170,8 @@ public class DriveSubsystem {
             double currentPointY = currentPoint.getDouble(2);
             double currentPointTheta = currentPoint.getDouble(3);
 
-
-            double feedForwardX = (targetX - currentPointX)/(targetTime - currentPointTime);
-            double feedForwardY = (targetY - currentPointY)/(targetTime - currentPointTime);
-            // double feedForwardTheta = -(targetTheta - currentPointTheta)/(targetTime - currentPointTime);
+            double feedForwardX = (targetX - currentPointX) / (targetTime - currentPointTime);
+            double feedForwardY = (targetY - currentPointY) / (targetTime - currentPointTime);
             double feedForwardTheta = 0;
 
             xPID.setSetPoint(targetX);
@@ -217,12 +196,8 @@ public class DriveSubsystem {
             velocityArray[1] = -yVel;
             velocityArray[2] = thetaVel;
 
-            // System.out.println("Targ - X: " + targetX + " Y: " + targetY + " Theta: " + targetTheta);
-            // System.out.println("PID side: " + this.fieldSide);
-
             return velocityArray;
-        }
-        else {
+        } else {
             double[] velocityArray = new double[3];
 
             velocityArray[0] = 0;

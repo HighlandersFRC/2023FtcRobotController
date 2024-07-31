@@ -31,7 +31,7 @@ public class ConstantsVision {
     public static final Map<Integer, AprilTagData> aprilTagMap = new HashMap<>();
 
     static {
-        aprilTagMap.put(7, new AprilTagData(0.0, 0.0, 1.27, Math.PI / 4));
+        aprilTagMap.put(7, new AprilTagData(0.0, 0.0, 1.27, 0));
         aprilTagMap.put(8, new AprilTagData(5.0, 5.0, 1.27, Math.PI / 2));
     }
 }
