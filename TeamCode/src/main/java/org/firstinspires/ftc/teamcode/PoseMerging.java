@@ -27,7 +27,7 @@ public class PoseMerging extends LinearOpMode {
     private VisionPortal visionPortal;
     private IMU imu;
     private Odometry odometry;
-    private boolean tagVisible = false; // Flag to track if the AprilTag is visible
+    private boolean tagVisible = false; 
 
     @Override
     public void runOpMode() throws InterruptedException {
