@@ -27,6 +27,7 @@ public class ConstantsVision {
         }
     }
 
+
     // HashMap to store AprilTag data
     public static final Map<Integer, AprilTagData> aprilTagMap = new HashMap<>();
 
