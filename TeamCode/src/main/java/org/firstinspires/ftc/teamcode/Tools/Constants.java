@@ -34,12 +34,14 @@ public class Constants {
     public static class AprilTagData {
         public double positionX;
         public double positionY;
+        public double positionZ;
         public double size;
         public double tagangle;
 
-        public AprilTagData(double positionX, double positionY, double size, double tagangle) {
+        public AprilTagData(double positionX, double positionY, double positionZ, double size, double tagangle) {
             this.positionX = positionX;
             this.positionY = positionY;
+            this.positionZ = positionZ;
             this.size = size;
             this.tagangle = tagangle; // Angle already provided in radians
         }
@@ -49,8 +51,8 @@ public class Constants {
     public static final Map<Integer, AprilTagData> aprilTagMap = new HashMap<>();
 
     static {
-        aprilTagMap.put(7, new AprilTagData(0.0, 0.0, 1.27, Math.PI / 4));
-        aprilTagMap.put(8, new AprilTagData(5.0, 5.0, 1.27, Math.PI / 2));
+        aprilTagMap.put(11, new AprilTagData(0.0, 0.0, 0.17, 0.17, 0));
+        aprilTagMap.put(8, new AprilTagData(5.0, 5.0, 0.2,0.127, Math.PI / 2));
     }
 
     public static final double AUTONOMOUS_LOOKAHEAD_DISTANCE = 10;
