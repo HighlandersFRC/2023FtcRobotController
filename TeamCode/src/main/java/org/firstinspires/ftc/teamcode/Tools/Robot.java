@@ -12,8 +12,6 @@ public class Robot {
     public static void initialize(HardwareMap hardwareMap) {
         Peripherals.initialize(hardwareMap);
         DriveSubsystem.initialize(hardwareMap);
-/*        ElevatorSubsystem.initialize(hardwareMap);
-        ArmSubsystem.initialize(hardwareMap);
-        IntakeSubsystem.initialize(hardwareMap);*/
+        FieldOfMerit.initialize(hardwareMap);
     }
 }
