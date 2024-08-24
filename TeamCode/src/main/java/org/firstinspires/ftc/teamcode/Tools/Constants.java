@@ -41,7 +41,7 @@ public class Constants {
             this.positionX = positionX;
             this.positionY = positionY;
             this.size = size;
-            this.tagangle = tagangle; // Angle already provided in radians
+            this.tagangle = tagangle;
         }
     }
 
@@ -49,12 +49,11 @@ public class Constants {
         return -0.276 + 0.394 * x + (-0.114 * x * x) + (0.01 * x * x * x);
     }
 
-    // HashMap to store AprilTag data
     public static final Map<Integer, AprilTagData> aprilTagMap = new HashMap<>();
 
     static {
-        aprilTagMap.put(7, new AprilTagData(0.0, 0.0, 1.27, Math.PI / 4));
-        aprilTagMap.put(8, new AprilTagData(5.0, 5.0, 1.27, Math.PI / 2));
+        aprilTagMap.put(7, new AprilTagData(0.0, 0.0, 0.152, 0));
+        aprilTagMap.put(8, new AprilTagData(5.0, 5.0, 0.152, Math.PI / 2));
     }
 
     public static final double AUTONOMOUS_LOOKAHEAD_DISTANCE = 10;
