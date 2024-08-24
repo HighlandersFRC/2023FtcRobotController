@@ -13,7 +13,7 @@ public class AprilTagLookUp {
                 .setAllowOverwrite(true)
                 .addTag(7,
                         "tag 7",
-                        0.152,
+                        0.152,//test
                         new VectorF(0,0),
                         DistanceUnit.METER,
                         Quaternion.identityQuaternion())
