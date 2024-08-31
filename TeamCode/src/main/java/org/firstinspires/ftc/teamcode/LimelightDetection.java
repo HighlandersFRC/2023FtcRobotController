@@ -311,13 +311,15 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import org.firstinspires.ftc.teamcode.Tools.FieldOfMerit;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 @TeleOp(name = "Limelight AprilTag Detection")
 public class LimelightDetection extends LinearOpMode {
 
-    private static final String LIMELIGHT_IP = "172.28.2.1"; // Replace with your Limelight's IP address
+    private static final String LIMELIGHT_IP = "172.28.2.1";
     private static final double CAMERA_HEIGHT = 0.8001;  // Example height in meters
     private static final double TAG_HEIGHT = 1.4478;     // Example AprilTag height in meters
     private static final double FIELD_TAG_X = 0.0;       // Known X position of the AprilTag on the field in meters
@@ -383,6 +385,8 @@ public class LimelightDetection extends LinearOpMode {
                     int id = tag.getInt("fID");
                     double tx = tag.getDouble("tx");
                     double ty = tag.getDouble("ty");
+
+
 
 
                     // Calculate the distance to the tag based on vertical angle and height

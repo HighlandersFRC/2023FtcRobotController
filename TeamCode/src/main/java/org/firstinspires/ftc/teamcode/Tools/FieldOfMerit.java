@@ -123,7 +123,7 @@ public class FieldOfMerit {
         }
 
         if (!tagDetected) {
-            fieldX = Drive.getOdometryX();
+              Drive.getOdometryX();
             fieldY = Drive.getOdometryY();
             theta = Drive.getOdometryTheta();
 
