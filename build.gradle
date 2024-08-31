@@ -15,22 +15,15 @@ buildscript {
     }
 }
 
+// This is now required because aapt2 has to be downloaded from the
+// google() repository beginning with version 3.2 of the Android Gradle Plugin
 allprojects {
     repositories {
         mavenCentral()
         google()
-        flatDir {
-            dirs 'libs','/Users/doadj/navx-mxp/android/libs'
-        }
-
     }
 }
 
 repositories {
     mavenCentral()
-    flatDir {
-        dirs 'libs', 'C:\\Users\\doadj\\navx-micro\\android\\libs'
-    }
-
-
 }
