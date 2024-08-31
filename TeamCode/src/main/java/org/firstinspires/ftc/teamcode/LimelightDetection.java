@@ -91,6 +91,12 @@ public class LimelightDetection extends LinearOpMode {
         }
     }
 }
+*//*
+
+*/
+/*
+
+*//*
 */
 /*
 
@@ -209,6 +215,9 @@ public class LimelightDetection extends LinearOpMode {
 *//*
 */
 /*
+*//*
+
+*/
 
         package org.firstinspires.ftc.teamcode;
 
@@ -286,8 +295,10 @@ public class LimelightDetection extends LinearOpMode {
                 double x = tag.getDouble("tx");
                 double y = tag.getDouble("ty");
                 double z = tag.getDouble("tz");
+                double botPose = tag.getDouble("botpose");
                 double rotation = tag.getDouble("rotation");
 
+                telemetry.addData("botpose", botPose);
                 telemetry.addData("Tag ID", id);
                 telemetry.addData("X", x);
                 telemetry.addData("Y", y);
@@ -300,9 +311,12 @@ public class LimelightDetection extends LinearOpMode {
         }
     }
 }
-*/
 
-package org.firstinspires.ftc.teamcode;
+/*
+
+
+*/
+/*package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -320,10 +334,7 @@ import org.json.JSONObject;
 public class LimelightDetection extends LinearOpMode {
 
     private static final String LIMELIGHT_IP = "172.28.2.1";
-    private static final double CAMERA_HEIGHT = 0.8001;  // Example height in meters
-    private static final double TAG_HEIGHT = 1.4478;     // Example AprilTag height in meters
-    private static final double FIELD_TAG_X = 0.0;       // Known X position of the AprilTag on the field in meters
-    private static final double FIELD_TAG_Y = 0.0;       // Known Y position of the AprilTag on the field in meters
+
 
     @Override
     public void runOpMode() {
@@ -384,25 +395,19 @@ public class LimelightDetection extends LinearOpMode {
                     JSONObject tag = fiducials.getJSONObject(i);
                     int id = tag.getInt("fID");
                     double tx = tag.getDouble("tx");
-                    double ty = tag.getDouble("ty");
+                    double ty = tag.getDouble("ty");*//*
 
 
 
 
-                    // Calculate the distance to the tag based on vertical angle and height
-                    double angle = Math.toRadians(ty);
-                    double distance = (TAG_HEIGHT - CAMERA_HEIGHT) / Math.tan(angle);
 
-                    // Calculate robot's position relative to the field
-                    double robotX = FIELD_TAG_X - distance * Math.cos(Math.toRadians(tx));
-                    double robotY = FIELD_TAG_Y - distance * Math.sin(Math.toRadians(tx));
+
 
                     // Display the information on the telemetry
                     telemetry.addData("Tag ID", id);
                     telemetry.addData("TX (deg)", tx);
                     telemetry.addData("TY (deg)", ty);
-                    telemetry.addData("Distance (m)", distance);
-                    telemetry.addData("Robot Position", "X: " + robotX + ", Y: " + robotY);
+
                 }
             } else {
                 telemetry.addData("Error", "No Fiducial data found");
@@ -413,4 +418,4 @@ public class LimelightDetection extends LinearOpMode {
         }
     }
 }
-//math might not work
+//math might not work*/
