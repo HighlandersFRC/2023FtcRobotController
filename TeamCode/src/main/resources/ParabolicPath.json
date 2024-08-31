@@ -1,0 +1,112 @@
+{
+  "meta_data": {
+    "path_name": "Parabolic_Path",
+    "sample_rate": 0.1
+  },
+  "key_points": [
+    {
+      "index": 0,
+      "delta_time": 0.0,
+      "time": 0.0,
+      "x": 0.0,
+      "y": 0.0,
+      "angle": 0.0,
+      "x_velocity": 0.0,
+      "y_velocity": 0.0,
+      "angular_velocity": 0.0,
+      "x_acceleration": 0.0,
+      "y_acceleration": 0.0,
+      "angular_acceleration": 0.0
+    },
+    {
+      "index": 1,
+      "delta_time": 1.0,
+      "time": 1.0,
+      "x": 1.0,
+      "y": 1.0,
+      "angle": 30.0,
+      "x_velocity": 1.0,
+      "y_velocity": 2.0,
+      "angular_velocity": 0.0,
+      "x_acceleration": 0.0,
+      "y_acceleration": 0.0,
+      "angular_acceleration": 0.0
+    },
+    {
+      "index": 2,
+      "delta_time": 2.0,
+      "time": 2.0,
+      "x": 2.0,
+      "y": 4.0,
+      "angle": 45.0,
+      "x_velocity": 1.0,
+      "y_velocity": 2.0,
+      "angular_velocity": 0.0,
+      "x_acceleration": 0.0,
+      "y_acceleration": 0.0,
+      "angular_acceleration": 0.0
+    }
+  ],
+  "sampled_points": [
+    {
+      "time": 0.0,
+      "x": 0.0,
+      "y": 0.0,
+      "angle": 0.0,
+      "x_velocity": 1.0,
+      "y_velocity": 2.0,
+      "angular_velocity": 0.0,
+      "x_acceleration": 0.0,
+      "y_acceleration": 0.0,
+      "angular_acceleration": 0.0
+    },
+    {
+      "time": 0.5,
+      "x": 0.5,
+      "y": 0.25,
+      "angle": 15.0,
+      "x_velocity": 1.0,
+      "y_velocity": 1.5,
+      "angular_velocity": 0.0,
+      "x_acceleration": 0.0,
+      "y_acceleration": 0.0,
+      "angular_acceleration": 0.0
+    },
+    {
+      "time": 1.0,
+      "x": 1.0,
+      "y": 1.0,
+      "angle": 30.0,
+      "x_velocity": 1.0,
+      "y_velocity": 2.0,
+      "angular_velocity": 0.0,
+      "x_acceleration": 0.0,
+      "y_acceleration": 0.0,
+      "angular_acceleration": 0.0
+    },
+    {
+      "time": 1.5,
+      "x": 1.5,
+      "y": 2.25,
+      "angle": 37.5,
+      "x_velocity": 1.0,
+      "y_velocity": 2.5,
+      "angular_velocity": 0.0,
+      "x_acceleration": 0.0,
+      "y_acceleration": 0.0,
+      "angular_acceleration": 0.0
+    },
+    {
+      "time": 2.0,
+      "x": 2.0,
+      "y": 4.0,
+      "angle": 45.0,
+      "x_velocity": 1.0,
+      "y_velocity": 2.0,
+      "angular_velocity": 0.0,
+      "x_acceleration": 0.0,
+      "y_acceleration": 0.0,
+      "angular_acceleration": 0.0
+    }
+  ]
+}

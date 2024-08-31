@@ -1,0 +1,66 @@
+{
+  "meta_data": {
+    "path_name": "Straight Line FTC",
+    "sample_rate": 0.0
+  },
+  "commands": [
+    {
+      "branched": true,
+      "branchedCommand": {
+        "condition": "right_trigger",
+        "onTrue": {
+          "name": "arm_up"
+        },
+        "onFalse": {
+          "name": "arm_down"
+        }
+      },
+      "start": 0.5,
+      "end": 1.0
+    }
+  ],
+  "key_points": [
+    {
+      "index": 0,
+      "delta_time": 0.0,
+      "time": 0.0,
+      "x": 0.25,
+      "y": 1.0,
+      "angle": 0.0,
+      "x_velocity": 0.0,
+      "y_velocity": 0.0,
+      "angular_velocity": 0.0,
+      "x_acceleration": 0.0,
+      "y_acceleration": 0.0,
+      "angular_acceleration": 0.0
+    },
+    {
+      "index": 1,
+      "delta_time": 2.0,
+      "time": 2.0,
+      "x": 1.0,
+      "y": 1.0,
+      "angle": 0.0,
+      "x_velocity": 0.0,
+      "y_velocity": -0.0,
+      "angular_velocity": 0.0,
+      "x_acceleration": 0.0,
+      "y_acceleration": 0.0,
+      "angular_acceleration": 0.0
+    }
+  ],
+  "sampled_points": [
+    {
+      "time": 0.0,
+      "x": 0.25,
+      "y": 1.0,
+      "angle": 0.0,
+      "x_velocity": 0.0,
+      "y_velocity": 0.0,
+      "angular_velocity": 0.0,
+      "x_acceleration": 0.0,
+      "y_acceleration": 0.0,
+      "angular_acceleration": 0.0
+    }
+  ]
+}
