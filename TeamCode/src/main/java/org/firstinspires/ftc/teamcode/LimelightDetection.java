@@ -92,6 +92,18 @@ public class LimelightDetection extends LinearOpMode {
     }
 }
 *//*
+*/
+/*
+
+*//*
+
+*/
+/*
+
+*//*
+*/
+/*
+*//*
 
 */
 /*
@@ -218,6 +230,13 @@ public class LimelightDetection extends LinearOpMode {
 *//*
 
 */
+/*
+*//*
+*/
+/*
+
+*//*
+
 
         package org.firstinspires.ftc.teamcode;
 
@@ -292,18 +311,18 @@ public class LimelightDetection extends LinearOpMode {
             for (int i = 0; i < targets.length(); i++) {
                 JSONObject tag = targets.getJSONObject(i);
                 int id = tag.getInt("id");
-                double x = tag.getDouble("tx");
-                double y = tag.getDouble("ty");
-                double z = tag.getDouble("tz");
+                double tx = tag.getDouble("tx");
+                double ty = tag.getDouble("ty");
                 double botPose = tag.getDouble("botpose");
-                double rotation = tag.getDouble("rotation");
+
 
                 telemetry.addData("botpose", botPose);
                 telemetry.addData("Tag ID", id);
-                telemetry.addData("X", x);
-                telemetry.addData("Y", y);
-                telemetry.addData("Z", z);
-                telemetry.addData("Rotation", rotation);
+                telemetry.addData("tx (deg)", tx);
+                telemetry.addData("ty (deg)", ty);
+
+
+
             }
         } catch (Exception e) {
             telemetry.addData("Error", "JSON Parsing Exception: " + e.getMessage());
@@ -312,8 +331,11 @@ public class LimelightDetection extends LinearOpMode {
     }
 }
 
+*/
 /*
 
+
+*//*
 
 */
 /*package org.firstinspires.ftc.teamcode;
@@ -396,6 +418,8 @@ public class LimelightDetection extends LinearOpMode {
                     int id = tag.getInt("fID");
                     double tx = tag.getDouble("tx");
                     double ty = tag.getDouble("ty");*//*
+*/
+/*
 
 
 
@@ -418,4 +442,5 @@ public class LimelightDetection extends LinearOpMode {
         }
     }
 }
-//math might not work*/
+//math might not work*//*
+*/
