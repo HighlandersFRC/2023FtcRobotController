@@ -4,52 +4,66 @@ import com.qualcomm.robotcore.util.RobotLog;
 
 import org.json.JSONException;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
-import java.util.Queue;
 
 public class SequentialCommandGroup implements Command {
-    private Queue<Command> commands = new LinkedList<>();
+    private ArrayList<Command> commands = new ArrayList<>();
+    private int currentCommandIndex = 0;
     private Command currentCommand;
+    private CommandScheduler scheduler;
+    private int maxExecutionCount = 100;
+    private int currentExecutionCount = 0;
 
-    public SequentialCommandGroup(Command... commands) {
+    public SequentialCommandGroup(CommandScheduler scheduler, Command... commands) {
+        this.scheduler = scheduler;
         Collections.addAll(this.commands, commands);
     }
+
     public void addCommands(Command... commands) {
-            Collections.addAll(this.commands, commands);
+        Collections.addAll(this.commands, commands);
     }
 
     @Override
-    public void start() {
+    public void start() throws JSONException {
         if (!commands.isEmpty()) {
-            currentCommand = commands.poll();
-            currentCommand.start();
+            currentCommandIndex = 0;
+            currentCommand = commands.get(currentCommandIndex);
+            scheduler.schedule(currentCommand);  // Add the first command to the scheduler
             RobotLog.d("Sequential Command Group Started with " + currentCommand.getClass().getSimpleName());
         }
     }
 
     @Override
     public void execute() throws InterruptedException, JSONException {
-        if (currentCommand != null) {
-            if (currentCommand.isFinished()) {
-                currentCommand.end();
-                if (!commands.isEmpty()) {
-                    currentCommand = commands.poll();
-                    currentCommand.start();
-                    RobotLog.d("Sequential Command Group Next Command Started: " + currentCommand.getClass().getSimpleName());
-                } else {
-                    currentCommand = null;
-                }
+        // SequentialCommandGroup itself doesn't execute commands directly now.
+        // Instead, it monitors the currentCommand's state via the CommandScheduler.
+
+        if (currentCommand != null && currentCommand.isFinished()) {
+            currentCommand.end();
+            currentCommandIndex++;
+            currentExecutionCount = 0; // Reset counter for next command
+            if (currentCommandIndex < commands.size()) {
+                currentCommand = commands.get(currentCommandIndex);
+                scheduler.schedule(currentCommand);  // Add the next command to the scheduler
+                RobotLog.d("Sequential Command Group Next Command Started: " + currentCommand.getClass().getSimpleName());
             } else {
-                currentCommand.execute();
+                currentCommand = null;
             }
+        } else if (currentExecutionCount > maxExecutionCount) {
+            RobotLog.e("Command execution exceeded max count, ending current command");
+            if (currentCommand != null) {
+                currentCommand.end(); // Force end to avoid infinite loop
+            }
+            currentCommand = null;
+        } else {
+            currentExecutionCount++;
         }
     }
 
     @Override
     public void end() {
         if (currentCommand != null) {
-            currentCommand.end();
             RobotLog.d("Sequential Command Group Ended with " + currentCommand.getClass().getSimpleName());
         }
         for (Command command : commands) {
@@ -59,6 +73,6 @@ public class SequentialCommandGroup implements Command {
 
     @Override
     public boolean isFinished() {
-        return currentCommand == null;
+        return false;
     }
 }

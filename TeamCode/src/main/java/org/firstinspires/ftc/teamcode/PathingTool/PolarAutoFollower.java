@@ -28,13 +28,16 @@ public class PolarAutoFollower extends SequentialCommandGroup {
 
 
     public PolarAutoFollower(CommandScheduler scheduler, JSONObject polarAutoJSON, Drive drive, Peripherals peripherals, HashMap<String, Supplier<Command>> commandMap, HashMap<String, BooleanSupplier> conditionMap) throws Exception {
+        super(scheduler);
         JSONArray schedule = polarAutoJSON.getJSONArray("schedule");
         JSONArray paths = polarAutoJSON.getJSONArray("paths");
         for (int i = 0; i < schedule.length(); i++) {
             JSONObject scheduleEntry = schedule.getJSONObject(i);
             if (!scheduleEntry.getBoolean("branched")){
                 addCommands(
+/*
                         new PolarPathFollower(drive, peripherals, paths.getJSONObject(scheduleEntry.getInt("path")), commandMap, conditionMap, scheduler)
+*/
                 );
             } else {
                 JSONArray onTrueSchedule = scheduleEntry.getJSONObject("branched_path").getJSONArray("on_true");

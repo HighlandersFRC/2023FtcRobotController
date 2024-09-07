@@ -28,7 +28,7 @@ public class ParallelCommandGroup implements Command {
     }
 
     @Override
-    public void start() {
+    public void start() throws JSONException {
         RobotLog.d("Parallel Command Group Started with parameter: " + parameter);
         for (Command command : commands) {
             command.start();

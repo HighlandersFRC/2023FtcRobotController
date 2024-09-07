@@ -2,6 +2,9 @@ package org.firstinspires.ftc.teamcode.PathingTool;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
@@ -24,6 +27,7 @@ public class PolarPathFollower extends ParallelCommandGroup {
     private JSONObject pathJSON;
     private TriggerCommand followerCommand;
     private CommandScheduler scheduler;
+    private Set<String> addedCommandKeys = new HashSet<>();
 
     public PolarPathFollower(Drive drive, Peripherals peripherals, JSONObject pathJSON,
                              HashMap<String, Supplier<Command>> commandMap, HashMap<String, BooleanSupplier> conditionMap, CommandScheduler scheduler) throws Exception {
@@ -32,6 +36,7 @@ public class PolarPathFollower extends ParallelCommandGroup {
         this.pathJSON = pathJSON;
 
         follower = new PurePursuitFollower(drive, peripherals, pathJSON.getJSONArray("sampled_points"), false);
+
         followerCommand = new TriggerCommand(scheduler,
                 () -> {
                     try {
@@ -48,7 +53,11 @@ public class PolarPathFollower extends ParallelCommandGroup {
 
         for (int i = 0; i < pathJSON.getJSONArray("commands").length(); i++) {
             JSONObject command = pathJSON.getJSONArray("commands").getJSONObject(i);
-            commands.add(addCommandsFromJSON(command, commandMap, conditionMap));
+            String commandKey = command.toString(); // Unique representation of the command
+            if (!addedCommandKeys.contains(commandKey)) {
+                commands.add(addCommandsFromJSON(command, commandMap, conditionMap));
+                addedCommandKeys.add(commandKey);
+            }
         }
 
         for (Command command : commands) {
@@ -90,7 +99,7 @@ public class PolarPathFollower extends ParallelCommandGroup {
                 throw new RuntimeException(e);
             }
         };
-        return new TriggerCommand(scheduler, startSupplier, commandMap.get(command.getJSONObject("command").getString("name")).get(), endSupplier);
+        return new TriggerCommand(scheduler, startSupplier, Objects.requireNonNull(commandMap.get(command.getJSONObject("command").getString("name"))).get(), endSupplier);
     }
 
     private Command createBranchedCommand(JSONObject command, HashMap<String, Supplier<Command>> commandMap,
@@ -173,7 +182,7 @@ public class PolarPathFollower extends ParallelCommandGroup {
                     command.getJSONObject("sequential_command_group").getJSONArray("commands").getJSONObject(i),
                     commandMap, conditionMap));
         }
-        return new SequentialCommandGroup(commands.toArray(new Command[0]));
+        return new SequentialCommandGroup(scheduler, commands.toArray(new Command[0]));
     }
 
     double getPathTime() throws JSONException {
