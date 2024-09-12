@@ -29,23 +29,20 @@ public class SequentialCommandGroup implements Command {
         if (!commands.isEmpty()) {
             currentCommandIndex = 0;
             currentCommand = commands.get(currentCommandIndex);
-            scheduler.schedule(currentCommand);  // Add the first command to the scheduler
+            scheduler.schedule(currentCommand);
             RobotLog.d("Sequential Command Group Started with " + currentCommand.getClass().getSimpleName());
         }
     }
 
     @Override
     public void execute() throws InterruptedException, JSONException {
-        // SequentialCommandGroup itself doesn't execute commands directly now.
-        // Instead, it monitors the currentCommand's state via the CommandScheduler.
-
         if (currentCommand != null && currentCommand.isFinished()) {
             currentCommand.end();
             currentCommandIndex++;
-            currentExecutionCount = 0; // Reset counter for next command
+            currentExecutionCount = 0;
             if (currentCommandIndex < commands.size()) {
                 currentCommand = commands.get(currentCommandIndex);
-                scheduler.schedule(currentCommand);  // Add the next command to the scheduler
+                scheduler.schedule(currentCommand);
                 RobotLog.d("Sequential Command Group Next Command Started: " + currentCommand.getClass().getSimpleName());
             } else {
                 currentCommand = null;
@@ -53,7 +50,7 @@ public class SequentialCommandGroup implements Command {
         } else if (currentExecutionCount > maxExecutionCount) {
             RobotLog.e("Command execution exceeded max count, ending current command");
             if (currentCommand != null) {
-                currentCommand.end(); // Force end to avoid infinite loop
+                currentCommand.end();
             }
             currentCommand = null;
         } else {
@@ -73,6 +70,6 @@ public class SequentialCommandGroup implements Command {
 
     @Override
     public boolean isFinished() {
-        return false;
+        return currentCommand == null || currentCommandIndex >= commands.size();
     }
 }

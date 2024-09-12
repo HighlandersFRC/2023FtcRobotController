@@ -21,9 +21,7 @@ import org.json.JSONArray;
 
 
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+
 public class PolarAutoFollower extends SequentialCommandGroup {
 
 
@@ -35,9 +33,7 @@ public class PolarAutoFollower extends SequentialCommandGroup {
             JSONObject scheduleEntry = schedule.getJSONObject(i);
             if (!scheduleEntry.getBoolean("branched")){
                 addCommands(
-/*
                         new PolarPathFollower(drive, peripherals, paths.getJSONObject(scheduleEntry.getInt("path")), commandMap, conditionMap, scheduler)
-*/
                 );
             } else {
                 JSONArray onTrueSchedule = scheduleEntry.getJSONObject("branched_path").getJSONArray("on_true");

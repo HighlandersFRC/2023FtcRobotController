@@ -25,7 +25,6 @@ public class WaitForCondition implements Command {
 
     @Override
     public boolean isFinished() {
-    return  true;
+        return condition.getAsBoolean();
     }
-
 }

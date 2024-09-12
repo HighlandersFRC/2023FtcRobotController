@@ -15,9 +15,9 @@ public class ConditionalCommand implements Command {
         this.condition = condition;
         this.onTrue = onTrue;
         this.onFalse = onFalse;
-        if (condition.getAsBoolean()){
+        if (condition.getAsBoolean()) {
             commandToRun = onTrue;
-        }else{
+        } else {
             commandToRun = onFalse;
         }
     }

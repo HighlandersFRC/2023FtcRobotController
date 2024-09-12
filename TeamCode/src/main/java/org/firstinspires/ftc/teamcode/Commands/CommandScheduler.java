@@ -30,21 +30,16 @@ public class CommandScheduler {
     }
 
     public void run() throws InterruptedException, JSONException {
-        // Use a new list to collect commands to remove
         List<Command> finishedCommands = new ArrayList<>();
-
-        // Iterate over a copy of scheduledCommands to avoid concurrent modification
         for (Command command : new ArrayList<>(scheduledCommands)) {
             if (command.isFinished()) {
                 command.end();
-                finishedCommands.add(command);  // Collect finished commands for removal
+                finishedCommands.add(command);
                 RobotLog.d("Command Finished and Ended: " + command.getClass().getSimpleName());
             } else {
                 command.execute();
             }
         }
-
-        // Remove finished commands after iteration
         scheduledCommands.removeAll(finishedCommands);
     }
 

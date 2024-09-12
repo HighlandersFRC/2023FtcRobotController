@@ -8,12 +8,7 @@ import java.util.Set;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
-import org.firstinspires.ftc.teamcode.Commands.Command;
-import org.firstinspires.ftc.teamcode.Commands.CommandScheduler;
-import org.firstinspires.ftc.teamcode.Commands.ConditionalCommand;
-import org.firstinspires.ftc.teamcode.Commands.ParallelCommandGroup;
-import org.firstinspires.ftc.teamcode.Commands.SequentialCommandGroup;
-import org.firstinspires.ftc.teamcode.Commands.TriggerCommand;
+import org.firstinspires.ftc.teamcode.Commands.*;
 import org.firstinspires.ftc.teamcode.Subsystems.Drive;
 import org.firstinspires.ftc.teamcode.Subsystems.Peripherals;
 import org.firstinspires.ftc.teamcode.Tools.Parameters;
@@ -32,36 +27,42 @@ public class PolarPathFollower extends ParallelCommandGroup {
     public PolarPathFollower(Drive drive, Peripherals peripherals, JSONObject pathJSON,
                              HashMap<String, Supplier<Command>> commandMap, HashMap<String, BooleanSupplier> conditionMap, CommandScheduler scheduler) throws Exception {
         super(scheduler, Parameters.ALL);
+
         this.scheduler = scheduler;
         this.pathJSON = pathJSON;
+
+        System.out.println("Loaded Path JSON: " + pathJSON.toString(2)); // Print JSON for debugging
 
         follower = new PurePursuitFollower(drive, peripherals, pathJSON.getJSONArray("sampled_points"), false);
 
         followerCommand = new TriggerCommand(scheduler,
                 () -> {
-                    try {
-                        return follower.pathStartTime <= getPathTime();
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
-                    }
+                    return follower.pathStartTime <= getPathTime();
                 },
                 follower,
                 () -> false);
 
+        // Process commands and ensure no duplicates are added
         ArrayList<Command> commands = new ArrayList<>();
         commands.add(followerCommand);
 
         for (int i = 0; i < pathJSON.getJSONArray("commands").length(); i++) {
             JSONObject command = pathJSON.getJSONArray("commands").getJSONObject(i);
-            String commandKey = command.toString(); // Unique representation of the command
+            String commandKey = command.toString();
+            System.out.println("Processing Command JSON: " + command.toString(2)); // Print each command for debugging
             if (!addedCommandKeys.contains(commandKey)) {
-                commands.add(addCommandsFromJSON(command, commandMap, conditionMap));
-                addedCommandKeys.add(commandKey);
+                Command newCommand = addCommandsFromJSON(command, commandMap, conditionMap);
+                if (newCommand != null) {
+                    commands.add(newCommand);
+                    addedCommandKeys.add(commandKey);
+                }
             }
         }
 
+        // Add all commands to the ParallelCommandGroup
         for (Command command : commands) {
-            addCommands(command);
+            System.out.println("Adding Command: " + command.getClass().getSimpleName()); // Print command being added
+            addCommands(command); // Ensure addCommands accepts single Command
         }
     }
 
@@ -137,16 +138,14 @@ public class PolarPathFollower extends ParallelCommandGroup {
 
     private ParallelCommandGroup createParallelCommandGroup(JSONObject command, HashMap<String, Supplier<Command>> commandMap,
                                                             HashMap<String, BooleanSupplier> conditionMap) throws JSONException {
-        ArrayList<Command> commands = new ArrayList<>();
+        ParallelCommandGroup parallelGroup = new ParallelCommandGroup(scheduler, Parameters.ALL);
+
         for (int i = 0; i < command.getJSONObject("parallel_command_group").getJSONArray("commands").length(); i++) {
-            commands.add(addCommandsFromJSON(
+            parallelGroup.addCommands(addCommandsFromJSON(
                     command.getJSONObject("parallel_command_group").getJSONArray("commands").getJSONObject(i),
                     commandMap, conditionMap));
         }
-        return new ParallelCommandGroup(
-                scheduler, Parameters.ALL,
-                commands.toArray(new Command[0])
-        );
+        return parallelGroup;
     }
 
     private ParallelCommandGroup createParallelDeadlineGroup(JSONObject command, HashMap<String, Supplier<Command>> commandMap,
@@ -154,52 +153,41 @@ public class PolarPathFollower extends ParallelCommandGroup {
         Command deadlineCommand = addCommandsFromJSON(
                 command.getJSONObject("parallel_deadline_group").getJSONArray("commands").getJSONObject(0),
                 commandMap, conditionMap);
-        ArrayList<Command> commands = new ArrayList<>();
+        ParallelCommandGroup parallelGroup = new ParallelCommandGroup(scheduler, Parameters.SPECIFIC, deadlineCommand);
+
         for (int i = 1; i < command.getJSONObject("parallel_deadline_group").getJSONArray("commands").length(); i++) {
-            commands.add(addCommandsFromJSON(
+            parallelGroup.addCommands(addCommandsFromJSON(
                     command.getJSONObject("parallel_deadline_group").getJSONArray("commands").getJSONObject(i),
                     commandMap, conditionMap));
         }
-        return new ParallelCommandGroup(scheduler, Parameters.SPECIFIC, deadlineCommand, commands.get(0));
+        return parallelGroup;
     }
 
     private ParallelCommandGroup createParallelRaceGroup(JSONObject command, HashMap<String, Supplier<Command>> commandMap,
                                                          HashMap<String, BooleanSupplier> conditionMap) throws JSONException {
-        ArrayList<Command> commands = new ArrayList<>();
+        ParallelCommandGroup parallelGroup = new ParallelCommandGroup(scheduler, Parameters.ANY);
+
         for (int i = 0; i < command.getJSONObject("parallel_race_group").getJSONArray("commands").length(); i++) {
-            commands.add(addCommandsFromJSON(
+            parallelGroup.addCommands(addCommandsFromJSON(
                     command.getJSONObject("parallel_race_group").getJSONArray("commands").getJSONObject(i),
                     commandMap, conditionMap));
         }
-        return new ParallelCommandGroup(scheduler, Parameters.ANY, commands.toArray(new Command[0]));
+        return parallelGroup;
     }
 
     private SequentialCommandGroup createSequentialCommandGroup(JSONObject command, HashMap<String, Supplier<Command>> commandMap,
                                                                 HashMap<String, BooleanSupplier> conditionMap) throws JSONException {
-        ArrayList<Command> commands = new ArrayList<>();
+        SequentialCommandGroup sequentialGroup = new SequentialCommandGroup(scheduler);
+
         for (int i = 0; i < command.getJSONObject("sequential_command_group").getJSONArray("commands").length(); i++) {
-            commands.add(addCommandsFromJSON(
+            sequentialGroup.addCommands(addCommandsFromJSON(
                     command.getJSONObject("sequential_command_group").getJSONArray("commands").getJSONObject(i),
                     commandMap, conditionMap));
         }
-        return new SequentialCommandGroup(scheduler, commands.toArray(new Command[0]));
+        return sequentialGroup;
     }
 
-    double getPathTime() throws JSONException {
-        double retval;
-        if (follower.isFinished()) {
-            if (!timerStarted) {
-                endTime = System.currentTimeMillis();
-                timerStarted = true;
-            }
-            retval = System.currentTimeMillis() - endTime;
-            retval += pathJSON.getJSONArray("sampled_points")
-                    .getJSONObject(pathJSON.getJSONArray("sampled_points").length() - 1).getDouble("time");
-        } else {
-            timerStarted = false;
-            retval = pathJSON.getJSONArray("sampled_points")
-                    .getJSONObject(follower.getPathPointIndex()).getDouble("time");
-        }
-        return retval;
+    private double getPathTime() {
+        return (System.currentTimeMillis() - follower.pathStartTime) / 1000.0;
     }
 }
